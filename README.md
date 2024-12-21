@@ -1,5 +1,5 @@
 
-<img src="https://github.com/user-attachments/assets/94fa7c18-5992-418c-ae54-439bcaa7b5ab" width="300"/>
+<img src="https://github.com/user-attachments/assets/50b438b9-f926-462e-843f-6946bee7f095" width="300"/>
 
 # EquipPoint
 Equipment Rental System - Heavy Vehicle  A robust web application designed for managing the rental of heavy vehicles and equipment. Built using Java, JSP, and Servlets, this system streamlines the equipment rental process, ensuring efficiency and reliability for both customers and administrators.
