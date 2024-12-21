@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - EquipPoint</title>
+    <link rel="stylesheet" href="../src/style.css">
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="md:w-1/2 p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
+                <form id="signupForm" class="space-y-4" onsubmit="return validateForm(event)">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        <p id="fullNameError" class="text-red-500 text-sm mt-1 hidden">Name must be at least 3 characters long</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid 10-digit phone number</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="password">Password</label>
+                        <input type="password" id="password" name="password" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Password must be at least 8 characters long</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        <p id="confirmPasswordError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match</p>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Sign Up
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-gray-600">
+                    Already have an account? 
+                    <a href="login.html" class="text-blue-500 hover:text-blue-600">Login here</a>
+                </p>
+            </div>
+            <div class="md:w-1/2 hidden md:block">
+                <img src="../images/EquipPoint.png" alt="Sign Up" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            let isValid = true;
+
+            // Name validation
+            if (fullName.length < 3) {
+                document.getElementById('fullNameError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('fullNameError').classList.add('hidden');
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.add('hidden');
+            }
+
+            // Phone validation
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').classList.add('hidden');
+            }
+
+            // Password validation
+            if (password.length < 8) {
+                document.getElementById('passwordError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('passwordError').classList.add('hidden');
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').classList.add('hidden');
+            }
+
+            // If all validations pass, form can be submitted
+            if (isValid) {
+                document.getElementById('signupForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>
