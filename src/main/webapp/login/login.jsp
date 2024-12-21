@@ -21,12 +21,22 @@
             <!-- Replace with your logo -->
             <img src="../images/EquipPoint.png" alt="EquipPoint Logo" class="h-20 w-auto">
         </div>
+
+        <div class=" <%= request.getAttribute("registerSuccessFully") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+             role="alert">
+            <strong class="font-bold"><%= request.getAttribute("registerSuccessFully") %></strong>
+        </div>
+        <div class=" <%= request.getAttribute("loginError") != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+             role="alert">
+            <strong class="font-bold"><%= request.getAttribute("loginError") %></strong>
+        </div>
         
-        <form class="space-y-6">
+        <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/api/auth">
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" 
                        id="email"
+                       name="email"
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                        required
                        title="Enter your email"
@@ -39,6 +49,7 @@
                        id="password"
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                        required
+                       name="password"
                        title="Enter your password"
                        placeholder="Enter your password">
             </div>
@@ -57,7 +68,7 @@
         
         <p class="mt-4 text-center text-sm text-gray-600">
             Don't have an account? 
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+            <a href="${pageContext.request.contextPath}/users/signUp.jsp" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
         </p>
     </div>
 </body>

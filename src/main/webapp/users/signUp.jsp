@@ -11,7 +11,7 @@
         <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="md:w-1/2 p-8">
                 <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
-                <form id="signupForm" class="space-y-4" onsubmit="return validateForm(event)">
+                <form method="post" action="${pageContext.request.contextPath}/api/register" id="signupForm" class="space-y-4" onsubmit="return validateForm(event) ">
                     <div>
                         <label class="block text-gray-700 mb-2" for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
@@ -21,6 +21,11 @@
                         <label class="block text-gray-700 mb-2" for="email">Email Address</label>
                         <input type="email" id="email" name="email" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                         <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address</p>
+                    </div>
+                    <div class="sm:col-span-4">
+                        <div class="<%= request.getAttribute("duplicateEmailMessage") != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                            <strong class="font-bold"><%= request.getAttribute("duplicateEmailMessage") %> </strong>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
@@ -43,7 +48,7 @@
                 </form>
                 <p class="mt-4 text-center text-gray-600">
                     Already have an account? 
-                    <a href="login.html" class="text-blue-500 hover:text-blue-600">Login here</a>
+                    <a href="${pageContext.request.contextPath}/login/login.jsp" class="text-blue-500 hover:text-blue-600">Login here</a>
                 </p>
             </div>
             <div class="md:w-1/2 hidden md:block">

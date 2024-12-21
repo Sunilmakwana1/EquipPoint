@@ -30,7 +30,7 @@
                 </button>
 
                 <div class="text-center">
-                    <a href="login.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                    <a href="login.jsp" class="text-blue-600 hover:text-blue-800 text-sm">
                         Back to Login
                     </a>
                 </div>
