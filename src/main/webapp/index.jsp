@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EquipPoint - Heavy Equipment Rental</title>
-    <link rel="stylesheet" href="../src/style.css">
+    <link rel="stylesheet" href="src/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="bg-gray-50">
@@ -13,7 +13,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <img src="../images/EquipPoint.png" alt="EquipPoint" class="h-8 w-auto">
+                    <img src="images/EquipPoint.png" alt="EquipPoint" class="h-8 w-auto">
                     <span class="ml-2 text-xl font-bold text-gray-800">EquipPoint</span>
                 </div>
                 <div class="hidden md:flex space-x-8">
@@ -23,7 +23,7 @@
                     <a href="#" class="text-gray-600 hover:text-blue-600 transition">Contact</a>
                 </div>
                 <div>
-                    <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Login</button>
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition" onclick="window.location.href='/login/login.jsp'">Login</button>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
                     </button>
                 </div>
                 <div class="md:w-1/2 mt-12 md:mt-0 animate__animated animate__fadeInRight">
-                    <img src="../images/EquipPoint.png" alt="Heavy Equipment" class="rounded-lg ">
+                    <img src="images/EquipPoint.png" alt="Heavy Equipment" class="rounded-lg ">
                 </div>
             </div>
         </div>
