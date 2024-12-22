@@ -18,7 +18,7 @@
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#" class="text-gray-600 hover:text-blue-600 transition">Home</a>
-                    <a href="${pageContext.request.contextPath}/catagory/addEquipmentCategories.jsp" class="text-gray-600 hover:text-blue-600 transition">Equipment</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition">Equipment</a>
                     <a href="#" class="text-gray-600 hover:text-blue-600 transition">About</a>
                     <a href="#" class="text-gray-600 hover:text-blue-600 transition">Contact</a>
                 </div>

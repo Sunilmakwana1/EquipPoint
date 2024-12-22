@@ -41,7 +41,7 @@ public class EquipmentCategoriesController extends HttpServlet {
             String categoryImage = fileName;
 
             EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(conn);
-            if (equipmentCategoriesService.checkEquipmentExist(categoryName)){
+            if (Boolean.TRUE.equals(equipmentCategoriesService.checkEquipmentExist(categoryName))){
                 EquipmentCategories equipmentCategories = new EquipmentCategories(categoryName, description, categoryImage);
                 Boolean addEquipmentCategories = equipmentCategoriesService.addEquipmentCategories(equipmentCategories);
                 if (Boolean.TRUE.equals(addEquipmentCategories)){
