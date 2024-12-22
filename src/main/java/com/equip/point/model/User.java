@@ -12,7 +12,7 @@ public class User implements Serializable {
 
     private String password;
 
-    private Role role;
+    private String role;
 
     private Boolean status;
 
@@ -64,11 +64,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
