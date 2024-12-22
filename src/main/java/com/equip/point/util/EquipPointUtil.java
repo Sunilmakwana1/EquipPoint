@@ -12,5 +12,16 @@ public class EquipPointUtil {
             greet();
         }
     }
+    public class SimpleMethodExample {
+        // Method that adds two numbers and returns the result
+        public static int add(int a, int b) {
+            return a + b;
+        }
+
+        public static void main(String[] args) {
+            int result = add(5, 3);
+            System.out.println("The sum is: " + result);
+        }
+    }
 
 }
