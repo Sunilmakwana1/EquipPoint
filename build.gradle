@@ -29,6 +29,7 @@ dependencies {
     implementation('org.jboss.weld.se:weld-se-core:6.0.0.Beta1')
     implementation 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:4.0.0'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'javax.servlet:jstl:1.2'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
