@@ -28,7 +28,7 @@ public class LoginService {
                 if (rs.next()) {
                     user = new User();
                     user.setId(rs.getLong("id"));
-                    user.setAddress(rs.getString("full_name"));
+                    user.setFullName(rs.getString("full_name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                 }
