@@ -42,6 +42,48 @@ CREATE TABLE `role`
 INSERT INTO `role` (`name`) VALUES ('Admin');
 INSERT INTO `role` (`name`) VALUES ('User');
 
+/*
+ Date : 2024-12-22
+    Name : Vishal Makwana
+    Purpose : Create table for Equipment Category and Equipment
+             Also added foreign key in USER table for role
+ */
+
+USE SCHEMA_NAME;
+
+CREATE TABLE `equipment_categories`
+(
+    `id`           INT NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(255) NULL,
+    `description`  VARCHAR(255) NULL,
+    `image`        VARCHAR(255) NULL,
+    `is_deleted`   BIT NULL,
+    `created_date` TIMESTAMP NULL,
+    `updated_date` TIMESTAMP NULL,
+    PRIMARY KEY (`id`)
+);
+
+
+ALTER TABLE `user`
+    ADD INDEX `user_id_role_id_fk_idx` (`role` ASC) VISIBLE;
+;
+ALTER TABLE `user`
+    ADD CONSTRAINT `user_id_role_id_fk`
+        FOREIGN KEY (`role`)
+            REFERENCES `role` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION;
+
+ALTER TABLE `user`
+DROP FOREIGN KEY `user_id_role_id_fk`;
+ALTER TABLE `user`
+    CHANGE COLUMN `role` `role_id` BIGINT NOT NULL ;
+ALTER TABLE `user`
+    ADD CONSTRAINT `user_id_role_id_fk`
+        FOREIGN KEY (`role_id`)
+            REFERENCES `role` (`id`);
+
+
 
 
 
