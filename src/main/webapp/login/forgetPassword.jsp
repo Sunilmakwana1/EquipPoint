@@ -13,8 +13,15 @@
                 <h2 class="text-3xl font-bold text-blue-600">Forgot Password?</h2>
                 <p class="text-gray-600 mt-2">Enter your email to reset password</p>
             </div>
-
-            <form class="space-y-6">
+            <div class=" <%= request.getAttribute("forgetPasswordSuccess") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                 role="alert">
+                <strong class="font-bold"><%= request.getAttribute("forgetPasswordSuccess") %></strong>
+            </div>
+            <div class=" <%= request.getAttribute("forgetPasswordError") != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                 role="alert">
+                <strong class="font-bold"><%= request.getAttribute("forgetPasswordError") %></strong>
+            </div>
+            <form class="space-y-6" action="/forget-password" method="post">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
                     <input type="email" id="email" name="email" 

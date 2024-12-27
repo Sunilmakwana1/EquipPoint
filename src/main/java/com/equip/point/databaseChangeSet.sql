@@ -84,6 +84,14 @@ ALTER TABLE `user`
             REFERENCES `role` (`id`);
 
 
+/*
+ Date : 2024-12-27
+    Name : Vishal Makwana
+    Purpose : Added otp column in user table 
+ */
+ ALTER TABLE `equip_point`.`user` 
+ADD COLUMN `otp` VARCHAR(255) NULL AFTER `updated_date`,
+ADD COLUMN `otp_created_date` TIMESTAMP NULL AFTER `otp`;
 
 
 
