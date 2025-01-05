@@ -20,16 +20,14 @@ public class ForgetPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
+        String securityQuestion = req.getParameter("securityQuestion");
+        String securityAnswer = req.getParameter("securityAnswer");
         try {
             HttpSession session = req.getSession();
             UserService userService = new UserService(DbConnection.getConnection());
-            User userEmail = userService.forgetPassword(email);
-            if (Objects.nonNull(userEmail)) {
-               System.out.println("Forget password successful for user with ID: " + userEmail.getId());
-               System.out.println("User name : " + userEmail.getFullName());
-               String forgetPassword = "Forget Password Successful. Please Contact Admin For Password Reset";
-               req.setAttribute("forgetPasswordSuccess", forgetPassword);
-                req.getRequestDispatcher("/login/forgetPassword.jsp").forward(req, resp);
+             Boolean isForgetPassword = userService.forgetPassword(email, securityQuestion, securityAnswer);
+            if (Boolean.TRUE.equals(isForgetPassword)) {
+                req.getRequestDispatcher("/login/resetPassword.jsp").forward(req, resp);
             } else {
                 System.out.println("Forget password failed for email: " + email);
                 String forgetPasswordError = "Forget Password Failed. Please try again";

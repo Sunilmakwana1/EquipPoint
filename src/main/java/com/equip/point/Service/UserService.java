@@ -1,4 +1,5 @@
 package com.equip.point.Service;
+
 import com.equip.point.model.User;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.util.List;
 public class UserService {
 
     private Connection conn;
-    
+
 
     //constructor
     public UserService(Connection conn) {
@@ -53,7 +54,6 @@ public class UserService {
     }
 
 
-
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         User user = null;
@@ -89,7 +89,7 @@ public class UserService {
 
     }
 
-    
+
     public User forgetPassword(String email) {
         User user = null;
         try {
@@ -140,5 +140,23 @@ public class UserService {
         return reset;
     }
 
+    public boolean forgetPassword(String email, String question, String answer) {
+        boolean isForgetPassword = false;
+        try {
+            String query = "SELECT * from user u left join security_questions_answer sqa on u.id = sqa.user_id left join security_questions sq on sqa.question_id = sq.id where u.email = ? and sq.question = ? and sqa.answer = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, email);
+                ps.setString(2, question);
+                ps.setString(3, answer);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    isForgetPassword = true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService forgetPassword: " + e.getMessage());
+        }
+        return isForgetPassword;
+    }
 
 }

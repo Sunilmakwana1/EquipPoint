@@ -30,6 +30,25 @@
                            required>
                 </div>
 
+                <div>
+                    <label for="securityQuestion" class="block text-sm font-medium text-gray-700">Security Question</label>
+                    <select id="securityQuestion" name="securityQuestion"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md
+                                   focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <option value="" disabled selected>Select a security question</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="securityAnswer" class="block text-sm font-medium text-gray-700">Security Answer</label>
+                    <input type="text" id="securityAnswer" name="securityAnswer"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md
+                                  focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                           required>
+                </div>
+                
+
                 <button type="submit" 
                         class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 
                                transition duration-300 font-medium">
@@ -44,5 +63,24 @@
             </form>
         </div>
     </div>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/security-questions')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('securityQuestion');
+                    data.forEach(question => {
+                        const option = document.createElement('option');
+                        option.value = question;
+                        option.textContent = question;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching security questions:', error));
+        });
+    </script>
 </body>
 </html></div></body>
