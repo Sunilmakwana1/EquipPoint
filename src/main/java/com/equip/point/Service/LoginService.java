@@ -20,7 +20,7 @@ public class LoginService {
     public User loginUser(String email, String password) {
         User user = null;
         try {
-            String query = "SELECT * FROM user WHERE email=? AND password=?";
+            String query = "SELECT * FROM user WHERE email=? AND password=? AND is_deleted = false";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, email);
                 ps.setString(2, password);

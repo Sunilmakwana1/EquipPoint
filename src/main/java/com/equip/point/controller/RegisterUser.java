@@ -6,6 +6,7 @@ import com.equip.point.Service.UserService;
 import com.equip.point.model.SecurityQuestions;
 import com.equip.point.model.User;
 import com.equip.point.util.DbConnection;
+import com.equip.point.util.EquipPointUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import static com.equip.point.util.AppConstant.REGISTER_SUCCESS;
-import static com.equip.point.util.AppConstant.REGISTER_SUCCESS_MESSAGE;
+import static com.equip.point.util.AppConstant.*;
 
 @WebServlet(value = "/api/register")
 public class RegisterUser extends HttpServlet {
@@ -36,7 +36,7 @@ public class RegisterUser extends HttpServlet {
             String securityQuestion = req.getParameter("securityQuestion");
             String securityAnswer = req.getParameter("securityAnswer");
             UserService userService = new UserService(conn);
-            if (userService.checkIsEmailAvailable(email)) {
+            if (EquipPointUtil.isTrueNotNull(userService.checkIsEmailAvailable(email)) && EquipPointUtil.isTrueNotNull(userService.checkIsPhoneNumberAvailable(phone))) {
                 User user = new User(fullName, email, password,  phone);
                 RegisterService registerService = new RegisterService(conn);
                 Boolean registerUser = registerService.registerUser(user);
@@ -53,8 +53,15 @@ public class RegisterUser extends HttpServlet {
                 }
             } else {
                 conn.rollback();
-                String duplicateEmailMessage = "This email is already used.";
-                req.setAttribute("duplicateEmailMessage", duplicateEmailMessage);
+                if (!EquipPointUtil.isTrueNotNull(userService.checkIsPhoneNumberAvailable(phone)) && !EquipPointUtil.isTrueNotNull(userService.checkIsEmailAvailable(email))) {
+                    req.setAttribute(DUPLICATE_PHONE, DUPLICATE_PHONE_MESSAGE);
+                    req.setAttribute(DUPLICATE_EMAIL, DUPLICATE_EMAIL_MESSAGE);
+                }
+                else if (!EquipPointUtil.isTrueNotNull(userService.checkIsPhoneNumberAvailable(phone))) {
+                    req.setAttribute(DUPLICATE_PHONE, DUPLICATE_PHONE_MESSAGE);
+                } else if (!EquipPointUtil.isTrueNotNull(userService.checkIsEmailAvailable(email))) {
+                    req.setAttribute(DUPLICATE_EMAIL, DUPLICATE_EMAIL_MESSAGE);
+                }
                 req.getRequestDispatcher("/users/signUp.jsp").forward(req, resp);
             }
         } catch (Exception e) {

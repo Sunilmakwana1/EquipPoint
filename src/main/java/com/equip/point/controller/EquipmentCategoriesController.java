@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static com.equip.point.util.AppConstant.*;
+
 @WebServlet("/api/equipment-categories")
 @MultipartConfig
 public class EquipmentCategoriesController extends HttpServlet {
@@ -27,7 +29,7 @@ public class EquipmentCategoriesController extends HttpServlet {
         Part filePart = req.getPart("categoryImage");
         String fileName = filePart.getSubmittedFileName();
         System.out.println("File name: " + fileName);
-        String uploadPath = "F:\\Major Project\\EquipPoint\\src\\main\\webapp\\images\\" + fileName;
+        String uploadPath = UPLOAD_PATH + fileName;
         System.out.println("Upload path: " + uploadPath);
 
         EquipPointUtil.uploadFile(uploadPath,filePart);
@@ -46,8 +48,7 @@ public class EquipmentCategoriesController extends HttpServlet {
                 Boolean addEquipmentCategories = equipmentCategoriesService.addEquipmentCategories(equipmentCategories);
                 if (Boolean.TRUE.equals(addEquipmentCategories)){
                     conn.commit();
-                    String categoryAddedSuccessfully = "Category added successfully.";
-                    req.setAttribute("categoryAddedSuccessfully", categoryAddedSuccessfully);
+                    req.setAttribute(CATEGORY_ADDED_SUCCESSFULLY, CATEGORY_ADDED_SUCCESSFULLY_MESSAGE);
                     req.getRequestDispatcher("/catagory/addEquipmentCategories.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
@@ -55,8 +56,7 @@ public class EquipmentCategoriesController extends HttpServlet {
                 }
             } else {
                 conn.rollback();
-                String duplicateCategoryMessage = "This category is already exist.";
-                req.setAttribute("duplicateCategoryMessage", duplicateCategoryMessage);
+                req.setAttribute(DUPLICATE_CATEGORY, DUPLICATE_CATEGORY_MESSAGE);
                 req.getRequestDispatcher("/catagory/addEquipmentCategories.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
