@@ -62,6 +62,11 @@
                     <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2" title="Delete User">
                         <i class="fas fa-trash-alt"></i>
                     </button>
+                    <% if (userList.getOtp() != null) { %>
+                        <a class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 ml-2 inline-block" href="/forget-password?otp=<%=userList.getOtp() %>" title="Reset Password">
+                            <i class="fas fa-key"></i>
+                        </a>
+                    <% } %>
                 </td>
             </tr>
         <%
