@@ -22,7 +22,7 @@ public class UserService {
     public boolean checkIsEmailAvailable(String email) {
         boolean available = true;
         try {
-            String sql = "SELECT COUNT(*) FROM user WHERE LOWER(email) = LOWER(?)";
+            String sql = "SELECT COUNT(*) FROM user WHERE LOWER(email) = LOWER(?) AND is_deleted = false";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -58,11 +58,12 @@ public class UserService {
         List<User> userList = new ArrayList<>();
         User user = null;
         try {
-            String query = "SELECT * FROM user order by id desc";
+            String query = "SELECT * FROM user WHERE is_deleted = false ORDER BY id DESC";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     user = new User();
+                    user.setId(rs.getLong("id"));
                     user.setFullName(rs.getString("full_name"));
                     user.setEmail(rs.getString("email"));
 
@@ -118,32 +119,28 @@ public class UserService {
     }
 
 
-    public Boolean resetPassword(String otp) {
-        Boolean reset = false;
+    public Boolean resetPassword(String email, String password) {
+        boolean isPasswordReset = false;
         try {
-            String query = "SELECT * FROM user WHERE otp = ?";
+            String query = "UPDATE user SET password = ? WHERE email = ?";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setString(1, otp);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    String passWordReset = "UPDATE user SET password = Equipoint , otp = null, otp_created_date = null WHERE otp = ?";
-                    try (PreparedStatement ps1 = conn.prepareStatement(passWordReset)) {
-                        ps1.setString(1, otp);
-                        ps1.executeUpdate();
-                        reset = true;
-                    }
+                ps.setString(1, password);
+                ps.setString(2, email);
+                int i = ps.executeUpdate();
+                if (i == 1) {
+                    isPasswordReset = true;
                 }
             }
         } catch (Exception e) {
             System.out.println("Error in UserService resetPassword: " + e.getMessage());
         }
-        return reset;
+        return isPasswordReset;
     }
 
     public boolean forgetPassword(String email, String question, String answer) {
         boolean isForgetPassword = false;
         try {
-            String query = "SELECT * from user u left join security_questions_answer sqa on u.id = sqa.user_id left join security_questions sq on sqa.question_id = sq.id where u.email = ? and sq.question = ? and sqa.answer = ?";
+            String query = "SELECT * from user u left join security_questions_answer sqa on u.id = sqa.user_id left join security_questions sq on sqa.question_id = sq.id where u.email = ? and sq.question = ? and sqa.answer = ? and u.is_deleted = false";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, email);
                 ps.setString(2, question);
@@ -158,5 +155,87 @@ public class UserService {
         }
         return isForgetPassword;
     }
+
+    public boolean checkIsPhoneNumberAvailable(String phone) {
+        boolean available = true;
+        try {
+            String sql = "SELECT COUNT(*) FROM user WHERE phone = ? AND is_deleted = false";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    available = false; // Phone number is already in use
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService checkIsPhoneAvailable : " + e.getMessage());
+        }
+        return available;
+    }
+
+    /**
+     * This method is used to get the email by phone
+     * @param phone
+     * @return String
+     */
+    public String getEmailByPhone(String phone) {
+        String email = null;
+        try {
+            String query = "SELECT email FROM user WHERE phone = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, phone);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    email = rs.getString("email");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService getEmailByPhone: " + e.getMessage());
+        }
+        return email;
+    }
+
+    /**
+     * This method is used to delete a user
+     * @param id
+     * @return boolean
+     */
+    public boolean deleteUser(Long id) {
+        boolean isDeleted = false;
+        try {
+            String query = "UPDATE user SET is_deleted = true WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setLong(1, id);
+                int i = ps.executeUpdate();
+                if (i == 1) {
+                    isDeleted = true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService deleteUser: " + e.getMessage());
+        }
+        return isDeleted;
+    }
+
+    //get the login user role
+    public String getRoleNameByEmail(String email) {
+        String roleName = null;
+        try {
+            String query = "SELECT r.name FROM role r JOIN user u ON r.id = u.role_id WHERE u.email = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, email);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    roleName = rs.getString("name");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService getRoleNameByEmail: " + e.getMessage());
+        }
+        return roleName;
+    }
+
 
 }

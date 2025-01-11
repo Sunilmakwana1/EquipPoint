@@ -6,14 +6,15 @@
            Inserted data in Role Table
  */
 
-CREATE SCHEMA `equip_point` ;
+CREATE SCHEMA `equip_point`;
 
-USE SCHEMA_NAME;
+USE
+SCHEMA_NAME;
 
 CREATE TABLE `user`
 (
     `id`           BIGINT       NOT NULL AUTO_INCREMENT,
-    `full_name`   VARCHAR(255) NOT NULL,
+    `full_name`    VARCHAR(255) NOT NULL,
     `email`        VARCHAR(255) NOT NULL,
     `password`     VARCHAR(255) NOT NULL,
     `role`         BIGINT       NOT NULL,
@@ -25,7 +26,7 @@ CREATE TABLE `user`
     `postal_code`  VARCHAR(10) NULL,
     `is_deleted`   BIT NULL,
     `created_date` TIMESTAMP    NOT NULL,
-    `updated_date` TIMESTAMP    NULL
+    `updated_date` TIMESTAMP NULL
     PRIMARY KEY (`id`)
 );
 
@@ -39,8 +40,10 @@ CREATE TABLE `role`
 
 
 
-INSERT INTO `role` (`name`) VALUES ('Admin');
-INSERT INTO `role` (`name`) VALUES ('User');
+INSERT INTO `role` (`name`)
+VALUES ('Admin');
+INSERT INTO `role` (`name`)
+VALUES ('User');
 
 /*
  Date : 2024-12-22
@@ -49,7 +52,8 @@ INSERT INTO `role` (`name`) VALUES ('User');
              Also added foreign key in USER table for role
  */
 
-USE SCHEMA_NAME;
+USE
+SCHEMA_NAME;
 
 CREATE TABLE `equipment_categories`
 (
@@ -75,9 +79,10 @@ ALTER TABLE `user`
             ON UPDATE NO ACTION;
 
 ALTER TABLE `user`
-DROP FOREIGN KEY `user_id_role_id_fk`;
+DROP
+FOREIGN KEY `user_id_role_id_fk`;
 ALTER TABLE `user`
-    CHANGE COLUMN `role` `role_id` BIGINT NOT NULL ;
+    CHANGE COLUMN `role` `role_id` BIGINT NOT NULL;
 ALTER TABLE `user`
     ADD CONSTRAINT `user_id_role_id_fk`
         FOREIGN KEY (`role_id`)
@@ -89,8 +94,8 @@ ALTER TABLE `user`
     Name : Vishal Makwana
     Purpose : Added otp column in user table 
  */
- ALTER TABLE `equip_point`.`user` 
-ADD COLUMN `otp` VARCHAR(255) NULL AFTER `updated_date`,
+ALTER TABLE `equip_point`.`user`
+    ADD COLUMN `otp` VARCHAR(255) NULL AFTER `updated_date`,
 ADD COLUMN `otp_created_date` TIMESTAMP NULL AFTER `otp`;
 
 
@@ -168,6 +173,14 @@ ADD CONSTRAINT `fk_user_id`
   FOREIGN KEY (`user_id`)
   REFERENCES `equip_point`.`user` (`id`)
   ON DELETE CASCADE;
+
+
+/*
+ Date : 2025-01-11
+    Name : Vishal Makwana
+    Purpose : Insert the user admin data
+ */
+    INSERT INTO `user` (`full_name`, `email`, `password`, `role_id`, `status`, `address`, `phone`, `country`, `city`, `postal_code`, `is_deleted`, `created_date`) VALUES ('Admin', 'admin@equipoint.com', 'Admin', (select id from role where name = "admin"), true, 'USA', '123456789', 'USA', 'USA', '123456', false, now());
 
 
 

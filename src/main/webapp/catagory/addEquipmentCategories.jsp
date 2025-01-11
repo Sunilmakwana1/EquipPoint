@@ -1,3 +1,5 @@
+<%@ page import="static com.equip.point.util.AppConstant.CATEGORY_ADDED_SUCCESSFULLY" %>
+<%@ page import="static com.equip.point.util.AppConstant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,9 +14,9 @@
         <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="md:w-1/2 p-8">
                 <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Add Equipment Categories</h2>
-                <div class=" <%= request.getAttribute("categoryAddedSuccessfully") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                <div class=" <%= request.getAttribute(CATEGORY_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                      role="alert">
-                    <strong class="font-bold"><%= request.getAttribute("categoryAddedSuccessfully") %></strong>
+                    <strong class="font-bold"><%= request.getAttribute(CATEGORY_ADDED_SUCCESSFULLY) %></strong>
                 </div>
                 <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/api/equipment-categories" enctype="multipart/form-data">
                     <div>
@@ -28,8 +30,8 @@
                             placeholder="Enter category name">
                     </div>
                     <div class="sm:col-span-4">
-                        <div class="<%= request.getAttribute("duplicateCategoryMessage") != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <strong class="font-bold"><%= request.getAttribute("duplicateCategoryMessage") %> </strong>
+                        <div class="<%= request.getAttribute(DUPLICATE_CATEGORY) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                            <strong class="font-bold"><%= request.getAttribute(DUPLICATE_CATEGORY) %> </strong>
                         </div>
                     </div>
 

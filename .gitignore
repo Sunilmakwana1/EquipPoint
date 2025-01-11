@@ -65,3 +65,6 @@ bin/
 
 # node modules
 node_modules/
+
+# Ignore image files
+src/main/webapp/images/
