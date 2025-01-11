@@ -14,6 +14,8 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
 
     private String image;
 
+    private String imageUri;
+
 
     public EquipmentCategories() {
     }
@@ -44,6 +46,11 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
         this.name = name;
         this.description = description;
         this.image = image;
+    }
+
+    public EquipmentCategories(Long id, String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted, String imageUri) {
+        this(id, name, description, image, createdAt, updatedAt, isDeleted);
+        this.imageUri = imageUri;
     }
 
     public Long getId() {
@@ -78,6 +85,14 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
         this.image = image;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
     @Override
     public String toString() {
         return "EquipmentCategories{" +
@@ -85,6 +100,7 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
+                ", imageUri='" + imageUri + '\'' +
                 '}';
     }
 }

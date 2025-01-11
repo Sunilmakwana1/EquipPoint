@@ -23,7 +23,6 @@ public class ForgetPassword extends HttpServlet {
         String securityQuestion = req.getParameter("securityQuestion");
         String securityAnswer = req.getParameter("securityAnswer");
         try {
-            HttpSession session = req.getSession();
             UserService userService = new UserService(DbConnection.getConnection());
              Boolean isForgetPassword = userService.forgetPassword(email, securityQuestion, securityAnswer);
             if (Boolean.TRUE.equals(isForgetPassword)) {

@@ -36,7 +36,7 @@ public class SecurityQuestionsService {
     public Boolean saveSecutityQuestionsAnswer(String answer, String email , SecurityQuestions securityQuestions) {
         boolean isAnswerSaved = false;
         try {
-            String query = "INSERT INTO security_questions_answer (user_id, question_id, answer, created_date) VALUES ((SELECT id FROM user WHERE email = ?), (SELECT id FROM security_questions WHERE question = ?), ?, now())";
+            String query = "INSERT INTO security_questions_answer (user_id, question_id, answer, created_date) VALUES ((SELECT id FROM user WHERE email = ? AND is_deleted = false), (SELECT id FROM security_questions WHERE question = ?), ?, now())";
             int i;
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, email);
