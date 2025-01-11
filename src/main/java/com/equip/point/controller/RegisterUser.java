@@ -17,6 +17,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import static com.equip.point.util.AppConstant.REGISTER_SUCCESS;
+import static com.equip.point.util.AppConstant.REGISTER_SUCCESS_MESSAGE;
+
 @WebServlet(value = "/api/register")
 public class RegisterUser extends HttpServlet {
     @Override
@@ -42,8 +45,7 @@ public class RegisterUser extends HttpServlet {
                 Boolean saveSecutityQuestionsAnswer = securityQuestionsService.saveSecutityQuestionsAnswer(securityAnswer, email, securityQuestions);
                 if (Boolean.TRUE.equals(registerUser) && Boolean.TRUE.equals(saveSecutityQuestionsAnswer)) {
                     conn.commit();
-                    String registerSuccessFully = "You have registered successfully.";
-                    req.setAttribute("registerSuccessFully", registerSuccessFully);
+                    req.setAttribute(REGISTER_SUCCESS, REGISTER_SUCCESS_MESSAGE);
                     req.getRequestDispatcher("/login/login.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
