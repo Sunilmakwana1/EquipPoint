@@ -1,3 +1,6 @@
+<%@ page import="static com.equip.point.util.AppConstant.LOGIN_ERROR" %>
+<%@ page import="static com.equip.point.util.AppConstant.LOGOUT_ERROR" %>
+<%@ page import="static com.equip.point.util.AppConstant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,15 +25,18 @@
             <img src="../images/EquipPoint.png" alt="EquipPoint Logo" class="h-20 w-auto">
         </div>
 
-        <div class=" <%= request.getAttribute("registerSuccessFully") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+        <div class=" <%= request.getAttribute(REGISTER_SUCCESS) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
              role="alert">
-            <strong class="font-bold"><%= request.getAttribute("registerSuccessFully") %></strong>
+            <strong class="font-bold"><%= request.getAttribute(REGISTER_SUCCESS) %></strong>
         </div>
-        <div class=" <%= request.getAttribute("loginError") != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+        <div class=" <%= request.getAttribute(LOGIN_ERROR) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
              role="alert">
-            <strong class="font-bold"><%= request.getAttribute("loginError") %></strong>
+            <strong class="font-bold"><%= request.getAttribute(LOGIN_ERROR) %></strong>
         </div>
-        
+        <div class=" <%= request.getAttribute(LOGOUT_ERROR) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+             role="alert">
+            <strong class="font-bold"><%= request.getAttribute(LOGOUT_ERROR) %></strong>
+        </div>
         <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/api/auth">
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -57,7 +63,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                 </div>
-                <a href="forgetPassword.jsp" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                <a href="../login/forgetPassword.jsp" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
             </div>
             
             <button type="submit" 
