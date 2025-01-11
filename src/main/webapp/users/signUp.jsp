@@ -33,6 +33,16 @@
                         <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid 10-digit phone number</p>
                     </div>
                     <div>
+                        <label class="block text-gray-700 mb-2" for="securityQuestion">Security Question</label>
+                        <select id="securityQuestion" name="securityQuestion" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                            <option value="" disabled selected>Select a security question</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="securityAnswer">Security Answer</label>
+                        <input type="text" id="securityAnswer" name="securityAnswer" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                    </div>
+                    <div>
                         <label class="block text-gray-700 mb-2" for="password">Password</label>
                         <input type="password" id="password" name="password" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                         <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Password must be at least 8 characters long</p>
@@ -52,11 +62,26 @@
                 </p>
             </div>
             <div class="md:w-1/2 hidden md:block">
-                <img src="../images/EquipPoint.png" alt="Sign Up" class="w-full h-full object-cover">
-            </div>
+                <img src="<%= request.getContextPath() %>/images/EquipPoint.png" alt="Sign Up" class="w-full h-full">
         </div>
     </div>
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/security-questions')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('securityQuestion');
+                    data.forEach(question => {
+                        const option = document.createElement('option');
+                        option.value = question;
+                        option.textContent = question;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching security questions:', error));
+        });
+
         function validateForm(event) {
             event.preventDefault();
             

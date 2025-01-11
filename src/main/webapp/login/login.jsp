@@ -57,7 +57,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                 </div>
-                <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                <a href="forgetPassword.jsp" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
             </div>
             
             <button type="submit" 

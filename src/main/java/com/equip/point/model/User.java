@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     private int postalCode;
 
-
+    private String otp;
 
     public User() {
 
@@ -120,6 +120,14 @@ public class User implements Serializable {
         this.postalCode = postalCode;
     }
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
     public User(String fullName, String email, String password, String phone) {
         this.fullName = fullName;
         this.email = email;
@@ -141,6 +149,7 @@ public class User implements Serializable {
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", postalCode=" + postalCode +
+                ", otp='" + otp + '\'' +
                 '}';
     }
 }

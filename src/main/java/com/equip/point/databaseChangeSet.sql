@@ -84,6 +84,91 @@ ALTER TABLE `user`
             REFERENCES `role` (`id`);
 
 
+/*
+ Date : 2024-12-27
+    Name : Vishal Makwana
+    Purpose : Added otp column in user table 
+ */
+ ALTER TABLE `equip_point`.`user` 
+ADD COLUMN `otp` VARCHAR(255) NULL AFTER `updated_date`,
+ADD COLUMN `otp_created_date` TIMESTAMP NULL AFTER `otp`;
+
+
+/*
+ Date : 05-01-2025
+    Name : Vishal Makwana
+    Purpose : Added scqurity question and answer
+ */
+
+CREATE TABLE security_questions
+(
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(255) NOT NULL
+);
+
+INSERT INTO security_questions (question)
+VALUES ('What is your mother\'s maiden name?'),
+('What is the name of your first pet?'),
+('What is the name of the city where you were born?');
+
+INSERT INTO security_questions (question) VALUES
+('What was the name of your elementary school?'),
+('What is the name of your favorite childhood friend?'),
+('What is the name of the street you grew up on?'),
+('What was your first car?'),
+('In what city did you meet your spouse/partner?'),
+('What is the name of your favorite book?'),
+('What is the name of the company of your first job?'),
+('What was the name of your first teacher?'),
+('What is your favorite food?'),
+('What is the name of your favorite pet?'),
+('What was your childhood nickname?'),
+('What was the name of your first boss?'),
+('What is the name of the hospital where you were born?'),
+('What is your father’s middle name?'),
+('What was the name of your first concert?'),
+('What is your favorite sports team?');
+
+// Security Question Answer Table
+
+CREATE TABLE `equip_point`.`security_questions_answer` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `question_id` BIGINT NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `created_date` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user_id_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `equip_point`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_question_id`
+    FOREIGN KEY (`question_id`)
+    REFERENCES `equip_point`.`security_questions` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+SHOW CREATE TABLE equip_point.security_questions_answer;
+
+ALTER TABLE `equip_point`.`security_questions_answer`
+ADD COLUMN `answer` VARCHAR(255) NOT NULL AFTER `user_id`;
+
+
+    ALTER TABLE `equip_point`.`security_questions_answer`
+DROP FOREIGN KEY `fk_question_id`,
+DROP FOREIGN KEY `fk_user_id`;
+ALTER TABLE `equip_point`.`security_questions_answer`
+ADD CONSTRAINT `fk_question_id`
+  FOREIGN KEY (`question_id`)
+  REFERENCES `equip_point`.`security_questions` (`id`)
+  ON DELETE CASCADE,
+ADD CONSTRAINT `fk_user_id`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `equip_point`.`user` (`id`)
+  ON DELETE CASCADE;
+
 
 
 

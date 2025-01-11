@@ -17,7 +17,7 @@ public class RegisterService {
     public Boolean registerUser(User user) {
         boolean isUserRegistered = false;
         try {
-            String query = "INSERT INTO user(full_name , email, password, role, status, phone, is_deleted , created_date ) VALUES(?, ?, ?, (select id from role where name = 'User' ) , true, ? , false , now())";
+            String query = "INSERT INTO user(full_name , email, password, role_id, status, phone, is_deleted , created_date ) VALUES(?, ?, ?, (select id from role where name = 'User' ) , true, ? , false , now())";
             int i;
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, user.getFullName());

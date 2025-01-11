@@ -1,7 +1,9 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.RegisterService;
+import com.equip.point.Service.SecurityQuestionsService;
 import com.equip.point.Service.UserService;
+import com.equip.point.model.SecurityQuestions;
 import com.equip.point.model.User;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
@@ -28,12 +30,17 @@ public class RegisterUser extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
             String phone = req.getParameter("phone");
+            String securityQuestion = req.getParameter("securityQuestion");
+            String securityAnswer = req.getParameter("securityAnswer");
             UserService userService = new UserService(conn);
             if (userService.checkIsEmailAvailable(email)) {
                 User user = new User(fullName, email, password,  phone);
                 RegisterService registerService = new RegisterService(conn);
                 Boolean registerUser = registerService.registerUser(user);
-                if (Boolean.TRUE.equals(registerUser)) {
+                SecurityQuestionsService securityQuestionsService = new SecurityQuestionsService(conn);
+                SecurityQuestions securityQuestions = new SecurityQuestions(securityQuestion);
+                Boolean saveSecutityQuestionsAnswer = securityQuestionsService.saveSecutityQuestionsAnswer(securityAnswer, email, securityQuestions);
+                if (Boolean.TRUE.equals(registerUser) && Boolean.TRUE.equals(saveSecutityQuestionsAnswer)) {
                     conn.commit();
                     String registerSuccessFully = "You have registered successfully.";
                     req.setAttribute("registerSuccessFully", registerSuccessFully);

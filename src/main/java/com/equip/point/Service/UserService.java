@@ -1,4 +1,5 @@
 package com.equip.point.Service;
+
 import com.equip.point.model.User;
 
 import java.sql.Connection;
@@ -10,6 +11,7 @@ import java.util.List;
 public class UserService {
 
     private Connection conn;
+
 
     //constructor
     public UserService(Connection conn) {
@@ -52,7 +54,6 @@ public class UserService {
     }
 
 
-
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         User user = null;
@@ -77,6 +78,7 @@ public class UserService {
                     user.setCountry(rs.getString("country"));
                     user.setCity(rs.getString("city"));
                     user.setPassword(rs.getString("password"));
+                    user.setOtp(rs.getString("otp"));
                     userList.add(user);
                 }
             }
@@ -86,4 +88,75 @@ public class UserService {
         return userList;
 
     }
+
+
+    public User forgetPassword(String email) {
+        User user = null;
+        try {
+            String query = "SELECT * FROM user WHERE email = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, email);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    String otp = java.util.UUID.randomUUID().toString();
+                    System.out.println("OTP: " + otp);
+                    String passWordReset = "UPDATE user SET otp = ?, otp_created_date = now() WHERE email = ?";
+                    try (PreparedStatement ps1 = conn.prepareStatement(passWordReset)) {
+                        ps1.setString(1, otp);
+                        ps1.setString(2, email);
+                        ps1.executeUpdate();
+                        user = new User();
+                        user.setFullName(rs.getString("full_name"));
+                        user.setEmail(rs.getString("email"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService forgetPassword: " + e.getMessage());
+        }
+        return user;
+    }
+
+
+    public Boolean resetPassword(String otp) {
+        Boolean reset = false;
+        try {
+            String query = "SELECT * FROM user WHERE otp = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, otp);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    String passWordReset = "UPDATE user SET password = Equipoint , otp = null, otp_created_date = null WHERE otp = ?";
+                    try (PreparedStatement ps1 = conn.prepareStatement(passWordReset)) {
+                        ps1.setString(1, otp);
+                        ps1.executeUpdate();
+                        reset = true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService resetPassword: " + e.getMessage());
+        }
+        return reset;
+    }
+
+    public boolean forgetPassword(String email, String question, String answer) {
+        boolean isForgetPassword = false;
+        try {
+            String query = "SELECT * from user u left join security_questions_answer sqa on u.id = sqa.user_id left join security_questions sq on sqa.question_id = sq.id where u.email = ? and sq.question = ? and sqa.answer = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, email);
+                ps.setString(2, question);
+                ps.setString(3, answer);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    isForgetPassword = true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService forgetPassword: " + e.getMessage());
+        }
+        return isForgetPassword;
+    }
+
 }
