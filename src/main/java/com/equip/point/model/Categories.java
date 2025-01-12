@@ -1,10 +1,11 @@
 package com.equip.point.model;
 
 import com.equip.point.util.CommonDateTimeAndDeleted;
+import com.equip.point.util.Type;
 
 import java.time.ZonedDateTime;
 
-public class EquipmentCategories extends CommonDateTimeAndDeleted {
+public class Categories extends CommonDateTimeAndDeleted {
 
     private Long id;
 
@@ -16,18 +17,20 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
 
     private String imageUri;
 
+    private Type type;
 
-    public EquipmentCategories() {
+
+    public Categories() {
     }
 
-    public EquipmentCategories(Long id, String name, String description, String image) {
+    public Categories(Long id, String name, String description, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
     }
 
-    public EquipmentCategories(Long id, String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted) {
+    public Categories(Long id, String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted) {
         super(createdAt, updatedAt, isDeleted);
         this.id = id;
         this.name = name;
@@ -35,22 +38,27 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
         this.image = image;
     }
 
-    public EquipmentCategories(String name, String description, String image) {
+    public Categories(String name, String description, String image) {
         this.name = name;
         this.description = description;
         this.image = image;
     }
 
-    public EquipmentCategories(String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted) {
+    public Categories(String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted) {
         super(createdAt, updatedAt, isDeleted);
         this.name = name;
         this.description = description;
         this.image = image;
     }
 
-    public EquipmentCategories(Long id, String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted, String imageUri) {
+    public Categories(Long id, String name, String description, String image, ZonedDateTime createdAt, ZonedDateTime updatedAt, Boolean isDeleted, String imageUri) {
         this(id, name, description, image, createdAt, updatedAt, isDeleted);
         this.imageUri = imageUri;
+    }
+
+    public Categories(String name, String description, String image , Type type) {
+       this(name, description, image);
+         this.type = type;
     }
 
     public Long getId() {
@@ -93,9 +101,17 @@ public class EquipmentCategories extends CommonDateTimeAndDeleted {
         this.imageUri = imageUri;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return "EquipmentCategories{" +
+        return "Categories{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

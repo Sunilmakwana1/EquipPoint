@@ -1,9 +1,10 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.EquipmentCategoriesService;
-import com.equip.point.model.EquipmentCategories;
+import com.equip.point.model.Categories;
 import com.equip.point.util.DbConnection;
 import com.equip.point.util.EquipPointUtil;
+import com.equip.point.util.Type;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,8 +45,8 @@ public class EquipmentCategoriesController extends HttpServlet {
 
             EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(conn);
             if (Boolean.TRUE.equals(equipmentCategoriesService.checkEquipmentExist(categoryName))){
-                EquipmentCategories equipmentCategories = new EquipmentCategories(categoryName, description, categoryImage);
-                Boolean addEquipmentCategories = equipmentCategoriesService.addEquipmentCategories(equipmentCategories);
+                Categories categories = new Categories(categoryName, description, categoryImage, Type.EQUIPMENT);
+                Boolean addEquipmentCategories = equipmentCategoriesService.addEquipmentCategories(categories);
                 if (Boolean.TRUE.equals(addEquipmentCategories)){
                     conn.commit();
                     req.setAttribute(CATEGORY_ADDED_SUCCESSFULLY, CATEGORY_ADDED_SUCCESSFULLY_MESSAGE);

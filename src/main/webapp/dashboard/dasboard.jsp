@@ -34,7 +34,7 @@
                 <p class="mt-4 text-gray-700">Equipments</p>
             </a>
 
-            <a href="#" id="addSpecialistButton"
+            <a href="${pageContext.request.contextPath}/catagory/addVendor.jsp" id="addSpecialistButton"
                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-wrench fa-3x text-yellow-500"></i>
                 <p class="mt-4 text-gray-700">Vendor</p>
@@ -63,7 +63,7 @@
                 }
             %>
 
-            <a href="${pageContext.request.contextPath}/catagory/viewEpuipmentCategories.jsp"
+            <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
                 class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-list fa-3x text-blue-500"></i>
                 <p class="mt-4 text-gray-700">Category</p>

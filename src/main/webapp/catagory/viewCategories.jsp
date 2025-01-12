@@ -1,10 +1,11 @@
 <%@ page import="com.equip.point.Service.EquipmentCategoriesService" %>
 <%@ page import="com.equip.point.util.DbConnection" %>
-<%@ page import="com.equip.point.model.EquipmentCategories" %>
+<%@ page import="com.equip.point.model.Categories" %>
 <%@ page import="java.util.List" %>
 <%@ page import="static com.equip.point.util.AppConstant.CATEGORY_DELETED_SUCCESSFULLY" %>
 <%@ page import="com.equip.point.Service.UserService" %>
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
+<%@ page import="com.equip.point.model.Categories" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,17 +17,29 @@
 <body class="bg-gray-100">
 <%@include file="/users/navbar.jsp" %>
 <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-4 items-center">Equipment Categories</h1>
-    <div id="deleteAlert" class=" <%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-3xl font-bold">Equipment Categories</h1>
+        <%
+            UserService userService = new UserService(DbConnection.getConnection());
+            String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
+            if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
+        %>
+
+        <a href="${pageContext.request.contextPath}/catagory/addEquipmentCategories.jsp" id="addSpecialistButton"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Add Equipment
+        </a>
+        <% } %>
+    </div>
+    <div id="deleteAlert" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
          role="alert">
-        <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %>
-        </strong>
+        <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %></strong>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <%
             EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(DbConnection.getConnection());
-            List<EquipmentCategories> categories = equipmentCategoriesService.getEquipmentCategories();
-            for (EquipmentCategories category : categories) {
+            List<Categories> categories = equipmentCategoriesService.getEquipmentCategories();
+            for (Categories category : categories) {
         %>
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <img class="w-full h-48 object-cover" src='/images/<%=category.getImage()%>' alt="Category Image" onerror="this.src='/images/EquipPoint.png';">
@@ -36,8 +49,6 @@
                 <p class="text-gray-700 mb-4 line-clamp-3"><%=category.getDescription()%>
                 </p>
                 <%
-                    UserService userService = new UserService(DbConnection.getConnection());
-                    String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
                     if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
                 %>
                 <div class="flex justify-between items-center">
