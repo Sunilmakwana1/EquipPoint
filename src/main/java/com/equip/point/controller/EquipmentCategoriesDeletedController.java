@@ -31,7 +31,7 @@ public class EquipmentCategoriesDeletedController extends HttpServlet {
             if (Boolean.TRUE.equals(deleteEquipmentCategory)) {
                 conn.commit();
                 req.setAttribute(CATEGORY_DELETED_SUCCESSFULLY, CATEGORY_DELETED_SUCCESSFULLY_MESSAGE);
-                req.getRequestDispatcher("/catagory/viewEpuipmentCategories.jsp").forward(req, resp);
+                req.getRequestDispatcher("/catagory/viewCategories.jsp").forward(req, resp);
             } else {
                 conn.rollback();
                 System.out.println("Unable to delete equipment category");
