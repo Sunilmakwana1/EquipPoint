@@ -183,6 +183,16 @@ ADD CONSTRAINT `fk_user_id`
     INSERT INTO `user` (`full_name`, `email`, `password`, `role_id`, `status`, `address`, `phone`, `country`, `city`, `postal_code`, `is_deleted`, `created_date`) VALUES ('Admin', 'admin@equipoint.com', 'Admin', (select id from role where name = "admin"), true, 'USA', '123456789', 'USA', 'USA', '123456', false, now());
 
 
+/**
+    * Date : 2025-01-11
+    * Name : Vishal Makwana
+    * Purpose : add type column in categories table
+    */
+
+    ALTER TABLE `equipment_categories`
+ADD COLUMN `type` VARCHAR(255) NULL AFTER `updated_date`,
+CHANGE COLUMN `description` `description` TEXT NULL DEFAULT NULL ,
+CHANGE COLUMN `image` `image` TEXT NULL DEFAULT NULL , RENAME TO  `equip_point`.`categories` ;
 
 
 

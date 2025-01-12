@@ -50,5 +50,13 @@ public class AppConstant {
 
     public static final String USER_DELETED_SUCCESSFULLY_MESSAGE = "User deleted successfully.";
 
+    public static final String VENDOR_ADDED_SUCCESSFULLY = "vendorAddedSuccessfully";
+
+    public static final String DUPLICATE_VENDOR = "duplicateVendorMessage";
+
+    public static final String VENDOR_ADDED_SUCCESSFULLY_MESSAGE = "Vendor added successfully.";
+
+    public static final String DUPLICATE_VENDOR_MESSAGE = "This vendor is already exist.";
+
 
 }
