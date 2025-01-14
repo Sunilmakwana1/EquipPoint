@@ -237,5 +237,42 @@ public class UserService {
         return roleName;
     }
 
+    /**
+     * This method is to get the user by id
+     */
+    public User getUserById(Long id) {
+        User user = null;
+        try {
+            String query = "SELECT * FROM user WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setLong(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setFullName(rs.getString("full_name"));
+                    user.setEmail(rs.getString("email"));
+
+                    // Get the role_id from the user table
+                    Long roleId = rs.getLong("role_id");
+
+                    // Fetch the corresponding Role object from the role table
+                    String role = getRoleNameById(roleId);  // Fetch role by ID
+                    user.setRole(role);  // Set the role object
+
+                    user.setStatus(rs.getBoolean("status"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setCountry(rs.getString("country"));
+                    user.setCity(rs.getString("city"));
+                    user.setPassword(rs.getString("password"));
+                    user.setOtp(rs.getString("otp"));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in UserService getUserById: " + e.getMessage());
+        }
+        return user;
+    }
+
 
 }

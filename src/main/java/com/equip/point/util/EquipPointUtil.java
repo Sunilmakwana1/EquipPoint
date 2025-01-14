@@ -1,9 +1,12 @@
 package com.equip.point.util;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 
@@ -57,5 +60,9 @@ public class EquipPointUtil {
 
     public static boolean isEqualToUser(String role) {
         return "User".equalsIgnoreCase(role);
+    }
+
+    public static boolean isNotNullOrEmptyString(String s) {
+        return s != null && !s.trim().isEmpty();
     }
 }
