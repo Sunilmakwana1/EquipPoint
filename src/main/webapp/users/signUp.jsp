@@ -11,7 +11,7 @@
 <body class="bg-gray-100">
     <div class="min-h-screen flex items-center justify-center">
         <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="md:w-1/2 p-8">
+                <div class="md:w-1/2 p-8">
                 <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
                 <form method="post" action="${pageContext.request.contextPath}/api/register" id="signupForm" class="space-y-4" onsubmit="return validateForm(event) ">
                     <div>
