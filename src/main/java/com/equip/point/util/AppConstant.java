@@ -58,5 +58,13 @@ public class AppConstant {
 
     public static final String DUPLICATE_VENDOR_MESSAGE = "This vendor is already exist.";
 
+    public static final String VENDOR_DELETED_SUCCESSFULLY = "vendorDeletedSuccessfully";
+
+    public static final String VENDOR_DELETED_SUCCESSFULLY_MESSAGE = "Vendor deleted successfully.";
+
+    public static final String VENDOR_EDITED_SUCCESSFULLY = "vendorEditedSuccessfully";
+
+    public static final String VENDOR_EDITED_SUCCESSFULLY_MESSAGE = "Vendor edited successfully.";
+
 
 }

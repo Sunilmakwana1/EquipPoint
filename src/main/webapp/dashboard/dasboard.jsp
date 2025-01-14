@@ -69,6 +69,12 @@
                 <p class="mt-4 text-gray-700">Category</p>
             </a>
 
+            <a href="${pageContext.request.contextPath}/catagory/viewVendor.jsp"
+               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
+                <i class="fa-solid fa-list fa-3x text-blue-500"></i>
+                <p class="mt-4 text-gray-700">Vendor Category</p>
+            </a>
+
             <a href="#"
                 class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fas fa-cog fa-3x text-green-500"></i>
