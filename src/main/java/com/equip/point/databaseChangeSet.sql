@@ -251,6 +251,12 @@ ALTER TABLE `contact_us`
             ON DELETE NO ACTION
             ON UPDATE NO ACTION;
 
-
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : add new column is_notify in contact us table
+*/
+ALTER TABLE `contact_us`
+    ADD COLUMN `is_notify` BOOLEAN DEFAULT false AFTER `replay_status`;
 
 
