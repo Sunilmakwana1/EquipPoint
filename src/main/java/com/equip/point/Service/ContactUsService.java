@@ -17,13 +17,13 @@ public class ContactUsService {
         this.conn = conn;
     }
 
-    private static final String INSERT_CONTACT_US = "INSERT INTO contact_us(name, email, message, created_date) VALUES(?, ?, ?, now())";
+    private static final String INSERT_CONTACT_US = "INSERT INTO contact_us(name, email, message, created_date ,is_notify) VALUES(?, ?, ?, now(),true)";
 
     private static final String GET_ALL_CONTACT_US = "SELECT * FROM contact_us ORDER BY id DESC";
 
     private static final String GET_CONTACT_US_BY_EMAIL = "SELECT * FROM contact_us WHERE email = ? ORDER BY id DESC";
 
-    private static final String APPROVE_CONTACT_US = "UPDATE contact_us SET approved_status = ?, approved_by = ?, approved_date = now() WHERE id = ?";
+    private static final String APPROVE_CONTACT_US = "UPDATE contact_us SET approval_status = ?, approved_by = ?, approval_date = now() WHERE id = ?";
 
     private static final String REPLY_CONTACT_US = "UPDATE contact_us SET reply_message = ?, replied_by = ?, reply_date = now(), replied_status = ? WHERE id = ?";
 
@@ -33,6 +33,15 @@ public class ContactUsService {
 
     private static final String GET_CONTACT_US_ID_BY_EMAIL = "SELECT id FROM contact_us WHERE email = ? ORDER BY created_date DESC LIMIT 1;";
 
+    private static final String GET_CONTACT_US_BY_ID = "SELECT * FROM contact_us WHERE id = ?";
+
+    private static final String UPDATE_IS_NOTIFIED_ALL = "UPDATE contact_us SET is_notify = false";
+
+    private static final String COUNT_NEW_CONTACT_US = "SELECT COUNT(id) FROM contact_us WHERE is_notify = true";
+
+    private static final String GET_COUNT_BY_EMAIL = "SELECT COUNT(id) FROM contact_us WHERE email = ?";
+
+    private static final String GET_TOTAL_COUNT = "SELECT COUNT(id) FROM contact_us";
 
 
     /**
@@ -134,11 +143,12 @@ public class ContactUsService {
     }
 
     /**
-     * Converts a SQL Timestamp object to a ZonedDateTime object using the system's default time zone.
+     * Converts an SQL Timestamp to a formatted date string using the system's default time zone.
+     * The date is formatted as "dd/MM/yyyy".
      *
      * @param timestamp The SQL Timestamp to be converted. It can be null.
-     * @return A ZonedDateTime object representing the same point in time as the provided Timestamp,
-     *         or null if the input Timestamp is null.
+     * @return A string representing the formatted date if the input Timestamp is not null,
+     * or null if the input Timestamp is null.
      */
     // Helper method: Converts SQL Timestamp to ZonedDateTime
     private ZonedDateTime convertTimestamp(Timestamp timestamp) {
@@ -179,9 +189,8 @@ public class ContactUsService {
     private ContactUs mapResultSetToContactUs(ResultSet resultSet) throws SQLException {
         ContactUs contactUs = new ContactUs();
         contactUs.setId(resultSet.getLong(ColumnConstants.ID));
-        contactUs.setFullName(resultSet.getString(ColumnConstants.FULL_NAME));
+        contactUs.setFullName(resultSet.getString(ColumnConstants.NAME));
         contactUs.setEmail(resultSet.getString(ColumnConstants.EMAIL));
-        contactUs.setSubject(resultSet.getString(ColumnConstants.SUBJECT));
         contactUs.setMessage(resultSet.getString(ColumnConstants.MESSAGE));
         UserService userService = new UserService(conn);
         contactUs.setApprovedBy(userService.getUserById(resultSet.getLong(ColumnConstants.APPROVED_BY)));
@@ -209,21 +218,41 @@ public class ContactUsService {
                 : null;
     }
 
+    /**
+     * Retrieves a ContactUs entry from the database based on the provided ID.
+     *
+     * @param i The ID of the ContactUs entry to be retrieved.
+     * @return A ContactUs object containing the details of the corresponding database entry,
+     *         or an empty ContactUs object if no match is found or an error occurs during the retrieval process.
+     */
+    public ContactUs getContactUsById(int i) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_CONTACT_US_BY_ID)) {
+            preparedStatement.setInt(1, i);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToContactUs(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            handleException("Error fetching ContactUs by ID: " + i, e);
+        }
+        return new ContactUs(); // Return empty object if no result found or an error occurred
+    }
+
     // Constants for column names
     private static class ColumnConstants {
         static final String ID = "id";
-        static final String FULL_NAME = "full_name";
+        static final String NAME = "name";
         static final String EMAIL = "email";
-        static final String SUBJECT = "subject";
         static final String MESSAGE = "message";
         static final String APPROVED_BY = "approved_by";
-        static final String APPROVED_DATE = "approved_date";
-        static final String APPROVED_STATUS = "approved_status";
-        static final String REPLY_MESSAGE = "reply_message";
+        static final String APPROVED_DATE = "approval_date";
+        static final String APPROVED_STATUS = "approval_status";
+        static final String REPLY_MESSAGE = "replay_message";
         static final String PROGRESS_STATUS = "progress_status";
-        static final String REPLY_DATE = "reply_date";
-        static final String REPLIED_BY = "replied_by";
-        static final String REPLIED_STATUS = "replied_status";
+        static final String REPLY_DATE = "replay_date";
+        static final String REPLIED_BY = "replay_by";
+        static final String REPLIED_STATUS = "replay_status";
         static final String CREATED_DATE = "created_date";
     }
 
@@ -381,5 +410,78 @@ public class ContactUsService {
             handleException("Error fetching ContactUs ID by email", e);
         }
         return contactUsEntryId;
+    }
+
+
+    /**
+     * Updates the is_notify status of all ContactUs entries in the database to false.
+     *
+     * @return A Boolean indicating whether the is_notify status of all ContactUs entries was successfully updated.
+     */
+    public Boolean updateIsNotifiedAll() {
+        try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_IS_NOTIFIED_ALL)) {
+            int rowsAffected = pstmt.executeUpdate();
+            return handleUpdateResult(rowsAffected);
+        } catch (Exception e) {
+            handleException("Error in ContactUsService updateIsNotifiedAll", e);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves the count of new ContactUs entries that have not been notified.
+     *
+     * @return The count of new ContactUs entries that have not been notified.
+     */
+    public int countNewContactUs() {
+        int newContactUsCount = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(COUNT_NEW_CONTACT_US);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                newContactUsCount = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            handleException("Error in ContactUsService countNewContactUs", e);
+        }
+        return newContactUsCount;
+    }
+
+    /**
+     * Retrieves the count of ContactUs entries with the specified email address.
+     *
+     * @param email The email address used to locate the ContactUs entries.
+     * @return The count of ContactUs entries with the specified email address.
+     */
+    public int getCountByEmail(String email) {
+        int count = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(GET_COUNT_BY_EMAIL)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            handleException("Error in ContactUsService getCountByEmail", e);
+        }
+        return count;
+    }
+
+    /**
+     * Retrieves the total count of ContactUs entries in the database.
+     *
+     * @return The total count of ContactUs entries in the database.
+     */
+    public int getTotalCount() {
+        int totalCount = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(GET_TOTAL_COUNT);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                totalCount = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            handleException("Error in ContactUsService getTotalCount", e);
+        }
+        return totalCount;
     }
 }

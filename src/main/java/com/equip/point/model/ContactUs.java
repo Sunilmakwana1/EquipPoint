@@ -1,6 +1,11 @@
 package com.equip.point.model;
 
+import com.equip.point.util.EquipPointUtil;
+
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static com.equip.point.util.AppConstant.DD_MM_YYYY;
 
 public class ContactUs {
 
@@ -31,6 +36,10 @@ public class ContactUs {
     private Boolean progressStatus = Boolean.FALSE;
 
     private ZonedDateTime createdDate = ZonedDateTime.now();
+
+    private String createdDateStr;
+
+    private Boolean isNotified = Boolean.FALSE;
 
     public ContactUs() {
 
@@ -105,6 +114,9 @@ public class ContactUs {
     }
 
     public void setApprovedDate(ZonedDateTime approvedDate) {
+        if (EquipPointUtil.isNotNull(approvedDate)) {
+            approvedDate.format(DateTimeFormatter.ofPattern(DD_MM_YYYY));
+        }
         this.approvedDate = approvedDate;
     }
 
@@ -161,7 +173,27 @@ public class ContactUs {
     }
 
     public void setCreatedDate(ZonedDateTime createdDate) {
+        if (EquipPointUtil.isNotNull(createdDate)) {
+            String format = createdDate.format(DateTimeFormatter.ofPattern(DD_MM_YYYY));
+            this.createdDateStr = format;
+        }
         this.createdDate = createdDate;
+    }
+
+    public String getCreatedDateStr() {
+        return createdDateStr;
+    }
+
+    public void setCreatedDateStr(String createdDateStr) {
+        this.createdDateStr = createdDateStr;
+    }
+
+    public Boolean getNotified() {
+        return isNotified;
+    }
+
+    public void setNotified(Boolean notified) {
+        isNotified = notified;
     }
 
     @Override
