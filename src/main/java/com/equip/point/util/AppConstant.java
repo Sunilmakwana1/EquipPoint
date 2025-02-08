@@ -66,5 +66,7 @@ public class AppConstant {
 
     public static final String VENDOR_EDITED_SUCCESSFULLY_MESSAGE = "Vendor edited successfully.";
 
+    public static final String DD_MM_YYYY = "dd-MM-yyyy";
+
 
 }

@@ -8,8 +8,7 @@
 
 CREATE SCHEMA `equip_point`;
 
-USE
-SCHEMA_NAME;
+USE equip_point;
 
 CREATE TABLE `user`
 (
@@ -19,21 +18,21 @@ CREATE TABLE `user`
     `password`     VARCHAR(255) NOT NULL,
     `role`         BIGINT       NOT NULL,
     `status`       BIT          NOT NULL,
-    `address`      TEXT NULL,
-    `phone`        VARCHAR(22) NULL,
+    `address`      TEXT         NULL,
+    `phone`        VARCHAR(22)  NULL,
     `country`      VARCHAR(100) NULL,
     `city`         VARCHAR(100) NULL,
-    `postal_code`  VARCHAR(10) NULL,
-    `is_deleted`   BIT NULL,
+    `postal_code`  VARCHAR(10)  NULL,
+    `is_deleted`   BIT          NULL,
     `created_date` TIMESTAMP    NOT NULL,
-    `updated_date` TIMESTAMP NULL
-    PRIMARY KEY (`id`)
+    `updated_date` TIMESTAMP    NULL
+        PRIMARY KEY (`id`)
 );
 
 
 CREATE TABLE `role`
 (
-    `id`   BIGINT NOT NULL AUTO_INCREMENT,
+    `id`   BIGINT      NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NULL,
     PRIMARY KEY (`id`)
 );
@@ -52,18 +51,17 @@ VALUES ('User');
              Also added foreign key in USER table for role
  */
 
-USE
-SCHEMA_NAME;
+USE equip_point;
 
 CREATE TABLE `equipment_categories`
 (
-    `id`           INT NOT NULL AUTO_INCREMENT,
+    `id`           INT          NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(255) NULL,
     `description`  VARCHAR(255) NULL,
     `image`        VARCHAR(255) NULL,
-    `is_deleted`   BIT NULL,
-    `created_date` TIMESTAMP NULL,
-    `updated_date` TIMESTAMP NULL,
+    `is_deleted`   BIT          NULL,
+    `created_date` TIMESTAMP    NULL,
+    `updated_date` TIMESTAMP    NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -79,8 +77,8 @@ ALTER TABLE `user`
             ON UPDATE NO ACTION;
 
 ALTER TABLE `user`
-DROP
-FOREIGN KEY `user_id_role_id_fk`;
+    DROP
+        FOREIGN KEY `user_id_role_id_fk`;
 ALTER TABLE `user`
     CHANGE COLUMN `role` `role_id` BIGINT NOT NULL;
 ALTER TABLE `user`
@@ -95,8 +93,8 @@ ALTER TABLE `user`
     Purpose : Added otp column in user table 
  */
 ALTER TABLE `equip_point`.`user`
-    ADD COLUMN `otp` VARCHAR(255) NULL AFTER `updated_date`,
-ADD COLUMN `otp_created_date` TIMESTAMP NULL AFTER `otp`;
+    ADD COLUMN `otp`              VARCHAR(255) NULL AFTER `updated_date`,
+    ADD COLUMN `otp_created_date` TIMESTAMP    NULL AFTER `otp`;
 
 
 /*
@@ -113,66 +111,70 @@ CREATE TABLE security_questions
 
 INSERT INTO security_questions (question)
 VALUES ('What is your mother\'s maiden name?'),
-('What is the name of your first pet?'),
-('What is the name of the city where you were born?');
+       ('What is the name of your first pet?'),
+       ('What is the name of the city where you were born?');
 
-INSERT INTO security_questions (question) VALUES
-('What was the name of your elementary school?'),
-('What is the name of your favorite childhood friend?'),
-('What is the name of the street you grew up on?'),
-('What was your first car?'),
-('In what city did you meet your spouse/partner?'),
-('What is the name of your favorite book?'),
-('What is the name of the company of your first job?'),
-('What was the name of your first teacher?'),
-('What is your favorite food?'),
-('What is the name of your favorite pet?'),
-('What was your childhood nickname?'),
-('What was the name of your first boss?'),
-('What is the name of the hospital where you were born?'),
-('What is your father’s middle name?'),
-('What was the name of your first concert?'),
-('What is your favorite sports team?');
+INSERT INTO security_questions (question)
+VALUES ('What was the name of your elementary school?'),
+       ('What is the name of your favorite childhood friend?'),
+       ('What is the name of the street you grew up on?'),
+       ('What was your first car?'),
+       ('In what city did you meet your spouse/partner?'),
+       ('What is the name of your favorite book?'),
+       ('What is the name of the company of your first job?'),
+       ('What was the name of your first teacher?'),
+       ('What is your favorite food?'),
+       ('What is the name of your favorite pet?'),
+       ('What was your childhood nickname?'),
+       ('What was the name of your first boss?'),
+       ('What is the name of the hospital where you were born?'),
+       ('What is your father’s middle name?'),
+       ('What was the name of your first concert?'),
+       ('What is your favorite sports team?');
 
-// Security Question Answer Table
-
-CREATE TABLE `equip_point`.`security_questions_answer` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `question_id` BIGINT NOT NULL,
-  `user_id` BIGINT NOT NULL,
-  `created_date` TIMESTAMP NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_user_id_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `equip_point`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_question_id`
-    FOREIGN KEY (`question_id`)
-    REFERENCES `equip_point`.`security_questions` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+/*'
+    `security_questions_answer` table created for security question and answer
+     name : Vishal Makwana
+        Date : 2025-01-05
+*/
+CREATE TABLE `equip_point`.`security_questions_answer`
+(
+    `id`           BIGINT    NOT NULL AUTO_INCREMENT,
+    `question_id`  BIGINT    NOT NULL,
+    `user_id`      BIGINT    NOT NULL,
+    `created_date` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_user_id_idx` (`user_id` ASC) VISIBLE,
+    CONSTRAINT `fk_user_id`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `equip_point`.`user` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `fk_question_id`
+        FOREIGN KEY (`question_id`)
+            REFERENCES `equip_point`.`security_questions` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
 );
 
 SHOW CREATE TABLE equip_point.security_questions_answer;
 
 ALTER TABLE `equip_point`.`security_questions_answer`
-ADD COLUMN `answer` VARCHAR(255) NOT NULL AFTER `user_id`;
+    ADD COLUMN `answer` VARCHAR(255) NOT NULL AFTER `user_id`;
 
 
-    ALTER TABLE `equip_point`.`security_questions_answer`
-DROP FOREIGN KEY `fk_question_id`,
-DROP FOREIGN KEY `fk_user_id`;
 ALTER TABLE `equip_point`.`security_questions_answer`
-ADD CONSTRAINT `fk_question_id`
-  FOREIGN KEY (`question_id`)
-  REFERENCES `equip_point`.`security_questions` (`id`)
-  ON DELETE CASCADE,
-ADD CONSTRAINT `fk_user_id`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `equip_point`.`user` (`id`)
-  ON DELETE CASCADE;
+    DROP FOREIGN KEY `fk_question_id`,
+    DROP FOREIGN KEY `fk_user_id`;
+ALTER TABLE `equip_point`.`security_questions_answer`
+    ADD CONSTRAINT `fk_question_id`
+        FOREIGN KEY (`question_id`)
+            REFERENCES `equip_point`.`security_questions` (`id`)
+            ON DELETE CASCADE,
+    ADD CONSTRAINT `fk_user_id`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `equip_point`.`user` (`id`)
+            ON DELETE CASCADE;
 
 
 /*
@@ -180,7 +182,10 @@ ADD CONSTRAINT `fk_user_id`
     Name : Vishal Makwana
     Purpose : Insert the user admin data
  */
-    INSERT INTO `user` (`full_name`, `email`, `password`, `role_id`, `status`, `address`, `phone`, `country`, `city`, `postal_code`, `is_deleted`, `created_date`) VALUES ('Admin', 'admin@equipoint.com', 'Admin', (select id from role where name = "admin"), true, 'USA', '123456789', 'USA', 'USA', '123456', false, now());
+INSERT INTO `user` (`full_name`, `email`, `password`, `role_id`, `status`, `address`, `phone`, `country`, `city`,
+                    `postal_code`, `is_deleted`, `created_date`)
+VALUES ('Admin', 'admin@equipoint.com', 'Admin', (select id from role where name = "admin"), true, 'USA', '123456789',
+        'USA', 'USA', '123456', false, now());
 
 
 /**
@@ -189,11 +194,69 @@ ADD CONSTRAINT `fk_user_id`
     * Purpose : add type column in categories table
     */
 
-    ALTER TABLE `equipment_categories`
-ADD COLUMN `type` VARCHAR(255) NULL AFTER `updated_date`,
-CHANGE COLUMN `description` `description` TEXT NULL DEFAULT NULL ,
-CHANGE COLUMN `image` `image` TEXT NULL DEFAULT NULL , RENAME TO  `equip_point`.`categories` ;
+ALTER TABLE `equipment_categories`
+    ADD COLUMN `type` VARCHAR(255) NULL AFTER `updated_date`,
+    CHANGE COLUMN `description` `description` TEXT NULL DEFAULT NULL,
+    CHANGE COLUMN `image` `image` TEXT NULL DEFAULT NULL, RENAME TO `equip_point`.`categories`;
 
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : add new contact us table
+ */
+CREATE TABLE `contact_us`
+(
+    `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(255) NOT NULL,
+    `email`        VARCHAR(255) NOT NULL,
+    `phone`        VARCHAR(22)  NULL,
+    `message`      TEXT         NULL,
+    `created_date` TIMESTAMP    NOT NULL,
+    PRIMARY KEY (`id`)
+);
 
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : add APPROVAL_STATUS , APPROVAL_DATE , APPROVED_BY , REPLAY_MESSAGE , PROGRESS_STATUS , REPLAY_DATE , REPLAY_BY , REPLAY_STATUS in contact us table
+ */
+ALTER TABLE `contact_us`
+    ADD COLUMN `approval_status` BOOLEAN DEFAULT false AFTER `message`,
+    ADD COLUMN `approval_date`   TIMESTAMP NULL AFTER `approval_status`,
+    ADD COLUMN `approved_by`     BIGINT    NULL AFTER `approval_date`,
+    ADD COLUMN `replay_message`  TEXT      NULL AFTER `approved_by`,
+    ADD COLUMN `progress_status` BOOLEAN default false AFTER `replay_message`,
+    ADD COLUMN `replay_date`     TIMESTAMP NULL AFTER `progress_status`,
+    ADD COLUMN `replay_by`       BIGINT    NULL AFTER `replay_date`,
+    ADD COLUMN `replay_status`   BOOLEAN default false AFTER `replay_by`;
+
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : replay_by , approved_by , FOREIGN KEY added TO USER TABLE in contact us table
+
+ */
+ALTER TABLE `contact_us`
+    ADD INDEX `contact_us_replay_by_fk_idx` (`replay_by` ASC) VISIBLE,
+    ADD INDEX `contact_us_approved_by_fk_idx` (`approved_by` ASC) VISIBLE;
+ALTER TABLE `contact_us`
+    ADD CONSTRAINT `contact_us_replay_by_fk`
+        FOREIGN KEY (`replay_by`)
+            REFERENCES `user` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    ADD CONSTRAINT `contact_us_approved_by_fk`
+        FOREIGN KEY (`approved_by`)
+            REFERENCES `user` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION;
+
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : add new column is_notify in contact us table
+*/
+ALTER TABLE `contact_us`
+    ADD COLUMN `is_notify` BOOLEAN DEFAULT false AFTER `replay_status`;
 
 

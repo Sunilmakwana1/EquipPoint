@@ -85,10 +85,10 @@
                 <i class="fas fa-chart-line fa-3x text-red-500"></i>
                 <p class="mt-4 text-gray-700">Analytics</p>
             </a>
-            <a href="#"
+            <a href="${pageContext.request.contextPath}/dashboard/messageInbox.jsp"
                 class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fas fa-envelope fa-3x text-yellow-500"></i>
-                <p class="mt-4 text-gray-700">Messages</p>
+                <p class="mt-4 text-gray-700">Support Ticket</p>
             </a>
         </div>
     </div>
