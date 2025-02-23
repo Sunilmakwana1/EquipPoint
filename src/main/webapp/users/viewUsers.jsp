@@ -19,9 +19,9 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-4">
         <div class="flex-1"></div>
-        <button id="addUserButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        <a href="addedUser.jsp" id="addUserButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
             <i class="fas fa-user-plus"></i> Add User
-        </button>
+        </a>
     </div>
 </div>
 <div id="deleteAlert"

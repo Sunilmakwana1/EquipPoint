@@ -3,6 +3,7 @@ package com.equip.point.controller;
 import com.equip.point.Service.LoginService;
 import com.equip.point.model.User;
 import com.equip.point.util.DbConnection;
+import com.equip.point.util.EquipPointUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,6 +34,7 @@ public class Login extends HttpServlet {
                 System.out.printf("Login successful for user with ID: %d%n", user.getId()); // NOSONAR
                 System.out.printf("User name : %s%n", user.getFullName()); // NOSONAR
                 session.setAttribute(LOGGED_IN_USER, user); // NOSONAR
+                EquipPointUtil.getCurrentLoginUser(email);
                 resp.sendRedirect("/dashboard/dasboard.jsp");
             } else {
                 System.out.printf("Login failed for email: %s%n", email);

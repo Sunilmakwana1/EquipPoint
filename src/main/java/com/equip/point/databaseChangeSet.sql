@@ -260,3 +260,38 @@ ALTER TABLE `contact_us`
     ADD COLUMN `is_notify` BOOLEAN DEFAULT false AFTER `replay_status`;
 
 
+/*
+ * Table: email_log
+ * Purpose: To store logs of emails sent by the system, including their status and any error messages.
+ * Columns:
+ * - id: Primary key, auto-incremented integer.
+ * - recipient_email: The email address of the recipient.
+ * - subject: The subject of the email.
+ * - message: The content of the email.
+ * - status: The status of the email (sent, failed, pending).
+ * - error_message: Any error message if the email failed to send.
+ * - created_at: Timestamp of when the log entry was created, defaults to the current timestamp.
+ */
+CREATE TABLE email_log (
+                           id INT AUTO_INCREMENT PRIMARY KEY,
+                           recipient_email VARCHAR(255) NOT NULL,
+                           subject VARCHAR(255) NOT NULL,
+                           message TEXT NOT NULL,
+                           status ENUM('sent', 'failed', 'pending') DEFAULT 'pending',
+                           error_message TEXT NULL,
+                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE history (
+                         id INT AUTO_INCREMENT PRIMARY KEY,
+                         table_name VARCHAR(100), -- Table affected
+                         record_id INT, -- Affected record ID
+                         action VARCHAR(50) NOT NULL, -- e.g., 'INSERT', 'UPDATE', 'DELETE'
+                         old_data TEXT, -- Stores previous data (for UPDATE, DELETE)
+                         new_data TEXT, -- Stores new data (for INSERT, UPDATE)
+                         status ENUM('success', 'failed') DEFAULT 'success',
+                         performed_by VARCHAR(100) NOT NULL, -- Username or email of user
+                         performed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

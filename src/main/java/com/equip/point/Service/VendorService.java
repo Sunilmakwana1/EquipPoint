@@ -2,7 +2,6 @@ package com.equip.point.Service;
 
 import com.equip.point.model.Categories;
 import com.equip.point.util.EquipPointUtil;
-import com.equip.point.util.Type;
 
 import java.sql.Connection;
 import java.time.ZonedDateTime;
@@ -11,20 +10,28 @@ import java.util.List;
 
 import static com.equip.point.util.AppConstant.FILE_PATH;
 
+/**
+ * Service class for managing vendors.
+ */
 public class VendorService {
 
     private Connection conn;
 
+    /**
+     * Constructor to initialize the VendorService with a database connection.
+     *
+     * @param conn The database connection.
+     */
     public VendorService(Connection conn) {
         super();
         this.conn = conn;
     }
 
     /**
-     * This method is used to add the vendor
+     * Adds a new vendor to the database.
      *
-     * @param vendor
-     * @return boolean
+     * @param vendor The vendor to be added.
+     * @return Boolean indicating if the vendor was successfully added.
      */
     public Boolean addVendor(Categories vendor) {
         boolean isVendorAdded = false;
@@ -49,10 +56,10 @@ public class VendorService {
     }
 
     /**
-     * This method is used to check if the vendor already exists
+     * Checks if a vendor with the given name already exists.
      *
-     * @param vendorName The name of the vendor
-     * @return boolean
+     * @param vendorName The name of the vendor.
+     * @return Boolean indicating if the vendor exists.
      */
     public Boolean checkVendorExist(String vendorName) {
         boolean isVendorExist = true;
@@ -78,9 +85,9 @@ public class VendorService {
     }
 
     /**
-     * get all the vendors
+     * Retrieves all vendors from the database.
      *
-     * @return List<Categories>
+     * @return List of Categories representing all vendors.
      */
     public List<Categories> getAllVendors() {
         List<Categories> vendors = new ArrayList<>();
@@ -108,10 +115,10 @@ public class VendorService {
     }
 
     /**
-     * This method is used to delete the vendor
+     * Deletes a vendor by setting its is_deleted flag to true.
      *
-     * @param id The id of the vendor
-     * @return boolean
+     * @param id The id of the vendor to be deleted.
+     * @return Boolean indicating if the vendor was successfully deleted.
      */
     public Boolean deleteVendor(Long id) {
         boolean isVendorDeleted = false;
@@ -132,10 +139,10 @@ public class VendorService {
     }
 
     /**
-     * This method is used to get the vendor by id
+     * Retrieves a vendor by its id.
      *
-     * @param id The id of the vendor
-     * @return Categories
+     * @param id The id of the vendor.
+     * @return Categories representing the vendor.
      */
     public Categories getVendorById(Long id) {
         Categories vendor = null;
@@ -162,10 +169,10 @@ public class VendorService {
     }
 
     /**
-     * This method is used to update the vendor
+     * Updates an existing vendor in the database.
      *
-     * @param vendor The vendor object
-     * @return boolean
+     * @param vendor The vendor object with updated information.
+     * @return Boolean indicating if the vendor was successfully updated.
      */
     public Boolean updateVendor(Categories vendor) {
         boolean isVendorUpdated = false;
@@ -189,10 +196,10 @@ public class VendorService {
     }
 
     /**
-     * This method is used to get the vendor by name
+     * Retrieves a vendor by its name.
      *
-     * @param vendorName The name of the vendor
-     * @return Categories
+     * @param vendorName The name of the vendor.
+     * @return Categories representing the vendor.
      */
     public Categories getVendorByName(String vendorName) {
         Categories vendor = null;
@@ -220,8 +227,11 @@ public class VendorService {
     }
 
     /**
-     * This method is to check while updating the vendor if the vendor already exists except the current vendor id
-     * @param vendorName The name of the vendor
+     * Checks if a vendor with the given name already exists, excluding the current vendor id.
+     *
+     * @param vendorName The name of the vendor.
+     * @param vendorId The id of the current vendor.
+     * @return Boolean indicating if the vendor exists.
      */
     public Boolean checkVendorExistExceptCurrentVendorId(String vendorName, Long vendorId) {
         boolean isVendorExist = true;

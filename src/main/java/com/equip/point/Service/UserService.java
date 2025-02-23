@@ -8,17 +8,29 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing users.
+ */
 public class UserService {
 
     private Connection conn;
 
-
-    //constructor
+    /**
+     * Constructor to initialize the UserService with a database connection.
+     *
+     * @param conn The database connection.
+     */
     public UserService(Connection conn) {
         super();
         this.conn = conn;
     }
 
+    /**
+     * Checks if the given email is available.
+     *
+     * @param email The email to check.
+     * @return boolean indicating if the email is available.
+     */
     public boolean checkIsEmailAvailable(String email) {
         boolean available = true;
         try {
@@ -38,6 +50,12 @@ public class UserService {
         return available;
     }
 
+    /**
+     * Retrieves the role name by its ID.
+     *
+     * @param roleId The ID of the role.
+     * @return String representing the role name.
+     */
     private String getRoleNameById(Long roleId) {
         String roleName = null;
         String roleQuery = "SELECT name FROM role WHERE id = ?";
@@ -53,7 +71,11 @@ public class UserService {
         return roleName;  // Return the role name as a String
     }
 
-
+    /**
+     * Retrieves all users from the database.
+     *
+     * @return List of User objects representing all users.
+     */
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         User user = null;
@@ -87,10 +109,14 @@ public class UserService {
             System.out.println("Error in UserService getAllUsers: " + e.getMessage());
         }
         return userList;
-
     }
 
-
+    /**
+     * Handles the forget password functionality by generating an OTP and updating the user record.
+     *
+     * @param email The email of the user who forgot the password.
+     * @return User object with the user's details.
+     */
     public User forgetPassword(String email) {
         User user = null;
         try {
@@ -118,7 +144,13 @@ public class UserService {
         return user;
     }
 
-
+    /**
+     * Resets the password for the given email.
+     *
+     * @param email The email of the user.
+     * @param password The new password.
+     * @return Boolean indicating if the password was successfully reset.
+     */
     public Boolean resetPassword(String email, String password) {
         boolean isPasswordReset = false;
         try {
@@ -137,6 +169,14 @@ public class UserService {
         return isPasswordReset;
     }
 
+    /**
+     * Handles the forget password functionality by verifying security questions and answers.
+     *
+     * @param email The email of the user.
+     * @param question The security question.
+     * @param answer The answer to the security question.
+     * @return Boolean indicating if the security question and answer match.
+     */
     public boolean forgetPassword(String email, String question, String answer) {
         boolean isForgetPassword = false;
         try {
@@ -156,6 +196,12 @@ public class UserService {
         return isForgetPassword;
     }
 
+    /**
+     * Checks if the given phone number is available.
+     *
+     * @param phone The phone number to check.
+     * @return boolean indicating if the phone number is available.
+     */
     public boolean checkIsPhoneNumberAvailable(String phone) {
         boolean available = true;
         try {
@@ -176,9 +222,10 @@ public class UserService {
     }
 
     /**
-     * This method is used to get the email by phone
-     * @param phone
-     * @return String
+     * Retrieves the email associated with the given phone number.
+     *
+     * @param phone The phone number to search for.
+     * @return String representing the email associated with the phone number.
      */
     public String getEmailByPhone(String phone) {
         String email = null;
@@ -198,9 +245,10 @@ public class UserService {
     }
 
     /**
-     * This method is used to delete a user
-     * @param id
-     * @return boolean
+     * Deletes a user by setting its is_deleted flag to true.
+     *
+     * @param id The ID of the user to be deleted.
+     * @return boolean indicating if the user was successfully deleted.
      */
     public boolean deleteUser(Long id) {
         boolean isDeleted = false;
@@ -219,7 +267,12 @@ public class UserService {
         return isDeleted;
     }
 
-    //get the login user role
+    /**
+     * Retrieves the role name associated with the given email.
+     *
+     * @param email The email to search for.
+     * @return String representing the role name.
+     */
     public String getRoleNameByEmail(String email) {
         String roleName = null;
         try {
@@ -238,7 +291,10 @@ public class UserService {
     }
 
     /**
-     * This method is to get the user by id
+     * Retrieves a user by its ID.
+     *
+     * @param id The ID of the user.
+     * @return User object representing the user.
      */
     public User getUserById(Long id) {
         User user = null;
@@ -273,6 +329,4 @@ public class UserService {
         }
         return user;
     }
-
-
 }

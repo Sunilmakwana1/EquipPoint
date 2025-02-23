@@ -1,14 +1,9 @@
 package com.equip.point.util;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 
 import static com.equip.point.util.AppConstant.FILE_PATH;
 
@@ -64,5 +59,10 @@ public class EquipPointUtil {
 
     public static boolean isNotNullOrEmptyString(String s) {
         return s != null && !s.trim().isEmpty();
+    }
+
+    public static void getCurrentLoginUser(String email) {
+        CurrentLoginUser currentLoginUser = new CurrentLoginUser();
+        currentLoginUser.setEmail(email);
     }
 }

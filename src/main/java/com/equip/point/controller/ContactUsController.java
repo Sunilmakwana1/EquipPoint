@@ -1,6 +1,8 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.ContactUsService;
+import com.equip.point.Service.EmailLogService;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -88,9 +90,10 @@ public class ContactUsController extends HttpServlet {
      */
     private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, Connection conn, ContactUsService contactUsService, String email)
             throws Exception {
+        EmailLogService emailLogService = new EmailLogService(conn);
         Long contactUsId = contactUsService.getContactUsIdByEmail(email);
         conn.commit();
-
+        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), "Contact Us", "Contact Us message sent successfully", "sent", null);
         req.setAttribute(CONTACT_US_SUCCESS, CONTACT_US_SUCCESS_MESSAGE + " Your Ticket ID is: #" + contactUsId);
         forwardRequest(req, resp, CONTACT_US_SUCCESS_PAGE);
     }
@@ -107,6 +110,8 @@ public class ContactUsController extends HttpServlet {
      * @throws IOException      if an input or output error is detected when the servlet handles the request
      */
     private void redirectToErrorPage(HttpServletRequest req, HttpServletResponse resp, String errorMessage) throws ServletException, IOException {
+        EmailLogService emailLogService = new EmailLogService(DbConnection.getConnection());
+        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), "Contact Us", "Contact Us message sent successfully", "sent", errorMessage);
         req.setAttribute(CONTACT_US_ERROR, errorMessage);
         forwardRequest(req, resp, CONTACT_US_ERROR_PAGE);
     }
