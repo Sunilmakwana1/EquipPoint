@@ -68,5 +68,11 @@ public class AppConstant {
 
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
 
+    public static final String CONTACT_US_APPROVED = "Contact Us Approved";
+
+    public static final String CONTACT_US_APPROVED_MESSAGE = "Contact Us Approved Successfully";
+
+    public static final String SENT = "sent";
+
 
 }

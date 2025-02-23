@@ -8,15 +8,28 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing security questions.
+ */
 public class SecurityQuestionsService {
 
     private Connection conn;
 
+    /**
+     * Constructor to initialize the SecurityQuestionsService with a database connection.
+     *
+     * @param conn The database connection.
+     */
     public SecurityQuestionsService(Connection conn) {
         super();
         this.conn = conn;
     }
 
+    /**
+     * Retrieves all security questions from the database.
+     *
+     * @return List of security questions as strings.
+     */
     public List<String> getSecurityQuestions() {
         List<String> questions = new ArrayList<>();
         try {
@@ -33,7 +46,15 @@ public class SecurityQuestionsService {
         return questions;
     }
 
-    public Boolean saveSecutityQuestionsAnswer(String answer, String email , SecurityQuestions securityQuestions) {
+    /**
+     * Saves the answer to a security question for a user.
+     *
+     * @param answer The answer to the security question.
+     * @param email The email of the user.
+     * @param securityQuestions The security question object.
+     * @return Boolean indicating if the answer was successfully saved.
+     */
+    public Boolean saveSecutityQuestionsAnswer(String answer, String email, SecurityQuestions securityQuestions) {
         boolean isAnswerSaved = false;
         try {
             String query = "INSERT INTO security_questions_answer (user_id, question_id, answer, created_date) VALUES ((SELECT id FROM user WHERE email = ? AND is_deleted = false), (SELECT id FROM security_questions WHERE question = ?), ?, now())";
