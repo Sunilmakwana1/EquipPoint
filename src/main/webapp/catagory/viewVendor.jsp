@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Categories</title>
+    <title>Vendors</title>
     <link href="../src/style.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">

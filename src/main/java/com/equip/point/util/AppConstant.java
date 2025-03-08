@@ -73,6 +73,37 @@ public class AppConstant {
     public static final String CONTACT_US_APPROVED_MESSAGE = "Contact Us Approved Successfully";
 
     public static final String SENT = "sent";
+    public static final String VENDOR_IMAGE = "vendorImage";
+    public static final String FILE_NAME = "File name: ";
+    public static final String UPLOAD_PATH_MESSAGE = "Upload path: ";
+    public static final String VENDOR_NAME = "vendorName";
+    public static final String DESCRIPTION = "description";
+    public static final String VENDOR_ADDED = "Vendor Added";
+    public static final String ERROR_IN_ADDED_VENDOR_CONTROLLER = "Error in AddedVendorController doPost: ";
+    public static final String VENDOR_ADDED_NOT_ADDED_MESSAGE = "Vendor not added";
+    public static final String VENDOR_NOT_ADDED = "Vendor Not Added";
+    public static final String CONTACT_US_APPROVED_STATUS_UPDATED = "contactUsApprovedStatusUpdated";
+    public static final Object CONTACT_US_APPROVED_STATUS_UPDATED_MESSAGE = "Contact us approved status updated successfully";
+    public static final String ID = "id";
+    public static final String USER_ID = "userId";
+    public static final String UNABLE_TO_UPDATE_CONTACT_US_APPROVED_STATUS = "Unable to update contact us approved status";
+    public static final String ERROR_IN_CONTACT_US_APPROVED_STATUS = "Error in ContactUsApprovedStatus doPut: ";
+    public static final String CONTACT_US_SUCCESS = "contactUsSuccess";
+    public static final Object CONTACT_US_SUCCESS_MESSAGE = "Your message has been sent successfully";
+    public static final String CONTACT_US_APPROVED_STATUS = "Contact Us Approved Status";
+    public static final String CONTACT_US = "Contact Us";
+    public static final String CONTACT_US_SUCCESS_MESSAGE_TICKET_ID = " Your Ticket ID is: #";
+    public static final String CONTACT_US_SUCCESS_MESSAGE_TICKET_ID_MESSAGE = "Contact Us message sent successfully";
+    public static final String INVALID_INPUT = "Invalid input!";
+    public static final String FAILED_TO_SAVE_MESSAGE = "Failed to save your message.";
+    public static final String ERROR_IN_CONTACT_US_CONTROLLER = "Error in ContactUsController doPost: ";
+    public static final String UNEXPECTED_ERROR = "An unexpected error occurred. Please try again.";
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
+    public static final String MESSAGE = "message";
+    public static final String CONTACT_US_ERROR = "contactUsError";
+    public static final String GET_METHOD_NOT_SUPPORTED = "GET method is not supported.";
+
 
 
 }

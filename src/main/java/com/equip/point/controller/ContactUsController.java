@@ -13,11 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-@WebServlet("/api/contact-us")
+import static com.equip.point.util.AppConstant.*;
+import static com.equip.point.util.URLConstant.*;
+
+@WebServlet(API_CONTACT_US)
 public class ContactUsController extends HttpServlet {
 
-    public static final String CONTACT_US_SUCCESS = "contactUsSuccess";
-    public static final Object CONTACT_US_SUCCESS_MESSAGE = "Your message has been sent successfully";
+
 
     /**
      * Handles HTTP POST requests to process form submissions from the contact us page.
@@ -36,7 +38,7 @@ public class ContactUsController extends HttpServlet {
 
             UserInput input = getUserInput(req);
             if (input == null) {
-                redirectToErrorPage(req, resp, "Invalid input!");
+                redirectToErrorPage(req, resp, INVALID_INPUT);
                 return;
             }
 
@@ -47,11 +49,11 @@ public class ContactUsController extends HttpServlet {
                 handleSuccess(req, resp, conn, contactUsService, input.email);
             } else {
                 conn.rollback();
-                redirectToErrorPage(req, resp, "Failed to save your message.");
+                redirectToErrorPage(req, resp, FAILED_TO_SAVE_MESSAGE);
             }
         } catch (Exception e) {
-            System.err.println("Error in ContactUsController doPost: " + e.getMessage());
-            redirectToErrorPage(req, resp, "An unexpected error occurred. Please try again.");
+            System.err.println(ERROR_IN_CONTACT_US_CONTROLLER + e.getMessage());
+            redirectToErrorPage(req, resp, UNEXPECTED_ERROR);
         }
     }
 
@@ -65,9 +67,9 @@ public class ContactUsController extends HttpServlet {
      *         are present; otherwise, returns null
      */
     private UserInput getUserInput(HttpServletRequest req) {
-        String fullName = req.getParameter("name");
-        String email = req.getParameter("email");
-        String message = req.getParameter("message");
+        String fullName = req.getParameter(NAME);
+        String email = req.getParameter(EMAIL);
+        String message = req.getParameter(MESSAGE);
 
         if (fullName == null || email == null || message == null) {
             return null;
@@ -93,8 +95,9 @@ public class ContactUsController extends HttpServlet {
         EmailLogService emailLogService = new EmailLogService(conn);
         Long contactUsId = contactUsService.getContactUsIdByEmail(email);
         conn.commit();
-        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), "Contact Us", "Contact Us message sent successfully", "sent", null);
-        req.setAttribute(CONTACT_US_SUCCESS, CONTACT_US_SUCCESS_MESSAGE + " Your Ticket ID is: #" + contactUsId);
+        // Save the email log
+        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US, CONTACT_US_APPROVED_MESSAGE, SENT, null);
+        req.setAttribute(CONTACT_US_SUCCESS, CONTACT_US_SUCCESS_MESSAGE + CONTACT_US_SUCCESS_MESSAGE_TICKET_ID+ contactUsId);
         forwardRequest(req, resp, CONTACT_US_SUCCESS_PAGE);
     }
 
@@ -111,7 +114,8 @@ public class ContactUsController extends HttpServlet {
      */
     private void redirectToErrorPage(HttpServletRequest req, HttpServletResponse resp, String errorMessage) throws ServletException, IOException {
         EmailLogService emailLogService = new EmailLogService(DbConnection.getConnection());
-        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), "Contact Us", "Contact Us message sent successfully", "sent", errorMessage);
+        // Save the email log with error message
+        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US, CONTACT_US_SUCCESS_MESSAGE_TICKET_ID_MESSAGE ,SENT, errorMessage);
         req.setAttribute(CONTACT_US_ERROR, errorMessage);
         forwardRequest(req, resp, CONTACT_US_ERROR_PAGE);
     }
@@ -141,11 +145,7 @@ public class ContactUsController extends HttpServlet {
             this.message = message;
         }
     }
-
-    // Constants for error and success pages
-    private static final String CONTACT_US_SUCCESS_PAGE = "/dashboard/contactUs.jsp";
-    private static final String CONTACT_US_ERROR_PAGE = "/dashboard/errorPage.jsp";
-    private static final String CONTACT_US_ERROR = "contactUsError";
+    
 
     /**
      * Handles HTTP GET requests by responding with a "Method Not Allowed" error.
@@ -158,7 +158,7 @@ public class ContactUsController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported.");
+        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, GET_METHOD_NOT_SUPPORTED);
     }
 }
 

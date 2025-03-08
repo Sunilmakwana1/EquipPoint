@@ -43,6 +43,8 @@ public class ContactUsService {
 
     private static final String GET_TOTAL_COUNT = "SELECT COUNT(id) FROM contact_us";
 
+    private static final String COUNT_NOTIFIED_BY_EMAIL = "SELECT COUNT(id) FROM contact_us WHERE email = ? AND is_notify = true";
+
 
     /**
      * Adds a new Contact Us entry to the database.
@@ -433,12 +435,12 @@ public class ContactUsService {
      *
      * @return The count of new ContactUs entries that have not been notified.
      */
-    public int countNewContactUs() {
-        int newContactUsCount = 0;
+    public Long countNewContactUs() {
+        Long newContactUsCount = 0L;
         try (PreparedStatement pstmt = conn.prepareStatement(COUNT_NEW_CONTACT_US);
              ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) {
-                newContactUsCount = rs.getInt(1);
+                newContactUsCount = rs.getLong(1);
             }
         } catch (Exception e) {
             handleException("Error in ContactUsService countNewContactUs", e);
@@ -483,5 +485,44 @@ public class ContactUsService {
             handleException("Error in ContactUsService getTotalCount", e);
         }
         return totalCount;
+    }
+
+
+
+    /**
+     * Retrieves the count of ContactUs entries that have been notified for the specified email address.
+     *
+     * @param email The email address used to locate the ContactUs entries.
+     * @return The count of ContactUs entries that have been notified for the specified email address.
+     */
+    public Long getContactUsNotifiedCountByEmail(String email) {
+        Long contactUsEntryId = null;
+        try (java.sql.PreparedStatement pstmt = conn.prepareStatement(COUNT_NOTIFIED_BY_EMAIL)) {
+            pstmt.setString(1, email);
+            try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Use `if` instead of `while` since only one result is expected
+                    contactUsEntryId = rs.getLong(1);
+                }
+            }
+        } catch (Exception e) {
+            handleException("Error fetching ContactUs ID by email", e);
+        }
+        return contactUsEntryId;
+    }
+
+    public List<ContactUs> getAllContactUsByEmail(String email) {
+        List<ContactUs> contactUsList = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(GET_CONTACT_US_BY_EMAIL)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ContactUs contactUs = mapResultSetToContactUs(rs);
+                    contactUsList.add(contactUs);
+                }
+            }
+        } catch (SQLException e) {
+            handleException("Error fetching ContactUs by email: " + email, e);
+        }
+        return contactUsList;
     }
 }

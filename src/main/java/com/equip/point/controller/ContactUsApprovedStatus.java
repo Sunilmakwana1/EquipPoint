@@ -16,13 +16,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static com.equip.point.util.AppConstant.*;
+import static com.equip.point.util.URLConstant.API_CONTACT_US_APPROVED_STATUS;
+import static com.equip.point.util.URLConstant.DASHBOARD_MESSAGE_INBOX_JSP;
 
-@WebServlet("/api/contact-us-approved-status")
+@WebServlet(API_CONTACT_US_APPROVED_STATUS)
 public class ContactUsApprovedStatus extends HttpServlet {
 
-    private static final String CONTACT_US_APPROVED_STATUS_UPDATED = "contactUsApprovedStatusUpdated";
-    private static final Object CONTACT_US_APPROVED_STATUS_UPDATED_MESSAGE = "Contact us approved status updated successfully";
-
+    /**
+     * Handles the HTTP GET request to approve a contact us message.
+     *
+     * @param req  The HttpServletRequest object that contains the request the client made to the servlet.
+     * @param resp The HttpServletResponse object that contains the response the servlet returns to the client.
+     * @throws ServletException If the request could not be handled.
+     * @throws IOException      If an input or output error is detected when the servlet handles the request.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = null;
@@ -30,24 +37,27 @@ public class ContactUsApprovedStatus extends HttpServlet {
         try {
             conn = DbConnection.getConnection();
             conn.setAutoCommit(false);
-            Long id = Long.parseLong(req.getParameter("id"));
-            Long userId = Long.parseLong(req.getParameter("userId"));
+            Long id = Long.parseLong(req.getParameter(ID));
+            Long userId = Long.parseLong(req.getParameter(USER_ID));
             ContactUsService contactUsService = new ContactUsService(conn);
             emailLogService = new EmailLogService(conn);
             Boolean updateContactUsApprovedStatus = contactUsService.approveContactUs(id, Boolean.TRUE , userId);
             if (Boolean.TRUE.equals(updateContactUsApprovedStatus)) {
                 conn.commit();
                 req.setAttribute(CONTACT_US_APPROVED_STATUS_UPDATED, CONTACT_US_APPROVED_STATUS_UPDATED_MESSAGE);
+                // Save the email log
                 emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, null);
-                req.getRequestDispatcher("/dashboard/messageInbox.jsp").forward(req, resp);
+                req.getRequestDispatcher(DASHBOARD_MESSAGE_INBOX_JSP).forward(req, resp);
             } else {
                 conn.rollback();
-                System.out.println("Unable to update contact us approved status");
-                emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, "Unable to update contact us approved status");
+                System.out.println(UNABLE_TO_UPDATE_CONTACT_US_APPROVED_STATUS);
+                //Save the email log
+                emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, UNABLE_TO_UPDATE_CONTACT_US_APPROVED_STATUS);
             }
         } catch (Exception e) {
-            System.out.println("Error in ContactUsApprovedStatus doPut: " + e.getMessage());
+            System.out.println(ERROR_IN_CONTACT_US_APPROVED_STATUS + e.getMessage());
             if (emailLogService != null) {
+                // Save the email log
                 emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, e.getMessage());
             }
         } finally {
@@ -55,8 +65,9 @@ public class ContactUsApprovedStatus extends HttpServlet {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    System.out.println("Error in ContactUsApprovedStatus doPut: " + e.getMessage());
+                    System.out.println(ERROR_IN_CONTACT_US_APPROVED_STATUS + e.getMessage());
                     if (EquipPointUtil.isNotNull(emailLogService)) {
+                        // Save the email log
                         emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, e.getMessage());
                     }
                 }

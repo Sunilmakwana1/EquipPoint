@@ -2,7 +2,7 @@ package com.equip.point.util;
 
 public class CurrentLoginUser {
 
-    private Long userId;
+    private static Long userId;
     private String fullName;
     private static String email;
     private String role;
@@ -104,5 +104,9 @@ public class CurrentLoginUser {
 
     public static String getCurrentLoginUser() {
         return email;
+    }
+
+    public static Long getCurrentLoginUserId() {
+        return userId;
     }
 }

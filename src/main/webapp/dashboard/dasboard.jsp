@@ -22,13 +22,13 @@
                 if (EquipPointUtil.isEqualToAdmin(roleNameByEmail))
                 {
             %>
-            <a href="#"
+            <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
                 class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="far fa-calendar-check  fa-3x text-red-500"></i>
                 <p class="mt-4 text-gray-700">Total Booking</p>
             </a>
 
-            <a href="#"
+            <a href="${pageContext.request.contextPath}/catagory/viewEpuipmentCategories.jsp"
                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-truck fa-3x text-red-500"></i>
                 <p class="mt-4 text-gray-700">Equipments</p>
@@ -54,7 +54,7 @@
                 if (EquipPointUtil.isEqualToUser(roleNameByEmail))
                 {
             %>
-            <a href="#"
+            <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="far fa-calendar-check  fa-3x text-red-500"></i>
                 <p class="mt-4 text-gray-700">My Booking</p>
