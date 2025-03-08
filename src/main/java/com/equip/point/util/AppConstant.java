@@ -31,6 +31,8 @@ public class AppConstant {
     public static final String CATEGORY_ADDED_SUCCESSFULLY_MESSAGE = "Category added successfully.";
 
     public static final String DUPLICATE_CATEGORY_MESSAGE = "This category is already exist.";
+    //The Equipment category is already exist
+    public static final String DUPLICATE_EQUIPMENT_CATEGORY_MESSAGE = "The Equipment category is already exist.";
 
     public static final String FILE_PATH = "../images/";
 
@@ -51,12 +53,20 @@ public class AppConstant {
     public static final String USER_DELETED_SUCCESSFULLY_MESSAGE = "User deleted successfully.";
 
     public static final String VENDOR_ADDED_SUCCESSFULLY = "vendorAddedSuccessfully";
+    //equipmentAddedSuccessfully
+    public static final String EQUIPMENT_ADDED_SUCCESSFULLY = "equipmentAddedSuccessfully";
 
     public static final String DUPLICATE_VENDOR = "duplicateVendorMessage";
+    //duplicateEquipmentMessage
+    public static final String DUPLICATE_EQUIPMENT = "duplicateEquipmentMessage";
 
     public static final String VENDOR_ADDED_SUCCESSFULLY_MESSAGE = "Vendor added successfully.";
+    //Equipment added successfully
+    public static final String EQUIPMENT_ADDED_SUCCESSFULLY_MESSAGE = "Equipment added successfully.";
 
     public static final String DUPLICATE_VENDOR_MESSAGE = "This vendor is already exist.";
+    //THIS EQUIPMENT IS ALREADY EXIST
+    public static final String DUPLICATE_EQUIPMENT_MESSAGE = "This equipment is already exist.";
 
     public static final String VENDOR_DELETED_SUCCESSFULLY = "vendorDeletedSuccessfully";
 
@@ -79,9 +89,18 @@ public class AppConstant {
     public static final String VENDOR_NAME = "vendorName";
     public static final String DESCRIPTION = "description";
     public static final String VENDOR_ADDED = "Vendor Added";
+    //Equipment Added
+    public static final String EQUIPMENT_ADDED = "Equipment Added";
     public static final String ERROR_IN_ADDED_VENDOR_CONTROLLER = "Error in AddedVendorController doPost: ";
+    //Error in AddedEquipmentController doPost
+    public static final String ERROR_IN_ADDED_EQUIPMENT_CONTROLLER = "Error in AddedEquipmentController doPost: ";
     public static final String VENDOR_ADDED_NOT_ADDED_MESSAGE = "Vendor not added";
+    //Equipment Not Added
+    public static final String VENDOR_NOT_ADDED_MESSAGE = "Vendor not added";
+    //Equipment Not Added
     public static final String VENDOR_NOT_ADDED = "Vendor Not Added";
+    //Equipment Not Added
+    public static final String EQUIPMENT_NOT_ADDED = "Equipment Not Added";
     public static final String CONTACT_US_APPROVED_STATUS_UPDATED = "contactUsApprovedStatusUpdated";
     public static final Object CONTACT_US_APPROVED_STATUS_UPDATED_MESSAGE = "Contact us approved status updated successfully";
     public static final String ID = "id";

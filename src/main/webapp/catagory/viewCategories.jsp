@@ -48,16 +48,20 @@
                 </h2>
                 <p class="text-gray-700 mb-4 line-clamp-3"><%=category.getDescription()%>
                 </p>
-                <%
-                    if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
-                %>
+
                 <div class="flex justify-between items-center">
+                    <a href="/catagory/viewEquipment.jsp?id=<%=category.getId()%>"
+                       class="bg-green-500 text-white px-4 py-2 rounded">View</a>
+                    <%
+                        if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
+                    %>
                     <a href="/api/equipment-categories-edit?id=<%=category.getId()%>"
                        class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
                     <a href="/api/equipment-categories-deleted?id=<%=category.getId()%>"
                        class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+                    <% } %>
                 </div>
-                <% } %>
+
             </div>
         </div>
         <%

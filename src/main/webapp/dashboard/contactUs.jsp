@@ -1,6 +1,6 @@
 <%@ page import="com.equip.point.Service.UserService" %>
 <%@ page import="com.equip.point.util.DbConnection" %>
-<%@ page import="static com.equip.point.controller.ContactUsController.CONTACT_US_SUCCESS" %>
+<%@ page import="static com.equip.point.util.AppConstant.CONTACT_US_SUCCESS" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>

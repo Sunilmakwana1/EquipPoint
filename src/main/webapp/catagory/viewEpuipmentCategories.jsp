@@ -20,7 +20,7 @@
 <%@include file="/users/navbar.jsp" %>
 <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-3xl font-bold">Equipment Categories</h1>
+        <h1 class="text-3xl font-bold">Equipment</h1>
         <%
             UserService userService = new UserService(DbConnection.getConnection());
             String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
@@ -29,7 +29,7 @@
 
         <a href="${pageContext.request.contextPath}/catagory/addEquipmentCategories.jsp" id="addSpecialistButton"
            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-            Add Equipment Category
+            Add Equipment
         </a>
         <% } %>
     </div>

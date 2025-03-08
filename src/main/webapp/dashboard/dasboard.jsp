@@ -28,10 +28,10 @@
                 <p class="mt-4 text-gray-700">Total Booking</p>
             </a>
 
-            <a href="${pageContext.request.contextPath}/catagory/viewEpuipmentCategories.jsp"
+            <a href="${pageContext.request.contextPath}/catagory/addEquipment.jsp"
                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-truck fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Equipments</p>
+                <p class="mt-4 text-gray-700">Add Equipments</p>
             </a>
 
             <a href="${pageContext.request.contextPath}/catagory/addVendor.jsp" id="addSpecialistButton"
@@ -44,6 +44,11 @@
                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fas fa-user-circle fa-3x text-blue-500"></i>
                 <p class="mt-4 text-gray-700">Users</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
+               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
+                <i class="fa-solid fa-truck fa-3x text-red-500"></i>
+                <p class="mt-4 text-gray-700">Equipments</p>
             </a>
             <%
                 }
@@ -59,6 +64,12 @@
                 <i class="far fa-calendar-check  fa-3x text-red-500"></i>
                 <p class="mt-4 text-gray-700">My Booking</p>
             </a>
+
+            <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
+               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
+                <i class="fa-solid fa-truck fa-3x text-red-500"></i>
+                <p class="mt-4 text-gray-700">Equipments</p>
+            </a>
             <%
                 }
             %>
@@ -66,7 +77,7 @@
             <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
                 class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
                 <i class="fa-solid fa-list fa-3x text-blue-500"></i>
-                <p class="mt-4 text-gray-700">Category</p>
+                <p class="mt-4 text-gray-700">Equipments Category</p>
             </a>
 
             <a href="${pageContext.request.contextPath}/catagory/viewVendor.jsp"

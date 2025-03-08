@@ -10,6 +10,11 @@
 <%@include file="/users/navbar.jsp"%>
     <div class="container mx-auto p-4">
         <h1 class="text-3xl font-bold mb-4">Bookings</h1>
+        <%--<div class="flex justify-end items-center mb-4">
+            <a href="bookingEqument.jsp" id="addUserButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Book Equipment
+            </a>
+        </div>--%>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                 <thead class="bg-gray-800 text-white">

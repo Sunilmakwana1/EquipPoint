@@ -3,6 +3,7 @@
 <%@ page import="com.equip.point.Service.ContactUsService" %>
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
 <%@ page import="com.equip.point.Service.UserService" %>
+<%@ page import="com.equip.point.util.DbConnection" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +17,10 @@
     String loginUserName = "Guest";
     Long id = 0L;
     User user = (User) session.getAttribute(LOGGED_IN_USER);
+    if (user == null) {
+        response.sendRedirect("../login/login.jsp");
+        return;  // Make sure the rest of the code doesn't execute when user is null
+    }
     Long contactUsNotifiedCountByEmail = 0L;
     Long contactUsNotifiedCountForAdmin = 0L;
     String userRole = null;

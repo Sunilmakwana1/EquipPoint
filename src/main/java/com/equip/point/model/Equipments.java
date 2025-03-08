@@ -17,20 +17,22 @@ public class Equipments {
     private String bookedStatus;
     private String lastServicedDate;
     private String notes;
-    private int equipmentCategoriesId;
+    private Long equipmentCategoriesId;
     private Long userId;
     private String createdDate;
     private String updatedDate;
+    private String image;
+    private String description;
+    private Long vendorId;
 
     public Equipments() {
         super();
     }
 
-    public Equipments(Long id, String model, int manufacturingYear, double operatingWeight, double enginePower,
+    public Equipments(String model, int manufacturingYear, double operatingWeight, double enginePower,
                       String fuelType, double rentalRate, String availabilityStatus, String location,
                       long rentalPeriod, String bookedStatus, String lastServicedDate, String notes,
-                      int equipmentCategoriesId, Long userId, String createdDate, String updatedDate) {
-        this.id = id;
+                      Long equipmentCategoriesId, Long userId, String createdDate, String updatedDate , String image, String description) {
         this.model = model;
         this.manufacturingYear = manufacturingYear;
         this.operatingWeight = operatingWeight;
@@ -47,6 +49,16 @@ public class Equipments {
         this.userId = userId;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
+        this.image = image;
+        this.description = description;
+    }
+
+    public Equipments(String model, String description, String image, Long equipmentCategoriesId , Long vendorId) {
+        this.model = model;
+        this.description = description;
+        this.image = image;
+        this.equipmentCategoriesId = equipmentCategoriesId;
+        this.vendorId = vendorId;
     }
 
     // Getters and Setters
@@ -155,11 +167,11 @@ public class Equipments {
         this.notes = notes;
     }
 
-    public int getEquipmentCategoriesId() {
+    public Long getEquipmentCategoriesId() {
         return equipmentCategoriesId;
     }
 
-    public void setEquipmentCategoriesId(int equipmentCategoriesId) {
+    public void setEquipmentCategoriesId(Long equipmentCategoriesId) {
         this.equipmentCategoriesId = equipmentCategoriesId;
     }
 
@@ -185,6 +197,30 @@ public class Equipments {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Long vendorId) {
+        this.vendorId = vendorId;
     }
 
     @Override
