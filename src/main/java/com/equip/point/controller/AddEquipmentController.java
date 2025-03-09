@@ -43,7 +43,7 @@ public class AddEquipmentController extends HttpServlet {
             String categoryName = req.getParameter("CategoriesSelect");
             String vendorName = req.getParameter("vendorSelect");
             EquipmentService equipmentService = new EquipmentService(conn);
-            if (Boolean.TRUE.equals(equipmentService.checkEquipmentExist(modelName)) && !EquipPointUtil.isEmpty(modelName) && !EquipPointUtil.isEmpty(description)) {
+            if (Boolean.TRUE.equals(equipmentService.checkEquipmentExist(modelName))) {
                 EquipPointUtil.setCurrentUserInSession(conn);
                 EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(conn);
                 VendorService vendorService = new VendorService(conn);
