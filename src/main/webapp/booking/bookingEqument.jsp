@@ -31,13 +31,13 @@
     %>
     <!-- Booking Form -->
     <div class="bg-white rounded-lg shadow-lg p-6">
-        <form class="space-y-6" action=""
+        <form class="space-y-6" action="${pageContext.request.contextPath}/api/booking" method="POST">
             <!-- Equipment Name not editable -->
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="equipmentName">
                     Equipment Name
                 </label>
-                <input type="text" id="equipmentName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="<%= equipment.getModel() %>" disabled name="equipmentName">
+                <input type="text" id="equipmentName" name="equipmentName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="<%= equipment.getModel() %>" readonly >
             </div>
 
             <!-- Date -->
@@ -45,7 +45,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
                     Date
                 </label>
-                <input type="date" id="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="date" required>
+                <input type="date" id="date" name="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"  required>
             </div>
 
             <!-- Duration to days -->
@@ -53,14 +53,14 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="duration">
                     Duration (in days)
                 </label>
-                <input type="number" id="duration" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="calculateTotalCost()" name="duration" required>
+                <input type="number" id="duration" name="duration" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="calculateTotalCost()"  required>
             </div>
 
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="rentalRate">
                     Rental Rate (per day)
                 </label>
-                <input type="text" id="rentalRate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="<%= equipment.getRentalRate() %>" disabled name="rentalRate">
+                <input type="text" id="rentalRate" name="rentalRate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="<%= equipment.getRentalRate() %>" readonly >
             </div>
 
             <!-- Purpose -->
@@ -68,7 +68,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="purpose">
                     Purpose of Booking
                 </label>
-                <textarea id="purpose" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="purpose" required></textarea>
+                <textarea id="purpose" rows="3" name="purpose" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"  required></textarea>
             </div>
 
             <!-- total cost on left side -->
@@ -76,7 +76,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="totalCost">
                     Total Cost
                 </label>
-                <input type="text" id="totalCost" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="totalCost" readonly>
+                <input type="text" id="totalCost" name="totalCost" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"  readonly>
             </div>
 
             <!-- Submit Button -->

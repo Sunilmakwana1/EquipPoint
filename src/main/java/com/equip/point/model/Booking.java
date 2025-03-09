@@ -1,69 +1,58 @@
 package com.equip.point.model;
 
-import java.util.Date;
+import java.lang.String;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Booking {
 
-    private int bookingId;
-    private int equipmentId;
-    private double totalCost;
-    private int duration;
-    private String status;
+    private Long bookingId;
+    private Long equipmentId;
+    private BigDecimal totalCost = BigDecimal.ZERO;
+    private Long duration;
+    private String status = "Pending";
     private String purposeOfBooking;
     private boolean approved;
-    private Date bookingDate;
-    private Date startDate;
-    private Date endDate;
-    private int userId;
+    private String bookingDate;
+    private String startDate;
+    private String endDate;
+    private Long userId;
     private String comments;
+    private BigDecimal rentalRate = BigDecimal.ZERO;
+    
 
-    // Constructor
-    public Booking(int equipmentId, double totalCost, int duration, String status, String purposeOfBooking,
-                   boolean approved, Date startDate, Date endDate, int userId, String comments) {
-        this.equipmentId = equipmentId;
-        this.totalCost = totalCost;
-        this.duration = duration;
-        this.status = status;
-        this.purposeOfBooking = purposeOfBooking;
-        this.approved = approved;
-        this.bookingDate = new Date(); // current date and time
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.userId = userId;
-        this.comments = comments;
+    public Booking() {
     }
 
-    // Getter and Setter methods
-
-    public int getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(int bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
 
-    public int getEquipmentId() {
+    public Long getEquipmentId() {
         return equipmentId;
     }
 
-    public void setEquipmentId(int equipmentId) {
+    public void setEquipmentId(Long equipmentId) {
         this.equipmentId = equipmentId;
     }
 
-    public double getTotalCost() {
+    public BigDecimal getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
+    public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
 
-    public int getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 
@@ -91,35 +80,35 @@ public class Booking {
         this.approved = approved;
     }
 
-    public Date getBookingDate() {
+    public String getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
+    public void setBookingDate(String bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -129,6 +118,26 @@ public class Booking {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public BigDecimal getRentalRate() {
+        return rentalRate;
+    }
+
+    public void setRentalRate(BigDecimal rentalRate) {
+        this.rentalRate = rentalRate;
+    }
+
+    public Booking(Long equipmentId, Long duration, String bookingDate, BigDecimal rentalRate, String purposeOfBooking, BigDecimal totalCost,Long userId) {
+        this.equipmentId = equipmentId;
+        this.duration = duration;
+        this.bookingDate = bookingDate;
+        this.rentalRate = rentalRate;
+        this.purposeOfBooking = purposeOfBooking;
+        this.totalCost = totalCost;
+        this.startDate = bookingDate;
+        this.endDate = String.valueOf(java.sql.Date.valueOf(LocalDate.parse(bookingDate).plusDays(duration)));
+        this.userId = userId;
     }
 
     // A method to convert the object to a string representation (useful for debugging or logging)

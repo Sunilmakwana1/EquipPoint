@@ -224,7 +224,7 @@ public class EquipmentService {
     public List<Equipments> getAllEquipment() {
         List<Equipments> equipmentList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM equipments WHERE is_deleted = false";
+            String query = "select * from equipments e left join categories c on c.id = e.vender_id left join categories  eq on eq.id = e.equipment_categories_id where c.is_deleted = false and eq.is_deleted = false and e.is_deleted = false;";
             try (java.sql.PreparedStatement pstmt = conn.prepareStatement(query)) {
                 java.sql.ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -250,5 +250,22 @@ public class EquipmentService {
             System.out.println("Error in EquipmentService getAllEquipment: " + e.getMessage());
         }
         return equipmentList;
+    }
+
+    public Long getEquipmentIdByName(String name) {
+        Long id = null;
+        try {
+            String query = "SELECT id FROM equipments WHERE model = ? AND is_deleted = false";
+            try (java.sql.PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, name);
+                java.sql.ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    id = rs.getLong(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EquipmentService getEquipmentIdByName: " + e.getMessage());
+        }
+        return id;
     }
 }
