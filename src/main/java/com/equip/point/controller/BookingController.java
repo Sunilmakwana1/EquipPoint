@@ -41,7 +41,7 @@ public class BookingController extends HttpServlet {
             if (Boolean.FALSE.equals(booked)) {
                 conn.rollback();
                 req.setAttribute("bookingError", "Unable to book equipment. Please try again.");
-                req.getRequestDispatcher("404.jsp").forward(req, resp);
+                req.getRequestDispatcher("../404.jsp").forward(req, resp);
             }else {
                 Long bookingIdByUserId = bookingService.getBookingIdByUserId(userId);
                 conn.commit();
