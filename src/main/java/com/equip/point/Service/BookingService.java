@@ -123,4 +123,108 @@ public class BookingService {
         }
         return bookings;
     }
+
+
+    public List<Booking> getAllBookings(int pageNumber, int pageSize) {
+        List<Booking> bookings = new ArrayList<>();
+        EquipmentService equipmentService = new EquipmentService(conn);
+        try {
+            int offset = (pageNumber - 1) * pageSize;
+            String query = "SELECT * FROM booking ORDER BY created_date DESC LIMIT ? OFFSET ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, pageSize);  // Number of records per page
+                pstmt.setInt(2, offset);    // The offset to skip for pagination
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    Booking booking = new Booking();
+                    booking.setBookingId(rs.getLong("booking_id"));
+                    booking.setEquipmentId(rs.getLong("equipment_id"));
+                    booking.setTotalCost(rs.getBigDecimal("total_cost"));
+                    booking.setDuration(rs.getLong("duration"));
+                    booking.setStatus(rs.getString("status"));
+                    booking.setPurposeOfBooking(rs.getString("purpose_of_booking"));
+                    booking.setApproved(rs.getBoolean("approved"));
+                    booking.setBookingDate(rs.getString("booking_date"));
+                    booking.setStartDate(rs.getString("start_date"));
+                    booking.setEndDate(rs.getString("end_date"));
+                    booking.setUserId(rs.getLong("user_id"));
+                    booking.setComments(rs.getString("comments"));
+                    booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                    bookings.add(booking);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getAllBookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    public List<Booking> getBookingsByUserId(Long userId, int pageNumber, int pageSize) {
+        List<Booking> bookings = new ArrayList<>();
+        EquipmentService equipmentService = new EquipmentService(conn);
+        try {
+            int offset = (pageNumber - 1) * pageSize;
+            String query = "SELECT * FROM booking WHERE user_id = ? ORDER BY created_date DESC LIMIT ? OFFSET ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, userId);
+                pstmt.setInt(2, pageSize);  // Number of records per page
+                pstmt.setInt(3, offset);    // The offset to skip for pagination
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    Booking booking = new Booking();
+                    booking.setBookingId(rs.getLong("booking_id"));
+                    booking.setEquipmentId(rs.getLong("equipment_id"));
+                    booking.setTotalCost(rs.getBigDecimal("total_cost"));
+                    booking.setDuration(rs.getLong("duration"));
+                    booking.setStatus(rs.getString("status"));
+                    booking.setPurposeOfBooking(rs.getString("purpose_of_booking"));
+                    booking.setApproved(rs.getBoolean("approved"));
+                    booking.setBookingDate(rs.getString("booking_date"));
+                    booking.setStartDate(rs.getString("start_date"));
+                    booking.setEndDate(rs.getString("end_date"));
+                    booking.setUserId(rs.getLong("user_id"));
+                    booking.setComments(rs.getString("comments"));
+                    booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                    bookings.add(booking);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getBookingsByUserId: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    public int getTotalBookingsCount() {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM booking";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getTotalBookingsCount: " + e.getMessage());
+        }
+        return count;
+    }
+
+    public int getTotalBookingsByUserIdCount(Long userId) {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM booking WHERE user_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, userId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getTotalBookingsByUserIdCount: " + e.getMessage());
+        }
+        return count;
+    }
+
 }
