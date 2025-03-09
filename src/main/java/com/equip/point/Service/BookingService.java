@@ -125,15 +125,53 @@ public class BookingService {
     }
 
 
-    public List<Booking> getAllBookings(int pageNumber, int pageSize) {
+    public List<Booking> getAllBookings(int pageNumber, int pageSize, String searchTerm) {
         List<Booking> bookings = new ArrayList<>();
         EquipmentService equipmentService = new EquipmentService(conn);
         try {
             int offset = (pageNumber - 1) * pageSize;
-            String query = "SELECT * FROM booking ORDER BY created_date DESC LIMIT ? OFFSET ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setInt(1, pageSize);  // Number of records per page
-                pstmt.setInt(2, offset);    // The offset to skip for pagination
+
+            // Constructing the search query
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM booking b left join equipments e on b.equipment_id = e.id WHERE ");
+
+            // Add search conditions if a search term is provided
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                queryBuilder.append(" (")
+                        .append("b.booking_id LIKE ? OR ")
+                        .append("b.equipment_id LIKE ? OR ")
+                        .append("b.status LIKE ? OR ")
+                        .append("b.purpose_of_booking LIKE ? OR ")
+                        .append("b.total_cost LIKE ? OR ")
+                        .append("b.start_date LIKE ? OR ")
+                        .append("b.end_date LIKE ? OR ")
+                        .append("e.model LIKE ?")
+                        .append(") ");
+            } else {
+                queryBuilder.append("1=1 "); // No filter, return all
+            }
+
+            queryBuilder.append("ORDER BY b.created_date DESC LIMIT ? OFFSET ?");
+
+            // Prepare the statement
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+                int index = 1;
+
+                // Set the search term parameters if provided
+                if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                    String searchPattern = "%" + searchTerm + "%";
+                    pstmt.setString(index++, searchPattern); // booking_id
+                    pstmt.setString(index++, searchPattern); // equipment_id
+                    pstmt.setString(index++, searchPattern); // status
+                    pstmt.setString(index++, searchPattern); // purpose_of_booking
+                    pstmt.setString(index++, searchPattern); // total_cost
+                    pstmt.setString(index++, searchPattern); // start_date
+                    pstmt.setString(index++, searchPattern); // end_date
+                    pstmt.setString(index++, searchPattern); // model
+                }
+
+                pstmt.setInt(index++, pageSize); // Number of records per page
+                pstmt.setInt(index++, offset);   // The offset to skip for pagination
+
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     Booking booking = new Booking();
@@ -159,16 +197,52 @@ public class BookingService {
         return bookings;
     }
 
-    public List<Booking> getBookingsByUserId(Long userId, int pageNumber, int pageSize) {
+    public List<Booking> getBookingsByUserId(Long userId, int pageNumber, int pageSize, String searchTerm) {
         List<Booking> bookings = new ArrayList<>();
         EquipmentService equipmentService = new EquipmentService(conn);
         try {
             int offset = (pageNumber - 1) * pageSize;
-            String query = "SELECT * FROM booking WHERE user_id = ? ORDER BY created_date DESC LIMIT ? OFFSET ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setLong(1, userId);
-                pstmt.setInt(2, pageSize);  // Number of records per page
-                pstmt.setInt(3, offset);    // The offset to skip for pagination
+
+            // Constructing the search query
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM booking b left join equipments e on b.equipment_id = e.id WHERE b.user_id = ? ");
+
+            // Add search conditions if a search term is provided
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                queryBuilder.append("AND (")
+                        .append("b.booking_id LIKE ? OR ")
+                        .append("b.equipment_id LIKE ? OR ")
+                        .append("b.status LIKE ? OR ")
+                        .append("b.purpose_of_booking LIKE ? OR ")
+                        .append("b.total_cost LIKE ? OR ")
+                        .append("b.start_date LIKE ? OR ")
+                        .append("b.end_date LIKE ? OR ")
+                        .append("e.model LIKE ?")
+                        .append(") ");
+            }
+
+            queryBuilder.append("ORDER BY b.created_date DESC LIMIT ? OFFSET ?");
+
+            // Prepare the statement
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+                int index = 1;
+                pstmt.setLong(index++, userId);
+
+                // Set the search term parameters if provided
+                if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                    String searchPattern = "%" + searchTerm + "%";
+                    pstmt.setString(index++, searchPattern); // booking_id
+                    pstmt.setString(index++, searchPattern); // equipment_id
+                    pstmt.setString(index++, searchPattern); // status
+                    pstmt.setString(index++, searchPattern); // purpose_of_booking
+                    pstmt.setString(index++, searchPattern); // total_cost
+                    pstmt.setString(index++, searchPattern); // start_date
+                    pstmt.setString(index++, searchPattern); // end_date
+                    pstmt.setString(index++, searchPattern); // model
+                }
+
+                pstmt.setInt(index++, pageSize); // Number of records per page
+                pstmt.setInt(index++, offset);   // The offset to skip for pagination
+
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     Booking booking = new Booking();
@@ -194,11 +268,43 @@ public class BookingService {
         return bookings;
     }
 
-    public int getTotalBookingsCount() {
+    public int getTotalBookingsCount(String searchTerm) {
         int count = 0;
         try {
-            String query = "SELECT COUNT(*) FROM booking";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(*) FROM booking b left join equipments e on b.equipment_id = e.id WHERE ");
+
+            // Add search conditions if a search term is provided
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                queryBuilder.append(" (")
+                        .append("b.booking_id LIKE ? OR ")
+                        .append("b.equipment_id LIKE ? OR ")
+                        .append("b.status LIKE ? OR ")
+                        .append("b.purpose_of_booking LIKE ? OR ")
+                        .append("b.total_cost LIKE ? OR ")
+                        .append("b.start_date LIKE ? OR ")
+                        .append("b.end_date LIKE ? OR ")
+                        .append("e.model LIKE ?")
+                        .append(") ");
+            } else {
+                queryBuilder.append("1=1 "); // No filter, return all
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+                int index = 1;
+
+                // Set the search term parameters if provided
+                if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                    String searchPattern = "%" + searchTerm + "%";
+                    pstmt.setString(index++, searchPattern); // booking_id
+                    pstmt.setString(index++, searchPattern); // equipment_id
+                    pstmt.setString(index++, searchPattern); // status
+                    pstmt.setString(index++, searchPattern); // purpose_of_booking
+                    pstmt.setString(index++, searchPattern); // total_cost
+                    pstmt.setString(index++, searchPattern); // start_date
+                    pstmt.setString(index++, searchPattern); // end_date
+                    pstmt.setString(index++, searchPattern); // model
+                }
+
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt(1);
@@ -210,12 +316,42 @@ public class BookingService {
         return count;
     }
 
-    public int getTotalBookingsByUserIdCount(Long userId) {
+    public int getTotalBookingsByUserIdCount(Long userId, String searchTerm) {
         int count = 0;
         try {
-            String query = "SELECT COUNT(*) FROM booking WHERE user_id = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setLong(1, userId);
+            StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(*) FROM booking b left join equipments e on b.equipment_id = e.id WHERE b.user_id = ? ");
+
+            // Add search conditions if a search term is provided
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                queryBuilder.append("AND (")
+                        .append("b.booking_id LIKE ? OR ")
+                        .append("b.equipment_id LIKE ? OR ")
+                        .append("b.status LIKE ? OR ")
+                        .append("b.purpose_of_booking LIKE ? OR ")
+                        .append("b.total_cost LIKE ? OR ")
+                        .append("b.start_date LIKE ? OR ")
+                        .append("b.end_date LIKE ? OR ")
+                        .append("e.model LIKE ?")
+                        .append(") ");
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+                int index = 1;
+                pstmt.setLong(index++, userId);
+
+                // Set the search term parameters if provided
+                if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                    String searchPattern = "%" + searchTerm + "%";
+                    pstmt.setString(index++, searchPattern); // booking_id
+                    pstmt.setString(index++, searchPattern); // equipment_id
+                    pstmt.setString(index++, searchPattern); // status
+                    pstmt.setString(index++, searchPattern); // purpose_of_booking
+                    pstmt.setString(index++, searchPattern); // total_cost
+                    pstmt.setString(index++, searchPattern); // start_date
+                    pstmt.setString(index++, searchPattern); // end_date
+                    pstmt.setString(index++, searchPattern); // model
+                }
+
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt(1);
@@ -226,5 +362,7 @@ public class BookingService {
         }
         return count;
     }
+
+
 
 }
