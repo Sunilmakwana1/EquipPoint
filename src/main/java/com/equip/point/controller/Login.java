@@ -34,7 +34,7 @@ public class Login extends HttpServlet {
                 System.out.printf("Login successful for user with ID: %d%n", user.getId()); // NOSONAR
                 System.out.printf("User name : %s%n", user.getFullName()); // NOSONAR
                 session.setAttribute(LOGGED_IN_USER, user); // NOSONAR
-                EquipPointUtil.getCurrentLoginUser(email);
+                EquipPointUtil.getCurrentLoginUser(user);
                 resp.sendRedirect("/dashboard/dasboard.jsp");
             } else {
                 System.out.printf("Login failed for email: %s%n", email);

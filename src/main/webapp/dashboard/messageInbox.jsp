@@ -2,6 +2,7 @@
 <%@ page import="com.equip.point.util.DbConnection" %>
 <%@ page import="com.equip.point.model.ContactUs" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,9 +35,15 @@
             </thead>
             <tbody class="text-gray-700">
             <%
-                // Fetch and loop through the tickets
+                // Initialize the contactUsService before use
                 ContactUsService contactUsService = new ContactUsService(DbConnection.getConnection());
-                List<ContactUs> contactUsList = contactUsService.getAllContactUs();
+
+                List<ContactUs> contactUsList = new ArrayList<>();
+                if(EquipPointUtil.isEqualToAdmin(userRole)) {
+                    contactUsList = contactUsService.getAllContactUs();
+                }else {
+                    contactUsList = contactUsService.getAllContactUsByEmail(userEmail);
+                }
                 for (ContactUs contactUs : contactUsList) {
             %>
             <tr class="border-b">

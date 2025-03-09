@@ -295,3 +295,276 @@ CREATE TABLE history (
                          performed_by VARCHAR(100) NOT NULL, -- Username or email of user
                          performed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+/**
+    * Date : 2025-02-08
+    * Name : Vishal Makwana
+    * Purpose : add history TRIGGER for All tables
+ */
+
+USE equip_point;
+DELIMITER //
+DROP TRIGGER IF EXISTS categories_history_after_insert;
+CREATE TRIGGER categories_history_after_insert
+    AFTER INSERT ON categories
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('categories', NEW.id, 'INSERT', CONCAT('{"name": "', NEW.name, '", "description": "', NEW.description, '", "image": "', NEW.image, '", "is_deleted": ', NEW.is_deleted, ', "created_date": "', NEW.created_date, '", "updated_date": "', NEW.updated_date, '", "type": "', NEW.type, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS categories_history_after_update;
+CREATE TRIGGER categories_history_after_update
+    AFTER UPDATE ON categories
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('categories', OLD.id, 'UPDATE', CONCAT('{"name": "', OLD.name, '", "description": "', OLD.description, '", "image": "', OLD.image, '", "is_deleted": ', OLD.is_deleted, ', "created_date": "', OLD.created_date, '", "updated_date": "', OLD.updated_date, '", "type": "', OLD.type, '"}'),
+            CONCAT('{"name": "', NEW.name, '", "description": "', NEW.description, '", "image": "', NEW.image, '", "is_deleted": ', NEW.is_deleted, ', "created_date": "', NEW.created_date, '", "updated_date": "', NEW.updated_date, '", "type": "', NEW.type, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS categories_history_after_delete;
+CREATE TRIGGER categories_history_after_delete
+    AFTER DELETE ON categories
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('categories', OLD.id, 'DELETE', CONCAT('{"name": "', OLD.name, '", "description": "', OLD.description, '", "image": "', OLD.image, '", "is_deleted": ', OLD.is_deleted, ', "created_date": "', OLD.created_date, '", "updated_date": "', OLD.updated_date, '", "type": "', OLD.type, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS contact_us_history_after_insert;
+CREATE TRIGGER contact_us_history_after_insert
+    AFTER INSERT ON contact_us
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('contact_us', NEW.id, 'INSERT', CONCAT('{"name": "', NEW.name, '", "email": "', NEW.email, '", "phone": "', NEW.phone, '", "message": "', NEW.message, '", "approval_status": ', NEW.approval_status, ', "approval_date": "', NEW.approval_date, '", "approved_by": ', NEW.approved_by, ', "replay_message": "', NEW.replay_message, '", "progress_status": ', NEW.progress_status, ', "replay_date": "', NEW.replay_date, '", "replay_by": ', NEW.replay_by, ', "replay_status": ', NEW.replay_status, ', "is_notify": ', NEW.is_notify, ', "created_date": "', NEW.created_date, '"}'), @current_user);
+END//
+
+
+DROP TRIGGER IF EXISTS contact_us_history_after_update;
+CREATE TRIGGER contact_us_history_after_update
+    AFTER UPDATE ON contact_us
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('contact_us', OLD.id, 'UPDATE', CONCAT('{"name": "', OLD.name, '", "email": "', OLD.email, '", "phone": "', OLD.phone, '", "message": "', OLD.message, '", "approval_status": ', OLD.approval_status, ', "approval_date": "', OLD.approval_date, '", "approved_by": ', OLD.approved_by, ', "replay_message": "', OLD.replay_message, '", "progress_status": ', OLD.progress_status, ', "replay_date": "', OLD.replay_date, '", "replay_by": ', OLD.replay_by, ', "replay_status": ', OLD.replay_status, ', "is_notify": ', OLD.is_notify, ', "created_date": "', OLD.created_date, '"}'),
+            CONCAT('{"name": "', NEW.name, '", "email": "', NEW.email, '", "phone": "', NEW.phone, '", "message": "', NEW.message, '", "approval_status": ', NEW.approval_status, ', "approval_date": "', NEW.approval_date, '", "approved_by": ', NEW.approved_by, ', "replay_message": "', NEW.replay_message, '", "progress_status": ', NEW.progress_status, ', "replay_date": "', NEW.replay_date, '", "replay_by": ', NEW.replay_by, ', "replay_status": ', NEW.replay_status, ', "is_notify": ', NEW.is_notify, ', "created_date": "', NEW.created_date, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS contact_us_history_after_delete;
+CREATE TRIGGER contact_us_history_after_delete
+    AFTER DELETE ON contact_us
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('contact_us', OLD.id, 'DELETE', CONCAT('{"name": "', OLD.name, '", "email": "', OLD.email, '", "phone": "', OLD.phone, '", "message": "', OLD.message, '", "approval_status": ', OLD.approval_status, ', "approval_date": "', OLD.approval_date, '", "approved_by": ', OLD.approved_by, ', "replay_message": "', OLD.replay_message, '", "progress_status": ', OLD.progress_status, ', "replay_date": "', OLD.replay_date, '", "replay_by": ', OLD.replay_by, ', "replay_status": ', OLD.replay_status, ', "is_notify": ', OLD.is_notify, ', "created_date": "', OLD.created_date, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS email_log_history_after_insert;
+CREATE TRIGGER email_log_history_after_insert
+    AFTER INSERT ON email_log
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('email_log', NEW.id, 'INSERT', CONCAT('{"recipient_email": "', NEW.recipient_email, '", "subject": "', NEW.subject, '", "message": "', NEW.message, '", "status": "', NEW.status, '", "error_message": "', NEW.error_message, '", "created_at": "', NEW.created_at, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS email_log_history_after_update;
+CREATE TRIGGER email_log_history_after_update
+    AFTER UPDATE ON email_log
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('email_log', OLD.id, 'UPDATE', CONCAT('{"recipient_email": "', OLD.recipient_email, '", "subject": "', OLD.subject, '", "message": "', OLD.message, '", "status": "', OLD.status, '", "error_message": "', OLD.error_message, '", "created_at": "', OLD.created_at, '"}'),
+            CONCAT('{"recipient_email": "', NEW.recipient_email, '", "subject": "', NEW.subject, '", "message": "', NEW.message, '", "status": "', NEW.status, '", "error_message": "', NEW.error_message, '", "created_at": "', NEW.created_at, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS email_log_history_after_delete;
+CREATE TRIGGER email_log_history_after_delete
+    AFTER DELETE ON email_log
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('email_log', OLD.id, 'DELETE', CONCAT('{"recipient_email": "', OLD.recipient_email, '", "subject": "', OLD.subject, '", "message": "', OLD.message, '", "status": "', OLD.status, '", "error_message": "', OLD.error_message, '", "created_at": "', OLD.created_at, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS role_history_after_insert;
+CREATE TRIGGER role_history_after_insert
+    AFTER INSERT ON role
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('role', NEW.id, 'INSERT', CONCAT('{"name": "', NEW.name, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS role_history_after_update;
+CREATE TRIGGER role_history_after_update
+    AFTER UPDATE ON role
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('role', OLD.id, 'UPDATE', CONCAT('{"name": "', OLD.name, '"}'),
+            CONCAT('{"name": "', NEW.name, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS role_history_after_delete;
+CREATE TRIGGER role_history_after_delete
+    AFTER DELETE ON role
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('role', OLD.id, 'DELETE', CONCAT('{"name": "', OLD.name, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS security_questions_history_after_insert;
+CREATE TRIGGER security_questions_history_after_insert
+    AFTER INSERT ON security_questions
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('security_questions', NEW.id, 'INSERT', CONCAT('{"question": "', NEW.question, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS security_questions_history_after_update;
+CREATE TRIGGER security_questions_history_after_update
+    AFTER UPDATE ON security_questions
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('security_questions', OLD.id, 'UPDATE', CONCAT('{"question": "', OLD.question, '"}'),
+            CONCAT('{"question": "', NEW.question, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS security_questions_history_after_delete;
+CREATE TRIGGER security_questions_history_after_delete
+    AFTER DELETE ON security_questions
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('security_questions', OLD.id, 'DELETE', CONCAT('{"question": "', OLD.question, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS security_questions_answer_history_after_insert;
+CREATE TRIGGER security_questions_answer_history_after_insert
+    AFTER INSERT ON security_questions_answer
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('security_questions_answer', NEW.id, 'INSERT', CONCAT('{"question_id": ', NEW.question_id, ', "user_id": ', NEW.user_id, ', "answer": "', NEW.answer, '", "created_date": "', NEW.created_date, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS security_questions_answer_history_after_update;
+CREATE TRIGGER security_questions_answer_history_after_update
+    AFTER UPDATE ON security_questions_answer
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('security_questions_answer', OLD.id, 'UPDATE',
+            CONCAT('{"question_id": ', OLD.question_id, ', "user_id": ', OLD.user_id, ', "answer": "', OLD.answer, '", "created_date": "', OLD.created_date, '"}'),
+            CONCAT('{"question_id": ', NEW.question_id, ', "user_id": ', NEW.user_id, ', "answer": "', NEW.answer, '", "created_date": "', NEW.created_date, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS security_questions_answer_history_after_delete;
+CREATE TRIGGER security_questions_answer_history_after_delete
+    AFTER DELETE ON security_questions_answer
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('security_questions_answer', OLD.id, 'DELETE',
+            CONCAT('{"question_id": ', OLD.question_id, ', "user_id": ', OLD.user_id, ', "answer": "', OLD.answer, '", "created_date": "', OLD.created_date, '"}'), @current_user);
+END//
+
+DELIMITER ;
+DELIMITER //
+
+DROP TRIGGER IF EXISTS  user_history_after_insert;
+CREATE TRIGGER user_history_after_insert
+    AFTER INSERT ON user
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, new_data, performed_by)
+    VALUES ('user', NEW.id, 'INSERT', CONCAT('{"full_name": "', NEW.full_name, '", "email": "', NEW.email, '", "role_id": ', NEW.role_id, ', "status": ', NEW.status, ', "address": "', NEW.address, '", "phone": "', NEW.phone, '", "country": "', NEW.country, '", "city": "', NEW.city, '", "postal_code": "', NEW.postal_code, '", "is_deleted": ', NEW.is_deleted, ', "created_date": "', NEW.created_date, '", "updated_date": "', NEW.updated_date, '", "otp": "', NEW.otp, '", "otp_created_date": "', NEW.otp_created_date, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS  user_history_after_update;
+CREATE TRIGGER user_history_after_update
+    AFTER UPDATE ON user
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, new_data, performed_by)
+    VALUES ('user', OLD.id, 'UPDATE',
+            CONCAT('{"full_name": "', OLD.full_name, '", "email": "', OLD.email, '", "role_id": ', OLD.role_id, ', "status": ', OLD.status, ', "address": "', OLD.address, '", "phone": "', OLD.phone, '", "country": "', OLD.country, '", "city": "', OLD.city, '", "postal_code": "', OLD.postal_code, '", "is_deleted": ', OLD.is_deleted, ', "created_date": "', OLD.created_date, '", "updated_date": "', OLD.updated_date, '", "otp": "', OLD.otp, '", "otp_created_date": "', OLD.otp_created_date, '"}'),
+            CONCAT('{"full_name": "', NEW.full_name, '", "email": "', NEW.email, '", "role_id": ', NEW.role_id, ', "status": ', NEW.status, ', "address": "', NEW.address, '", "phone": "', NEW.phone, '", "country": "', NEW.country, '", "city": "', NEW.city, '", "postal_code": "', NEW.postal_code, '", "is_deleted": ', NEW.is_deleted, ', "created_date": "', NEW.created_date, '", "updated_date": "', NEW.updated_date, '", "otp": "', NEW.otp, '", "otp_created_date": "', NEW.otp_created_date, '"}'), @current_user);
+END//
+
+DROP TRIGGER IF EXISTS  user_history_after_delete;
+CREATE TRIGGER user_history_after_delete
+    AFTER DELETE ON user
+    FOR EACH ROW
+BEGIN
+    INSERT INTO history (table_name, record_id, action, old_data, performed_by)
+    VALUES ('user', OLD.id, 'DELETE',
+            CONCAT('{"full_name": "', OLD.full_name, '", "email": "', OLD.email, '", "role_id": ', OLD.role_id, ', "status": ', OLD.status, ', "address": "', OLD.address, '", "phone": "', OLD.phone, '", "country": "', OLD.country, '", "city": "', OLD.city, '", "postal_code": "', OLD.postal_code, '", "is_deleted": ', OLD.is_deleted, ', "created_date": "', OLD.created_date, '", "updated_date": "', OLD.updated_date, '", "otp": "', OLD.otp, '", "otp_created_date": "', OLD.otp_created_date, '"}'), @current_user);
+END//
+
+DELIMITER ;
+
+/**
+  Date : 2025-02-08
+    Name : Vishal Makwana
+  purpose : History table performed_by column default value changed to system
+*/
+
+
+ALTER TABLE `equip_point`.`history`
+    CHANGE COLUMN `table_name` `table_name` VARCHAR(100) NOT NULL ,
+    CHANGE COLUMN `performed_by` `performed_by` VARCHAR(100) NOT NULL DEFAULT 'system' ;
+
+
+
+ALTER TABLE `equip_point`.`categories`
+    CHANGE COLUMN `id` `id` BIGINT NOT NULL AUTO_INCREMENT ;
+
+
+CREATE TABLE `equipments` (
+                              `id` int NOT NULL AUTO_INCREMENT,
+                              `model` varchar(255) NOT NULL,
+                              `manufacturing_year` int NOT NULL,
+                              `operating_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+                              `engine_power` decimal(10,2) NOT NULL DEFAULT '0.00',
+                              `fuel_type` varchar(50) NOT NULL DEFAULT '0.00',
+                              `rental_rate` decimal(10,2) DEFAULT '0.00',
+                              `availability_status` enum('Available','Booked','Under Maintenance') NOT NULL,
+                              `location` varchar(255) NOT NULL,
+                              `rental_period` bigint DEFAULT '0',
+                              `booked_status` enum('Booked','Available') DEFAULT 'Available',
+                              `last_serviced_date` date DEFAULT NULL,
+                              `notes` text,
+                              `equipment_categories_id` bigint DEFAULT NULL,
+                              `user_id` bigint DEFAULT NULL,
+                              `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                              `updated_date` timestamp NULL DEFAULT NULL,
+                              `is_active` bit(1) DEFAULT b'0',
+                              PRIMARY KEY (`id`),
+                              KEY `user_id_idx` (`user_id`),
+                              KEY `categories_id_idx` (`equipment_categories_id`),
+                              CONSTRAINT `categories_id` FOREIGN KEY (`equipment_categories_id`) REFERENCES `categories` (`id`),
+                              CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

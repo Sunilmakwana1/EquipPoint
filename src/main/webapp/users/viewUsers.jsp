@@ -91,7 +91,7 @@
 <%@include file="/users/footer.jsp" %>
 <script>
     // Hide the alert after 5 seconds (5000 milliseconds)
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById('deleteAlert').classList.add('hidden');
     }, 5000);
 </script>

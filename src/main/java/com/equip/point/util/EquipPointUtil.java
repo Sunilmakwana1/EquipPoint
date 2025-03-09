@@ -1,9 +1,12 @@
 package com.equip.point.util;
 
+import com.equip.point.model.User;
 import jakarta.servlet.http.Part;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import static com.equip.point.util.AppConstant.FILE_PATH;
 
@@ -61,8 +64,20 @@ public class EquipPointUtil {
         return s != null && !s.trim().isEmpty();
     }
 
-    public static void getCurrentLoginUser(String email) {
+    public static void getCurrentLoginUser(User user) {
         CurrentLoginUser currentLoginUser = new CurrentLoginUser();
-        currentLoginUser.setEmail(email);
+        currentLoginUser.setEmail(user.getEmail());
+        currentLoginUser.setUserId(user.getId());
+        currentLoginUser.setRole(user.getRole());
+    }
+
+
+
+    public static void  setCurrentUserInSession(Connection conn) throws Exception {
+        String setCurrentUserQuery = "SET @current_user = ?";
+        try (PreparedStatement setStmt = conn.prepareStatement(setCurrentUserQuery)) {
+            setStmt.setString(1, CurrentLoginUser.getCurrentLoginUser());  // Set the current user (username or userId)
+            setStmt.executeUpdate();  // Set the session variable
+        }
     }
 }
