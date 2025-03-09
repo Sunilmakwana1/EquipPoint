@@ -71,7 +71,7 @@ public class EquipmentService {
                     if (rs.next()) {
                         int count = rs.getInt(1);  // Get the count from the result set
                         if (count == 0) {
-                            isEquipmentExist = false;
+                            isEquipmentExist = true;
                         }
                     }
                 }
