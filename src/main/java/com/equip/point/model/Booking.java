@@ -20,6 +20,7 @@ public class Booking {
     private String comments;
     private BigDecimal rentalRate = BigDecimal.ZERO;
     private String modelName;
+    private String approvedStatus = "Pending";
     
 
     public Booking() {
@@ -147,6 +148,17 @@ public class Booking {
         this.startDate = bookingDate;
         this.endDate = String.valueOf(java.sql.Date.valueOf(LocalDate.parse(bookingDate).plusDays(duration)));
         this.userId = userId;
+    }
+
+    public String getApprovedStatus() {
+        if (Boolean.TRUE.equals(approved)) {
+            return "Approved";
+        }
+        return approvedStatus;
+    }
+
+    public void setApprovedStatus(String approvedStatus) {
+        this.approvedStatus = approvedStatus;
     }
 
     // A method to convert the object to a string representation (useful for debugging or logging)

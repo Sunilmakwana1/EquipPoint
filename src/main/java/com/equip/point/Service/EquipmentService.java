@@ -112,6 +112,7 @@ public class EquipmentService {
                     equipment.setNotes(rs.getString("notes"));
                     equipment.setEquipmentCategoriesId(rs.getLong("equipment_categories_id"));
                     equipment.setUserId(rs.getLong("user_id"));
+                    equipment.setEquipmentsCategories(rs.getString("equipments_category"));
                 }
             }
         } catch (Exception e) {
@@ -129,7 +130,7 @@ public class EquipmentService {
     public Boolean updateEquipment(Equipments equipment) {
         boolean isEquipmentUpdated = false;
         try {
-            String query = "UPDATE equipments SET model = ?, manufacturing_year = ?, operating_weight = ?, engine_power = ?, fuel_type = ?, rental_rate = ?, availability_status = ?, location = ?, rental_period = ?, booked_status = ?, last_serviced_date = ?, notes = ? WHERE id = ?";
+            String query = "UPDATE equipments SET model = ?, manufacturing_year = ?, operating_weight = ?, engine_power = ?, fuel_type = ?, rental_rate = ?, availability_status = ?,description = ?,equipments_category = ? WHERE id = ?";
             int i;
             try (java.sql.PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, equipment.getModel());
@@ -139,12 +140,9 @@ public class EquipmentService {
                 pstmt.setString(5, equipment.getFuelType());
                 pstmt.setDouble(6, equipment.getRentalRate());
                 pstmt.setString(7, equipment.getAvailabilityStatus());
-                pstmt.setString(8, equipment.getLocation());
-                pstmt.setLong(9, equipment.getRentalPeriod());
-                pstmt.setString(10, equipment.getBookedStatus());
-                pstmt.setString(11, equipment.getLastServicedDate());
-                pstmt.setString(12, equipment.getNotes());
-                pstmt.setLong(13, equipment.getId());
+                pstmt.setString(8, equipment.getDescription());
+                pstmt.setString(9, equipment.getEquipmentsCategories());
+                pstmt.setLong(10, equipment.getId());
                 i = pstmt.executeUpdate();
             }
             if (i == 1) {
@@ -243,6 +241,7 @@ public class EquipmentService {
                     equipment.setLastServicedDate(rs.getString("last_serviced_date"));
                     equipment.setNotes(rs.getString("notes"));
                     equipment.setEquipmentCategoriesId(rs.getLong("equipment_categories_id"));
+                    equipment.setDescription(rs.getString("description"));
                     equipmentList.add(equipment);
                 }
             }
@@ -267,5 +266,36 @@ public class EquipmentService {
             System.out.println("Error in EquipmentService getEquipmentIdByName: " + e.getMessage());
         }
         return id;
+    }
+
+    public List<Equipments> getEquipmentByCategoryId(long categoryId) {
+        List<Equipments> equipmentList = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM equipments WHERE equipment_categories_id = ? AND is_deleted = false";
+            try (java.sql.PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, categoryId);
+                java.sql.ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    Equipments equipment = new Equipments();
+                    equipment.setId(rs.getLong("id"));
+                    equipment.setModel(rs.getString("model"));
+                    equipment.setManufacturingYear(rs.getInt("manufacturing_year"));
+                    equipment.setOperatingWeight(rs.getDouble("operating_weight"));
+                    equipment.setEnginePower(rs.getDouble("engine_power"));
+                    equipment.setFuelType(rs.getString("fuel_type"));
+                    equipment.setRentalRate(rs.getDouble("rental_rate"));
+                    equipment.setAvailabilityStatus(rs.getString("availability_status"));
+                    equipment.setLocation(rs.getString("location"));
+                    equipment.setRentalPeriod(rs.getLong("rental_period"));
+                    equipment.setBookedStatus(rs.getString("booked_status"));
+                    equipment.setLastServicedDate(rs.getString("last_serviced_date"));
+                    equipment.setNotes(rs.getString("notes"));
+                    equipmentList.add(equipment);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EquipmentService getEquipmentByCategoryId: " + e.getMessage());
+        }
+        return equipmentList;
     }
 }

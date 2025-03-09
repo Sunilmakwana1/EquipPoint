@@ -80,7 +80,7 @@
                         <a href="${pageContext.request.contextPath}/dashboard/dasboard.jsp"
                            class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                            aria-current="page">Dashboard</a>
-                        <a href="${pageContext.request.contextPath}/catagory/equpmentView.html"
+                        <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Equipment</a>
                         <a href="#"
                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Maintenance</a>

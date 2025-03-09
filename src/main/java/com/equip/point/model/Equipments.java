@@ -11,7 +11,7 @@ public class Equipments {
     private double enginePower;
     private String fuelType;
     private double rentalRate;
-    private String availabilityStatus;
+    private String availabilityStatus = "Available";
     private String location;
     private long rentalPeriod;
     private String bookedStatus;
@@ -24,6 +24,7 @@ public class Equipments {
     private String image;
     private String description;
     private Long vendorId;
+    private String equipmentsCategories;
 
     public Equipments() {
         super();
@@ -221,6 +222,14 @@ public class Equipments {
 
     public void setVendorId(Long vendorId) {
         this.vendorId = vendorId;
+    }
+
+    public String getEquipmentsCategories() {
+        return equipmentsCategories;
+    }
+
+    public void setEquipmentsCategories(String equipmentsCategories) {
+        this.equipmentsCategories = equipmentsCategories;
     }
 
     @Override

@@ -37,11 +37,17 @@ public class BookingController extends HttpServlet {
             Long equipmentId = equipmentService.getEquipmentIdByName(equipmentName);
             Long userId = CurrentLoginUser.getCurrentLoginUserId();
             Booking booking = new Booking(equipmentId,  duration, startDate, rentalRate, purpose, totalCost,userId);
-            bookingService.bookEquipment(booking);
-            Long bookingIdByUserId = bookingService.getBookingIdByUserId(userId);
-            conn.commit();
-            req.setAttribute("bookingSuccess", "#"+bookingIdByUserId);
-            req.getRequestDispatcher("/booking/bookingSuccess.jsp").forward(req, resp);
+            Boolean booked = bookingService.bookEquipment(booking);
+            if (Boolean.FALSE.equals(booked)) {
+                conn.rollback();
+                req.setAttribute("bookingError", "Unable to book equipment. Please try again.");
+                req.getRequestDispatcher("404.jsp").forward(req, resp);
+            }else {
+                Long bookingIdByUserId = bookingService.getBookingIdByUserId(userId);
+                conn.commit();
+                req.setAttribute("bookingSuccess", "#" + bookingIdByUserId);
+                req.getRequestDispatcher("/booking/bookingSuccess.jsp").forward(req, resp);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             if (conn != null) {

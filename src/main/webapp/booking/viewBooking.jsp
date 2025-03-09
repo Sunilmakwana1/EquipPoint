@@ -85,12 +85,19 @@
                 for (Booking booking : allBookings) {
                     if (count >= pageSize) break;
                     String statusClass = "";
+                    String statusClassApproval = "";
                     if ("Pending".equalsIgnoreCase(booking.getStatus())) {
                         statusClass = "bg-yellow-200 text-yellow-800";
                     } else if ("Booked".equalsIgnoreCase(booking.getStatus())) {
                         statusClass = "bg-green-200 text-green-800";
                     } else if ("Cancelled".equalsIgnoreCase(booking.getStatus())) {
                         statusClass = "bg-red-200 text-red-800";
+                    }
+
+                    if ("Pending".equalsIgnoreCase(booking.getApprovedStatus())) {
+                        statusClassApproval = "bg-yellow-200 text-yellow-800";
+                    } else if ("Approved".equalsIgnoreCase(booking.getApprovedStatus())) {
+                        statusClassApproval = "bg-green-200 text-green-800";
                     }
             %>
             <tr class="hover:bg-gray-50">
@@ -106,27 +113,35 @@
                     </span>
                 </td>
                 <td class="py-3 px-6 text-sm">
-                    <span class="inline-block <%= statusClass %> text-xs font-semibold py-1 px-2 rounded-full">
-                        Approval
+                    <span class="inline-block <%= statusClassApproval %> text-xs font-semibold py-1 px-2 rounded-full">
+                        <%= booking.getApprovedStatus() %>
                     </span>
                 </td>
                 <% if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
                 <td class="py-3 px-6 text-sm">
 
-                        <a href="approveBooking.jsp?id=<%= booking.getBookingId() %>" class="text-green-500 hover:text-green-700">
-                            <i class="fas fa-check-circle"></i> Approve
-                        </a>
-                        <a href="cancelBooking.jsp?id=<%= booking.getBookingId() %>" class="text-red-500 hover:text-red-700">
-                            <i class="fas fa-times-circle"></i> Cancel
-                        </a>
-                        <a href="rejectBooking.jsp?id=<%= booking.getBookingId() %>" class="text-red-500 hover:text-red-700">
-                            <i class="fas fa-ban"></i> Reject
-                        </a>
+                    <% if ("Approved".equalsIgnoreCase(booking.getApprovedStatus())) { %>
+                    <!-- If the status is approved, display the link as disabled -->
+                    <a href="#" class="text-gray-500 cursor-not-allowed">
+                        <i class="fas fa-check-circle"></i> Approved
+                    </a>
+                    <% } else { %>
+                    <!-- If the status is not approved, show the clickable link -->
+                    <a href="/api/booking-status?id=<%= booking.getBookingId() %>" class="text-green-500 hover:text-green-700">
+                        <i class="fas fa-check-circle"></i> Approve
+                    </a>
+                    <% } %>
+<%--                        <a href="/api/booking-status?id=<%= booking.getBookingId() %>&status=Cancelled" class="text-red-500 hover:text-red-700">--%>
+<%--                            <i class="fas fa-times-circle"></i> Cancel--%>
+<%--                        </a>--%>
+<%--                        <a href="/api/booking-status?id=<%= booking.getBookingId() %>&status=Approved" class="text-red-500 hover:text-red-700">--%>
+<%--                            <i class="fas fa-ban"></i> Reject
+<%--                        </a>--%>
 
                 </td>
                 <% } %>
                 <td class="py-3 px-6 text-sm">
-                    <a href="viewBookingDetails.jsp?id=<%= booking.getBookingId() %>" class="text-gray-500 hover:text-blue-500 focus:outline-none">
+                    <a href="/booking/viewBookingDetails.jsp?id=<%= booking.getBookingId() %>" class="text-gray-500 hover:text-blue-500 focus:outline-none">
                         <i class="fas fa-eye text-xl"></i>
                     </a>
                 </td>

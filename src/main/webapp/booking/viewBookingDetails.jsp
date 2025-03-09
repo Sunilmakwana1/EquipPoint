@@ -1,41 +1,102 @@
+<%@ page import="com.equip.point.model.Booking" %>
+<%@ page import="com.equip.point.Service.BookingService" %>
+<%@ page import="com.equip.point.util.DbConnection" %>
+<%@ page import="com.equip.point.Service.UserService" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="../src/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"></script>
+    <style>
+        /* Keyframe animation for gradient background */
+        @keyframes gradientBackground {
+            0% {
+                background: linear-gradient(to right, #6EE7B7, #3B82F6);
+            }
+            50% {
+                background: linear-gradient(to right, #9333EA, #F472B6);
+            }
+            100% {
+                background: linear-gradient(to right, #3B82F6, #9333EA);
+            }
+        }
+
+        /* Apply the gradient animation to the body */
+        body {
+            animation: gradientBackground 10s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        /* Add a fade-in effect for the container */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add fade-in animation to the main container */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
-    <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
-        <h2 class="text-3xl font-extrabold text-gray-800 mb-6 text-center">Booking Details</h2>
-        <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Booking ID:</label>
-            <p class="text-gray-800 text-lg">12345</p>
+<%
+    // Assuming you have a BookingService to fetch booking details
+    BookingService bookingService = new BookingService(DbConnection.getConnection());
+    Long bookingId = Long.valueOf(request.getParameter("id"));
+    Booking booking = bookingService.getBookingById(bookingId);
+    UserService userService = new UserService(DbConnection.getConnection());
+    userService.getUserById(booking.getUserId());
+%>
+<body class="min-h-screen flex items-center justify-center font-sans">
+<div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full space-y-6 animate-fade-in">
+    <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center">Booking Details</h2>
+
+    <div class="space-y-4">
+        <div class="animate__animated animate__fadeInUp">
+            <label class="block text-gray-700 text-sm font-medium">Booking ID:</label>
+            <p class="text-gray-800 text-lg mt-1">#<%= booking.getBookingId() %></p>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Customer Name:</label>
-            <p class="text-gray-800 text-lg">John Doe</p>
+
+        <div class="animate__animated animate__fadeInUp animate__delay-1s">
+            <label class="block text-gray-700 text-sm font-medium">Customer Name:</label>
+            <p class="text-gray-800 text-lg mt-1"><%= userService.getUserById(booking.getUserId()).getFullName() %></p>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Equipment:</label>
-            <p class="text-gray-800 text-lg">Excavator</p>
+
+        <div class="animate__animated animate__fadeInUp animate__delay-2s">
+            <label class="block text-gray-700 text-sm font-medium">Equipment:</label>
+            <p class="text-gray-800 text-lg mt-1"><%= booking.getModelName() %></p>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Booking Date:</label>
-            <p class="text-gray-800 text-lg">2023-10-01</p>
+
+        <div class="animate__animated animate__fadeInUp animate__delay-3s">
+            <label class="block text-gray-700 text-sm font-medium">Booking Date:</label>
+            <p class="text-gray-800 text-lg mt-1"><%= booking.getStartDate() %></p>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Return Date:</label>
-            <p class="text-gray-800 text-lg">2023-10-10</p>
+
+        <div class="animate__animated animate__fadeInUp animate__delay-4s">
+            <label class="block text-gray-700 text-sm font-medium">Return Date:</label>
+            <p class="text-gray-800 text-lg mt-1"><%= booking.getEndDate() %></p>
         </div>
-        <div class="mb-6">
-            <label class="block text-gray-600 text-sm font-semibold mb-1">Status:</label>
-            <p class="text-gray-800 text-lg">Confirmed</p>
+
+        <div class="animate__animated animate__fadeInUp animate__delay-5s">
+            <label class="block text-gray-700 text-sm font-medium">Status:</label>
+            <p class="text-gray-800 text-lg mt-1"><%= booking.getStatus() %></p>
         </div>
-        <button class="w-full bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 rounded-lg transition duration-300">
-            Edit Booking
-        </button>
     </div>
+
+    <div class="mt-6">
+        <a href="/booking/viewBooking.jsp" class="w-full inline-block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transform hover:scale-105">
+            Back to Booking List
+        </a>
+    </div>
+</div>
 </body>
 </html>

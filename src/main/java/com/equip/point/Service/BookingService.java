@@ -25,7 +25,7 @@ public class BookingService {
                 pstmt.setLong(1, booking.getEquipmentId());
                 pstmt.setBigDecimal(2, booking.getTotalCost());
                 pstmt.setLong(3, booking.getDuration());
-                pstmt.setString(4, booking.getStatus());
+                pstmt.setString(4, "Booked");
                 pstmt.setString(5, booking.getPurposeOfBooking());
                 pstmt.setBoolean(6, booking.isApproved());
                 pstmt.setString(7, booking.getStartDate());
@@ -364,5 +364,53 @@ public class BookingService {
     }
 
 
+    public Boolean updateBookingStatus(Long bookingId) {
+        boolean isBookingStatusUpdated = false;
+        try {
+            String query = "UPDATE booking SET approved = true WHERE booking_id = ?";
+            int i;
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, bookingId);
+                i = pstmt.executeUpdate();
+                System.out.println("Booking status updated successfully");
+            }
+            if (i == 1) {
+                isBookingStatusUpdated = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService updateBookingStatus: " + e.getMessage());
+        }
+        return isBookingStatusUpdated;
+    }
 
+    public Booking getBookingById(Long bookingId) {
+        Booking booking = null;
+        EquipmentService equipmentService = new EquipmentService(conn);
+        try {
+            String query = "SELECT * FROM booking WHERE booking_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, bookingId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    booking = new Booking();
+                    booking.setBookingId(rs.getLong("booking_id"));
+                    booking.setEquipmentId(rs.getLong("equipment_id"));
+                    booking.setTotalCost(rs.getBigDecimal("total_cost"));
+                    booking.setDuration(rs.getLong("duration"));
+                    booking.setStatus(rs.getString("status"));
+                    booking.setPurposeOfBooking(rs.getString("purpose_of_booking"));
+                    booking.setApproved(rs.getBoolean("approved"));
+                    booking.setBookingDate(rs.getString("booking_date"));
+                    booking.setStartDate(rs.getString("start_date"));
+                    booking.setEndDate(rs.getString("end_date"));
+                    booking.setUserId(rs.getLong("user_id"));
+                    booking.setComments(rs.getString("comments"));
+                    booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getBookingById: " + e.getMessage());
+        }
+        return booking;
+    }
 }
