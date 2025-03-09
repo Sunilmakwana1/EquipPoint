@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EquipPoint - Heavy Equipment Rental</title>
     <link rel="stylesheet" href="src/style.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        section {
+            padding-top: 4rem; /* Adjust padding as needed */
+            padding-bottom: 4rem; /* Adjust padding as needed */
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="bg-gray-50">
@@ -38,7 +49,7 @@
                         Heavy Equipment Rental Made Simple
                     </h1>
                     <p class="text-lg text-gray-600 mb-8">
-                        Streamlined equipment rental process for construction and industrial needs. 
+                        Streamlined equipment rental process for construction and industrial needs.
                         Access top-quality heavy machinery when you need it.
                     </p>
                     <button class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition">
@@ -68,6 +79,104 @@
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
                     <h3 class="text-xl font-semibold mb-4">24/7 Support</h3>
                     <p class="text-gray-600">Round-the-clock customer service and technical support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipment Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Popular Equipment</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition">
+                    <img src="images/excavator.jpg" alt="Excavator" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4">Excavator</h3>
+                        <p class="text-gray-600">Heavy-duty construction equipment for digging and earthmoving.</p>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition mt-4">
+                            Rent Now
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition">
+                    <img src="images/bulldozer.jpg" alt="Bulldozer" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4">Bulldozer</h3>
+                        <p class="text-gray-600">Powerful heavy equipment for pushing and moving materials.</p>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition mt-4">
+                            Rent Now
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition">
+                    <img src="images/crane.jpg" alt="Crane" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4">Crane</h3>
+                        <p class="text-gray-600">Versatile heavy machinery for lifting and moving heavy loads.</p>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition mt-4">
+                            Rent Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <p class="text-gray-600">"EquipPoint has been a reliable partner for our construction projects. The equipment is always in top condition and the service is excellent."</p>
+                    <div class="flex items-center mt-4">
+                        <img src="images/avatar1.jpg" alt="Customer 1" class="h-10 w-10 object-cover rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-semibold">John Doe</h4>
+                            <p class="text-gray-500">Construction Manager</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <p class="text-gray-600">"The booking process is quick and easy. EquipPoint has a great selection of equipment and the prices are very competitive."</p>
+                    <div class="flex items-center mt-4">
+                        <img src="images/avatar2.jpg" alt="Customer 2" class="h-10 w-10 object-cover rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-semibold">Jane Smith</h4>
+                            <p class="text-gray-500">Project Manager</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <p class="text-gray-600">"EquipPoint's customer service is top-notch. They are always available to assist us with any issues or concerns."</p>
+                    <div class="flex items-center mt-4">
+                        <img src="images/avatar3.jpg" alt="Customer 3" class="h-10 w-10 object-cover rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-semibold">David Wilson</h4>
+                            <p class="text-gray-500">Site Supervisor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Count Vender and Customer and equipment -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <h3 class="text-2xl font-semibold mb-4">100+</h3>
+                    <p class="text-gray-600">Trusted Vendors</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <h3 class="text-2xl font-semibold mb-4">500+</h3>
+                    <p class="text-gray-600">Satisfied Customers</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <h3 class="text-2xl font-semibold mb-4">1000+</h3>
+                    <p class="text-gray-600">Equipment Available</p>
                 </div>
             </div>
         </div>
@@ -112,4 +221,4 @@
         </div>
     </footer>
 </body>
-</html></div>
+</html>

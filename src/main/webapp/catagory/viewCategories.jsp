@@ -15,49 +15,56 @@
     <link href="../src/style.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-<%@include file="/users/navbar.jsp" %>
-<div class="container mx-auto p-4">
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-3xl font-bold">Equipment Categories</h1>
+<%@ include file="/users/navbar.jsp" %>
+<div class="container mx-auto p-6">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-extrabold text-gray-800">Equipment Categories</h1>
         <%
             UserService userService = new UserService(DbConnection.getConnection());
             String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
             if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
         %>
-
-        <a href="${pageContext.request.contextPath}/catagory/addEquipmentCategories.jsp" id="addSpecialistButton"
-           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <a href="${pageContext.request.contextPath}/catagory/addEquipmentCategories.jsp"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300">
             Add Equipment
         </a>
         <% } %>
     </div>
-    <div id="deleteAlert" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
+
+    <!-- Success Alert for Category Deletion -->
+    <div id="deleteAlert" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md mb-4 mx-auto w-full max-w-lg text-center animate-bounce"
          role="alert">
         <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %></strong>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Categories Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <%
             EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(DbConnection.getConnection());
             List<Categories> categories = equipmentCategoriesService.getEquipmentCategories();
             for (Categories category : categories) {
         %>
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <img class="w-full h-48 object-cover" src='/images/<%=category.getImage()%>' alt="Category Image" onerror="this.src='/images/EquipPoint.png';">
-            <div class="p-4">
-                <h2 class="text-xl font-bold mb-2"><%=category.getName()%>
-                </h2>
-                <p class="text-gray-700 mb-4 line-clamp-3"><%=category.getDescription()%>
-                </p>
-                <%
-                    if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
-                %>
-                <div class="flex justify-between items-center">
-                    <a href="/api/equipment-categories-edit?id=<%=category.getId()%>"
-                       class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden group transition-all duration-300 transform hover:scale-105">
+            <!-- Category Image -->
+            <img class="w-full h-64 object-cover group-hover:opacity-75 transition-all duration-300" src='/images/<%=category.getImage()%>' alt="Category Image" onerror="this.src='/images/EquipPoint.png';">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3"><%=category.getName()%></h2>
+                <p class="text-gray-600 mb-4 line-clamp-3"><%=category.getDescription()%></p>
+
+                <!-- Buttons -->
+                <div class="flex justify-between items-center mt-4">
+                    <a href="/catagory/ConstructionEquipmentListByCategory.jsp?id=<%=category.getId()%>"
+                       class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-all duration-300">View</a>
+                    <%
+                        if (EquipPointUtil.isEqualToAdmin(roleNameByEmail)) {
+                    %>
+                    <a href="/catagory/editEquipment.jsp?id=<%=category.getId()%>"
+                       class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300">Edit</a>
                     <a href="/api/equipment-categories-deleted?id=<%=category.getId()%>"
-                       class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+                       class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-all duration-300">Delete</a>
+                    <% } %>
                 </div>
-                <% } %>
             </div>
         </div>
         <%
@@ -65,7 +72,8 @@
         %>
     </div>
 </div>
-<%@include file="/users/footer.jsp"%>
+<%@ include file="/users/footer.jsp" %>
+
 <script>
     // Hide the alert after 5 seconds (5000 milliseconds)
     setTimeout(function() {

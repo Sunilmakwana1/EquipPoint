@@ -1,10 +1,12 @@
 package com.equip.point.controller;
 
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.Service.RegisterService;
 import com.equip.point.Service.SecurityQuestionsService;
 import com.equip.point.Service.UserService;
 import com.equip.point.model.SecurityQuestions;
 import com.equip.point.model.User;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import com.equip.point.util.EquipPointUtil;
 import jakarta.servlet.ServletException;
@@ -25,6 +27,7 @@ public class RegisterUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = null;
+        EmailLogService emailLogService = null;
         try {
             conn = DbConnection.getConnection();
             conn.setAutoCommit(false); // Start a transaction
@@ -36,6 +39,7 @@ public class RegisterUser extends HttpServlet {
             String securityQuestion = req.getParameter("securityQuestion");
             String securityAnswer = req.getParameter("securityAnswer");
             UserService userService = new UserService(conn);
+            emailLogService = new EmailLogService(conn);
             if (EquipPointUtil.isTrueNotNull(userService.checkIsEmailAvailable(email)) && EquipPointUtil.isTrueNotNull(userService.checkIsPhoneNumberAvailable(phone))) {
                 User user = new User(fullName, email, password,  phone);
                 RegisterService registerService = new RegisterService(conn);
@@ -45,6 +49,7 @@ public class RegisterUser extends HttpServlet {
                 Boolean saveSecutityQuestionsAnswer = securityQuestionsService.saveSecutityQuestionsAnswer(securityAnswer, email, securityQuestions);
                 if (Boolean.TRUE.equals(registerUser) && Boolean.TRUE.equals(saveSecutityQuestionsAnswer)) {
                     conn.commit();
+                    emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), "User Registration", "User Registration Successfully", "sent", null);
                     req.setAttribute(REGISTER_SUCCESS, REGISTER_SUCCESS_MESSAGE);
                     req.getRequestDispatcher("/login/login.jsp").forward(req, resp);
                 } else {

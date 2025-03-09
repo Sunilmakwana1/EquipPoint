@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Log</title>
+    <link href="../src/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-bold mb-4">Email Log</h1>
+        <div class="bg-white shadow-md rounded my-6">
+            <table class="min-w-max w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Date</th>
+                        <th class="py-3 px-6 text-left">Recipient</th>
+                        <th class="py-3 px-6 text-left">Subject</th>
+                        <th class="py-3 px-6 text-center">Status</th>
+                        <th class="py-3 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">2023-10-01</td>
+                        <td class="py-3 px-6 text-left">john.doe@example.com</td>
+                        <td class="py-3 px-6 text-left">Welcome to our service</td>
+                        <td class="py-3 px-6 text-center">Sent</td>
+                        <td class="py-3 px-6 text-center">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Repeat rows as needed -->
+                </tbody>
+            </table>
+            <div class="flex justify-between items-center p-4">
+                <span class="text-sm text-gray-600">Showing 1 to 10 of 50 entries</span>
+                <div class="inline-flex">
+                    <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                        Prev
+                    </button>
+                    <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

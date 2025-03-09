@@ -124,4 +124,40 @@ public class EquipmentCategoriesService {
         }
         return isEquipmentCategoryDeleted;
     }
+
+    public List<String> getListOfEquipmentCategoriesByCategoriesType(String type) {
+        List<String> categoriesList = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM categories WHERE is_deleted = false AND type = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, type);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    categoriesList.add(name);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EquipmentCategoriesService getListOfEquipmentCategoriesByCategoriesType: " + e.getMessage());
+        }
+        return categoriesList;
+    }
+
+    public Long getEquipmentCategoryIdByName(String name) {
+        Long id = null;
+        try {
+            String query = "SELECT id FROM categories WHERE name = ? AND is_deleted = false AND type = 'EQUIPMENT'";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, name);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    id = rs.getLong(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EquipmentCategoriesService getEquipmentCategoryIdByName: " + e.getMessage());
+        }
+        return id;
+    }
+
 }

@@ -31,6 +31,7 @@ public class LoginService {
                     user.setFullName(rs.getString("full_name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
+                    user.setRole(rs.getString("role"));
                 }
             }
         } catch (Exception e) {
