@@ -46,11 +46,11 @@ public class UpdateEquipmentController  extends HttpServlet {
             if (Boolean.TRUE.equals(updateEquipment)) {
                 conn.commit();
                 req.setAttribute("updateSuccess", "Equipment updated successfully");
-                req.getRequestDispatcher("/catagory/viewEquipment.jsp").forward(req, resp);
+                req.getRequestDispatcher("/catagory/ConstructionEquipmentList.jsp").forward(req, resp);
             } else {
                 conn.rollback();
                 req.setAttribute("updateError", "Unable to update equipment");
-                req.getRequestDispatcher("/catagory/viewEquipment.jsp").forward(req, resp);
+                req.getRequestDispatcher("/catagory/ConstructionEquipmentList.jsp").forward(req, resp);
             }
         } catch (Exception e) {
             e.printStackTrace();
