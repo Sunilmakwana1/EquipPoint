@@ -19,6 +19,7 @@ public class Booking {
     private Long userId;
     private String comments;
     private BigDecimal rentalRate = BigDecimal.ZERO;
+    private String modelName;
     
 
     public Booking() {
@@ -128,7 +129,15 @@ public class Booking {
         this.rentalRate = rentalRate;
     }
 
-    public Booking(Long equipmentId, Long duration, String bookingDate, BigDecimal rentalRate, String purposeOfBooking, BigDecimal totalCost,Long userId) {
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public Booking(Long equipmentId, Long duration, String bookingDate, BigDecimal rentalRate, String purposeOfBooking, BigDecimal totalCost, Long userId) {
         this.equipmentId = equipmentId;
         this.duration = duration;
         this.bookingDate = bookingDate;

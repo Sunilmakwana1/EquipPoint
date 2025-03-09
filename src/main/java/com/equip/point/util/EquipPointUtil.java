@@ -68,6 +68,7 @@ public class EquipPointUtil {
         CurrentLoginUser currentLoginUser = new CurrentLoginUser();
         currentLoginUser.setEmail(user.getEmail());
         currentLoginUser.setUserId(user.getId());
+        currentLoginUser.setRole(user.getRole());
     }
 
 

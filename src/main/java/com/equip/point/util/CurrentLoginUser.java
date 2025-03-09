@@ -5,7 +5,7 @@ public class CurrentLoginUser {
     private static Long userId;
     private String fullName;
     private static String email;
-    private String role;
+    private static String role;
     private Boolean status;
     private String address;
     private String phone;
@@ -108,5 +108,8 @@ public class CurrentLoginUser {
 
     public static Long getCurrentLoginUserId() {
         return userId;
+    }
+    public static String getCurrentLoginUserRole() {
+        return role;
     }
 }
