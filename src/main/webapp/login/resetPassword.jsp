@@ -21,8 +21,13 @@
              role="alert">
             <strong class="font-bold"><%= request.getAttribute("forgetPasswordError") %></strong>
         </div>
-        <form class="space-y-6" action="" method="post" id="resetPassword" onsubmit="return validateForm(event)">
+        <form class="space-y-6" action="${pageContext.request.contextPath}/api/reset-password-user" method="POST" id="resetPassword" onsubmit="return validateForm(event)">
             <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md
+                                  focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          value="<%= request.getParameter("email") %>" readonly>
                 <label for="password" class="block text-sm font-medium text-gray-700">New Password</label>
                 <input type="password" id="password" name="password"
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md

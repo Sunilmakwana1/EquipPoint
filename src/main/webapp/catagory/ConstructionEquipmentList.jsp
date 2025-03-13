@@ -30,6 +30,7 @@
                     <div class="space-x-2">
                         <a href="/catagory/editEquipment.jsp?id=<%=equipment.getId()%>" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">Edit</a>
                         <a href="/catagory/deleteEquipment.jsp?id=<%=equipment.getId()%>" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-200">Delete</a>
+                        <a href="/catagory/maintainance.jsp?id=<%=equipment.getId()%>" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors duration-200">Maintenance</a>
                     </div>
                     <% } %>
                     <div class="space-x-2">
