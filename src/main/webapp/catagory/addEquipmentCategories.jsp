@@ -52,7 +52,7 @@
                     </label>
                     <input class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                            id="equipmentImage"
-                           name="vendorImage"
+                           name="equipmentImage"
                            type="file">
                 </div>
 
