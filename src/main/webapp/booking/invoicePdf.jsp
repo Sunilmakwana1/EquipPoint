@@ -19,11 +19,13 @@
         BookingService bookingService = new BookingService(DbConnection.getConnection());
         Long bookingId = Long.valueOf(request.getParameter("id"));
         Booking booking = bookingService.getBookingById(bookingId);
+        BillPaymetService billPaymetService = new BillPaymetService(DbConnection.getConnection());
+        Long billPaymentId = billPaymetService.getBillPaymentId(booking.getEquipmentId());
         InvoiceService  invoiceService = new InvoiceService(DbConnection.getConnection());
-        Long inVoiceIdByBookingId = invoiceService.getInVoiceIdByBookingId(bookingId);
+        Long inVoiceIdByBookingId = invoiceService.getInVoiceIdByBookingId(billPaymentId);
         EquipmentService equipmentService = new EquipmentService(DbConnection.getConnection());
         Equipments equipment = equipmentService.getEquipmentById(booking.getEquipmentId());
-        Invoice invoice = invoiceService.getInvoiceByBookingId(bookingId);
+        Invoice invoice = invoiceService.getInvoiceByBookingId(billPaymentId);
     %>
     <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold mb-4">Invoice</h1>

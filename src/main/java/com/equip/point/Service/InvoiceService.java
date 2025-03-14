@@ -32,7 +32,7 @@ public class InvoiceService {
 
     public Invoice getInvoiceByBookingId(Long bookingId) {
         Invoice invoice = null;
-        String sql = "SELECT payment_id, bill_id, payment_date, payment_amount FROM payment WHERE bill_id = ?";
+        String sql = "SELECT * FROM payment WHERE bill_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, bookingId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -43,7 +43,7 @@ public class InvoiceService {
                 String paymentAmount = resultSet.getString("payment_amount");
                 invoice = new Invoice(paymentId, billId, paymentDate, paymentAmount);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Error in InvoiceService getInvoiceByBookingId: " + e.getMessage());
         }
         return invoice;
