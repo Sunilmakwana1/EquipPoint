@@ -44,7 +44,7 @@
                             <i class="fas fa-trash-alt"></i> <!-- Delete icon -->
                         </a>
                         <!-- Maintenance Button -->
-                        <a href="/catagory/maintainance.jsp?id=<%=equipment.getId()%>"
+                        <a href="/catagory/equpmentMaintenance.html?id=<%=equipment.getId()%>"
                            class="bg-orange-500 text-white p-4 rounded-full hover:bg-orange-600 transition-colors duration-200 flex items-center justify-center text-3xl">
                             <i class="fas fa-tools"></i> <!-- Maintenance icon -->
                         </a>

@@ -4,6 +4,7 @@ import com.equip.point.util.EquipPointUtil;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static com.equip.point.util.AppConstant.DD_MM_YYYY;
 
@@ -21,13 +22,13 @@ public class ContactUs {
 
     private Boolean approvedStatus = Boolean.FALSE;
 
-    private ZonedDateTime approvedDate = ZonedDateTime.now();
+    private Date approvedDate = new Date();
 
     private User approvedBy;
 
     private String replyMessage;
 
-    private ZonedDateTime replyDate = ZonedDateTime.now();
+    private Date replyDate = new Date();
 
     private User repliedBy;
 
@@ -45,7 +46,7 @@ public class ContactUs {
 
     }
 
-    public ContactUs(Long id, String fullName, String email, String subject, String message, Boolean approvedStatus, ZonedDateTime approvedDate, User approvedBy, String replyMessage, ZonedDateTime replyDate, User repliedBy, Boolean repliedStatus, Boolean progressStatus) {
+    public ContactUs(Long id, String fullName, String email, String subject, String message, Boolean approvedStatus, Date approvedDate, User approvedBy, String replyMessage, Date replyDate, User repliedBy, Boolean repliedStatus, Boolean progressStatus) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -109,14 +110,11 @@ public class ContactUs {
         this.approvedStatus = approvedStatus;
     }
 
-    public ZonedDateTime getApprovedDate() {
+    public Date getApprovedDate() {
         return approvedDate;
     }
 
-    public void setApprovedDate(ZonedDateTime approvedDate) {
-        if (EquipPointUtil.isNotNull(approvedDate)) {
-            approvedDate.format(DateTimeFormatter.ofPattern(DD_MM_YYYY));
-        }
+    public void setApprovedDate(Date approvedDate) {
         this.approvedDate = approvedDate;
     }
 
@@ -136,11 +134,11 @@ public class ContactUs {
         this.replyMessage = replyMessage;
     }
 
-    public ZonedDateTime getReplyDate() {
+    public Date getReplyDate() {
         return replyDate;
     }
 
-    public void setReplyDate(ZonedDateTime replyDate) {
+    public void setReplyDate(Date replyDate) {
         this.replyDate = replyDate;
     }
 

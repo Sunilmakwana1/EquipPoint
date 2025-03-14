@@ -25,7 +25,7 @@
     <%
         String id = request.getParameter("id");
         ContactUsService contactUsService = new ContactUsService(DbConnection.getConnection());
-        ContactUs contactUs = contactUsService.getContactUsById(Integer.parseInt(id));
+        ContactUs contactUs = contactUsService.getContactUsById(Long.valueOf(id));
         Long userId = 0L;
         User user = (User) session.getAttribute(LOGGED_IN_USER);
         if (user != null) {
@@ -36,8 +36,11 @@
         }
     %>
 
-    <form>
+    <form action="${pageContext.request.contextPath}/api/contact-us-reply" method="post">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Hidden Fields -->
+            <input type="hidden" name="id" value="<%=contactUs.getId()%>">
+
             <!-- Ticket Number -->
             <div>
                 <label class="block text-lg font-semibold text-gray-700">Ticket Number:</label>
@@ -92,7 +95,7 @@
             <!-- Reply Message -->
             <div class="col-span-1 sm:col-span-2">
                 <label class="block text-lg font-semibold text-gray-700">Reply Message:</label>
-                <textarea id="replyMessage" class="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="4" placeholder="Add a reply..."></textarea>
+                <textarea id="replyMessage" class="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="4" placeholder="Add a reply..." name="replyMessage" required></textarea>
             </div>
 
             <!-- Created Date -->

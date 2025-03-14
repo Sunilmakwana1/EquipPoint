@@ -98,10 +98,17 @@
                 <td class="py-4 px-4 text-sm"><%= contactUs.getReplyDate() != null ? contactUs.getReplyDate() : "N/A" %></td>
                 <td class="py-4 px-4 text-sm"><%= contactUs.getRepliedBy() != null && contactUs.getRepliedBy().getFullName() != null ? contactUs.getRepliedBy().getFullName() : "N/A" %></td>
                 <td class="py-4 px-4 text-sm">
+                    <% if (contactUs.getRepliedStatus() != null && contactUs.getRepliedStatus()) { %>
+                        <span class="inline-flex items-center rounded-md bg-green-100 text-green-700 px-2 py-1 text-xs font-medium">
+                            Replied
+                        </span>
+                    <% } else { %>
+
                     <a href="${pageContext.request.contextPath}/dashboard/detailViewOfSupprotTicket.jsp?id=<%= contactUs.getId() %>"
                        class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs font-medium" title="View Details">
                         Replied
                     </a>
+                    <% } %>
                 </td>
                 <td class="py-4 px-4 text-sm">
                     <% if (contactUs.getProgressStatus().equals(false)) { %>
