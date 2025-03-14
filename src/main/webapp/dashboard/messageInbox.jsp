@@ -104,7 +104,6 @@
                         </span>
                     <% } else {
                         if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
-                    %>
 
                     <a href="${pageContext.request.contextPath}/dashboard/detailViewOfSupprotTicket.jsp?id=<%= contactUs.getId() %>"
                        class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs font-medium" title="View Details">
@@ -117,7 +116,6 @@
                 <td class="py-4 px-4 text-sm">
                     <% if (contactUs.getProgressStatus().equals(false)) {
                          if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
-                    %>
                     <a href="${pageContext.request.contextPath}/api/contact-us-progress-status?id=<%= contactUs.getId() %>"
                        class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md text-xs font-medium" title="Mark as In Progress">
                         In Progress
