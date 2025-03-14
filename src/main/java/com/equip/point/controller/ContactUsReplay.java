@@ -22,12 +22,13 @@ public class ContactUsReplay extends HttpServlet{
         Long contactUsId = Long.parseLong(req.getParameter("id"));
         String replyMessage = req.getParameter("replyMessage");
         ContactUsService contactUsService = new ContactUsService(connection);
+
         try {
             Boolean replyContactUs = contactUsService.replyContactUs(contactUsId, replyMessage, CurrentLoginUser.getCurrentLoginUserId(), true);
             if (replyContactUs) {
                 // Send email to user
                 String subject = "Reply from Equip Point";
-                String email = CurrentLoginUser.getCurrentLoginUser();
+                String email = contactUsService.getContactUsById(contactUsId).getEmail();
                 EmailLogService emailLogService = new EmailLogService(connection);
                 emailLogService.saveEmailLog(email, subject, replyMessage , "Success", null);
                 req.getRequestDispatcher("/dashboard/dasboard.jsp" ).forward(req, resp);
