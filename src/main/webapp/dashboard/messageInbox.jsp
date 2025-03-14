@@ -102,21 +102,29 @@
                         <span class="inline-flex items-center rounded-md bg-green-100 text-green-700 px-2 py-1 text-xs font-medium">
                             Replied
                         </span>
-                    <% } else { %>
+                    <% } else {
+                        if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
+                    %>
 
                     <a href="${pageContext.request.contextPath}/dashboard/detailViewOfSupprotTicket.jsp?id=<%= contactUs.getId() %>"
                        class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs font-medium" title="View Details">
                         Replied
                     </a>
-                    <% } %>
+                    <%
+                            }
+                    } %>
                 </td>
                 <td class="py-4 px-4 text-sm">
-                    <% if (contactUs.getProgressStatus().equals(false)) { %>
+                    <% if (contactUs.getProgressStatus().equals(false)) {
+                         if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
+                    %>
                     <a href="${pageContext.request.contextPath}/api/contact-us-progress-status?id=<%= contactUs.getId() %>"
                        class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md text-xs font-medium" title="Mark as In Progress">
                         In Progress
                     </a>
-                    <% } else { %>
+                    <%
+                        }
+                    } else { %>
                     <span class="inline-flex items-center rounded-md bg-green-100 text-green-700 px-2 py-1 text-xs font-medium">
                                 Progress
                             </span>

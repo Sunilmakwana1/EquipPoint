@@ -22,7 +22,7 @@
         BillPaymetService billPaymetService = new BillPaymetService(DbConnection.getConnection());
         Long billPaymentId = billPaymetService.getBillPaymentId(booking.getEquipmentId());
         InvoiceService  invoiceService = new InvoiceService(DbConnection.getConnection());
-        Long inVoiceIdByBookingId = invoiceService.getInVoiceIdByBookingId(bookingId);
+        Long inVoiceIdByBookingId = invoiceService.getInVoiceIdByBookingId(billPaymentId);
         EquipmentService equipmentService = new EquipmentService(DbConnection.getConnection());
         Equipments equipment = equipmentService.getEquipmentById(booking.getEquipmentId());
         Invoice invoice = invoiceService.getInvoiceByBookingId(billPaymentId);
