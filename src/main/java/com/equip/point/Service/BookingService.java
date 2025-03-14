@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingService {
-    private Connection conn;
+        private Connection conn;
 
-    public BookingService(Connection conn) {
-        super();
-        this.conn = conn;
-    }
+        public BookingService(Connection conn) {
+            super();
+            this.conn = conn;
+        }
 
     public Boolean bookEquipment(Booking booking) {
         boolean isBookingSuccessful = false;
@@ -188,6 +188,7 @@ public class BookingService {
                     booking.setUserId(rs.getLong("user_id"));
                     booking.setComments(rs.getString("comments"));
                     booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                    booking.setBillingStatus(rs.getBoolean("is_bill_paid"));
                     bookings.add(booking);
                 }
             }
@@ -259,6 +260,8 @@ public class BookingService {
                     booking.setUserId(rs.getLong("user_id"));
                     booking.setComments(rs.getString("comments"));
                     booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                    booking.setBillingStatus(rs.getBoolean("is_bill_paid"));
+
                     bookings.add(booking);
                 }
             }
@@ -406,11 +409,49 @@ public class BookingService {
                     booking.setUserId(rs.getLong("user_id"));
                     booking.setComments(rs.getString("comments"));
                     booking.setModelName(equipmentService.getEquipmentById(booking.getEquipmentId()).getModel());
+                    booking.setBillingStatus(rs.getBoolean("is_bill_paid"));
                 }
             }
         } catch (Exception e) {
             System.out.println("Error in BookingService getBookingById: " + e.getMessage());
         }
         return booking;
+    }
+
+
+    public boolean updateBookingStatusByBookingId(Long bookingId) {
+        boolean isBookingStatusUpdated = false;
+        try {
+            String query = "UPDATE booking SET is_bill_paid = true WHERE booking_id = ?";
+            int i;
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, bookingId);
+                    i = pstmt.executeUpdate();
+                System.out.println("Booking status updated successfully");
+            }
+            if (i == 1) {
+                isBookingStatusUpdated = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService updateBookingStatusByequipmentId: " + e.getMessage());
+        }
+        return isBookingStatusUpdated;
+    }
+
+    public String getUserEmailByBookingId(Long bookingId) {
+        String email = null;
+        try {
+            String query = "SELECT u.email FROM booking b JOIN user u ON b.user_id = u.id WHERE b.booking_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, bookingId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    email = rs.getString("email");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getUserEmailByBookingId: " + e.getMessage());
+        }
+        return email;
     }
 }

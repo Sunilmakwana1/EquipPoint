@@ -34,13 +34,13 @@ public class AddEquipmentCategories extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Part filePart = req.getPart(VENDOR_IMAGE);
+        Part filePart = req.getPart("equipmentImage");
         String fileName = filePart.getSubmittedFileName();
         System.out.println(FILE_NAME + fileName);
-        String uploadPath = UPLOAD_PATH + fileName;
+        String uploadPath = UPLOAD_PATH_EQUPMENT + fileName;
         System.out.println(UPLOAD_PATH_MESSAGE + uploadPath);
 
-        EquipPointUtil.uploadFile(uploadPath, filePart);
+        EquipPointUtil.equpmentUploadFile(uploadPath, filePart);
 
         Connection conn = null;
         EmailLogService emailLogService = null;
@@ -58,9 +58,12 @@ public class AddEquipmentCategories extends HttpServlet {
                 if (Boolean.TRUE.equals(addVendor)) {
                     conn.commit();
                     req.setAttribute(EQUIPMENT_ADDED_SUCCESSFULLY, EQUIPMENT_ADDED_SUCCESSFULLY_MESSAGE);
-                    // Save the email log
-                    emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), EQUIPMENT_ADDED, EQUIPMENT_ADDED_SUCCESSFULLY_MESSAGE, SENT, null);
-                    req.getRequestDispatcher("/catagory/addEquipmentCategories.jsp").forward(req, resp);
+                    String subject = "Equipment Added Successfully";
+                    String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour equipment has been successfully added.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                    String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                    String status = "Success";
+                    emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
+                    req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
                 }

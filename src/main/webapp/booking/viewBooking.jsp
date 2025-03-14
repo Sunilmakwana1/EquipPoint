@@ -73,6 +73,7 @@
                 <th class="py-3 px-6 text-left text-sm font-semibold uppercase cursor-pointer">Total Cost</th>
                 <th class="py-3 px-6 text-left text-sm font-semibold uppercase cursor-pointer">Status</th>
                 <th class="py-3 px-6 text-left text-sm font-semibold uppercase cursor-pointer">Approval Status</th>
+                <th class="py-3 px-6 text-left text-sm font-semibold uppercase cursor-pointer">Bill Payment </th>
                 <% if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
                 <th class="py-3 px-6 text-left text-sm font-semibold uppercase cursor-pointer">Actions</th>
                 <% } %>
@@ -116,6 +117,23 @@
                     <span class="inline-block <%= statusClassApproval %> text-xs font-semibold py-1 px-2 rounded-full">
                         <%= booking.getApprovedStatus() %>
                     </span>
+                </td>
+                <td class="py-3 px-6 text-sm">
+                    <%
+                        boolean billingStatus = booking.isBillingStatus();
+                        if (!billingStatus){
+                    %>
+                    <a href="${pageContext.request.contextPath}/booking/billPayment.jsp?id=<%= booking.getBookingId() %>" class="text-gray-500 hover:text-blue-500 focus:outline-none">
+                        <i class="fas fa-file-invoice-dollar text-xl"></i>
+                    </a>
+                    <%
+                        }
+                    %>
+                    <% if ("Paid".equalsIgnoreCase(booking.getBillingStatus())) { %>
+                        <span class="text-green-500 font-semibold">Paid</span>
+                    <% } else { %>
+                        <span class="text-red-500 font-semibold">Unpaid</span>
+                    <% } %>
                 </td>
                 <% if (EquipPointUtil.isEqualToAdmin(userRole)) { %>
                 <td class="py-3 px-6 text-sm">

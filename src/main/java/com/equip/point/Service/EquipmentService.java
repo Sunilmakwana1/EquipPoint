@@ -71,7 +71,7 @@ public class EquipmentService {
                     if (rs.next()) {
                         int count = rs.getInt(1);  // Get the count from the result set
                         if (count == 0) {
-                            isEquipmentExist = false;
+                            isEquipmentExist = true;
                         }
                     }
                 }
@@ -113,6 +113,7 @@ public class EquipmentService {
                     equipment.setEquipmentCategoriesId(rs.getLong("equipment_categories_id"));
                     equipment.setUserId(rs.getLong("user_id"));
                     equipment.setEquipmentsCategories(rs.getString("equipments_category"));
+                    equipment.setDescription(rs.getString("description"));
                 }
             }
         } catch (Exception e) {
@@ -290,6 +291,7 @@ public class EquipmentService {
                     equipment.setBookedStatus(rs.getString("booked_status"));
                     equipment.setLastServicedDate(rs.getString("last_serviced_date"));
                     equipment.setNotes(rs.getString("notes"));
+                    equipment.setDescription(rs.getString("description"));
                     equipmentList.add(equipment);
                 }
             }

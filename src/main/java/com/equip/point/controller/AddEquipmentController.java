@@ -1,10 +1,12 @@
 package com.equip.point.controller;
 
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.Service.EquipmentCategoriesService;
 import com.equip.point.Service.EquipmentService;
 import com.equip.point.Service.VendorService;
 import com.equip.point.model.Categories;
 import com.equip.point.model.Equipments;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import com.equip.point.util.EquipPointUtil;
 import jakarta.servlet.ServletException;
@@ -28,13 +30,13 @@ public class AddEquipmentController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = null;
-        Part filePart = req.getPart(VENDOR_IMAGE);
+        Part filePart = req.getPart("equipmentImage");
         String fileName = filePart.getSubmittedFileName();
         System.out.println(FILE_NAME + fileName);
-        String uploadPath = UPLOAD_PATH + fileName;
+        String uploadPath = UPLOAD_PATH_EQUPMENT + fileName;
         System.out.println(UPLOAD_PATH_MESSAGE + uploadPath);
 
-        EquipPointUtil.uploadFile(uploadPath, filePart);
+        EquipPointUtil.equpmentUploadFile(uploadPath, filePart);
         try {
             conn = DbConnection.getConnection();
             conn.setAutoCommit(false);
@@ -43,7 +45,7 @@ public class AddEquipmentController extends HttpServlet {
             String categoryName = req.getParameter("CategoriesSelect");
             String vendorName = req.getParameter("vendorSelect");
             EquipmentService equipmentService = new EquipmentService(conn);
-            if (Boolean.TRUE.equals(equipmentService.checkEquipmentExist(modelName)) && !EquipPointUtil.isEmpty(modelName) && !EquipPointUtil.isEmpty(description)) {
+            if (Boolean.TRUE.equals(equipmentService.checkEquipmentExist(modelName))) {
                 EquipPointUtil.setCurrentUserInSession(conn);
                 EquipmentCategoriesService equipmentCategoriesService = new EquipmentCategoriesService(conn);
                 VendorService vendorService = new VendorService(conn);
@@ -53,8 +55,14 @@ public class AddEquipmentController extends HttpServlet {
                 Boolean addEquipment = equipmentService.addEquipment(equipments);
                 if (Boolean.TRUE.equals(addEquipment)) {
                     conn.commit();
+                    String subject = "Equipment Added Successfully";
+                    String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour equipment has been successfully added.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                    String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                    String status = "Success";
                     req.setAttribute(EQUIPMENT_ADDED_SUCCESSFULLY, EQUIPMENT_ADDED_SUCCESSFULLY_MESSAGE);
-                    req.getRequestDispatcher("/catagory/addEquipment.jsp").forward(req, resp);
+                    EmailLogService emailLogService = new EmailLogService(conn);
+                    emailLogService.saveEmailLog(recipientEmail, subject, body, status , null );
+                    req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
                     System.out.println("Unable to add equipment");

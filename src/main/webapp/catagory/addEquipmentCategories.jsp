@@ -47,12 +47,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="vendorImage">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="equipmentImage">
                         Image
                     </label>
                     <input class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           id="vendorImage"
-                           name="vendorImage"
+                           id="equipmentImage"
+                           name="equipmentImage"
                            type="file">
                 </div>
 

@@ -95,10 +95,13 @@ public class ContactUsController extends HttpServlet {
         EmailLogService emailLogService = new EmailLogService(conn);
         Long contactUsId = contactUsService.getContactUsIdByEmail(email);
         conn.commit();
+        String subject = "Contact Us Submitted Successfully";
+        String body = "Dear " + email + ",\n\nYour contact us message has been successfully submitted.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+        String status = "Success";
         // Save the email log
-        emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US, CONTACT_US_APPROVED_MESSAGE, SENT, null);
+        emailLogService.saveEmailLog(email, subject, body, status, null);
         req.setAttribute(CONTACT_US_SUCCESS, CONTACT_US_SUCCESS_MESSAGE + CONTACT_US_SUCCESS_MESSAGE_TICKET_ID+ contactUsId);
-        forwardRequest(req, resp, CONTACT_US_SUCCESS_PAGE);
+        forwardRequest(req, resp, "/dashboard/dasboard.jsp");
     }
 
     /**

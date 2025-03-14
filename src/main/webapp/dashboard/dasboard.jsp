@@ -1,108 +1,141 @@
 <%@ page import="com.equip.point.Service.UserService" %>
 <%@ page import="com.equip.point.util.DbConnection" %>
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
+<%@ page import="static com.equip.point.util.AppConstant.LOGIN_ERROR" %>
+<%@ page import="static com.equip.point.util.AppConstant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-gray-100">
 <%@include file="/users/navbar.jsp"%>
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
-            <%
-                UserService userService = new UserService(DbConnection.getConnection());
-                String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
-                if (EquipPointUtil.isEqualToAdmin(roleNameByEmail))
-                {
-            %>
-            <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
-                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="far fa-calendar-check  fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Total Booking</p>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/catagory/addEquipment.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-truck fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Add Equipments</p>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/catagory/addVendor.jsp" id="addSpecialistButton"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-wrench fa-3x text-yellow-500"></i>
-                <p class="mt-4 text-gray-700">Vendor</p>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/users/viewUsers.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fas fa-user-circle fa-3x text-blue-500"></i>
-                <p class="mt-4 text-gray-700">Users</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-truck fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Equipments</p>
-            </a>
-            <%
-                }
-            %>
-
-
-            <%
-                if (EquipPointUtil.isEqualToUser(roleNameByEmail))
-                {
-            %>
-            <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="far fa-calendar-check  fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">My Booking</p>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-truck fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Equipments</p>
-            </a>
-            <%
-                }
-            %>
-
-            <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
-                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-list fa-3x text-blue-500"></i>
-                <p class="mt-4 text-gray-700">Equipments Category</p>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/catagory/viewVendor.jsp"
-               class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fa-solid fa-list fa-3x text-blue-500"></i>
-                <p class="mt-4 text-gray-700">Vendor Category</p>
-            </a>
-
-            <a href="#"
-                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fas fa-cog fa-3x text-green-500"></i>
-                <p class="mt-4 text-gray-700">Settings</p>
-            </a>
-            <a href="#"
-                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fas fa-chart-line fa-3x text-red-500"></i>
-                <p class="mt-4 text-gray-700">Analytics</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/dashboard/messageInbox.jsp"
-                class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-100">
-                <i class="fas fa-envelope fa-3x text-yellow-500"></i>
-                <p class="mt-4 text-gray-700">Support Ticket</p>
-            </a>
-        </div>
+<div class="container mx-auto px-4 py-8">
+    <div class=" <%= request.getAttribute("message") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute("message") %></strong>
     </div>
+    <div class=" <%= request.getAttribute(LOGIN_ERROR) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(LOGIN_ERROR) %></strong>
+    </div>
+    <div class=" <%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) %></strong>
+    </div>
+    <div class=" <%= request.getAttribute(VENDOR_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_ADDED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="deleteAlert1" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md mb-4 mx-auto w-full max-w-lg text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="deleteAlert2" class="<%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="vendor" class="<%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) %></strong>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <%
+            UserService userService = new UserService(DbConnection.getConnection());
+            String roleNameByEmail = userService.getRoleNameByEmail(user.getEmail());
+            if (EquipPointUtil.isEqualToAdmin(roleNameByEmail))
+            {
+        %>
+        <a href="${pageContext.request.contextPath}/dashboard/bookingReportGraph.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fas fa-chart-line fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Analytics</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="far fa-calendar-check fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Total Booking</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/catagory/addEquipment.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-truck fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Add Equipments</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/catagory/addVendor.jsp" id="addSpecialistButton"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-wrench fa-4x text-yellow-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Vendor</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/users/viewUsers.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fas fa-user-circle fa-4x text-blue-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Users</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-truck fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Equipments</p>
+        </a>
+        <%
+            }
+        %>
+
+        <%
+            if (EquipPointUtil.isEqualToUser(roleNameByEmail))
+            {
+        %>
+        <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="far fa-calendar-check fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">My Booking</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/catagory/ConstructionEquipmentList.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-truck fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Equipments</p>
+        </a>
+        <%
+            }
+        %>
+
+        <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-list fa-4x text-blue-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Equipments Category</p>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/catagory/viewVendor.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fa-solid fa-list fa-4x text-blue-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Vendor Category</p>
+        </a>
+
+<%--        <a href="#"--%>
+<%--           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">--%>
+<%--            <i class="fas fa-cog fa-4x text-green-500"></i>--%>
+<%--            <p class="mt-4 text-gray-700 font-semibold">Settings</p>--%>
+<%--        </a>--%>
+
+
+        <a href="${pageContext.request.contextPath}/dashboard/messageInbox.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fas fa-envelope fa-4x text-yellow-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Support Ticket</p>
+        </a>
+    </div>
+</div>
 <%@include file="/users/footer.jsp"%>
 </body>
 

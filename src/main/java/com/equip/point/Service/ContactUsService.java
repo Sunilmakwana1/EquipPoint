@@ -127,11 +127,11 @@ public class ContactUsService {
                 contactUs.setEmail(rs.getString("email"));
                 contactUs.setMessage(rs.getString("message"));
                 contactUs.setApprovedBy(userService.getUserById(rs.getLong("approved_by")));
-                contactUs.setApprovedDate(convertTimestamp(rs.getTimestamp("approval_date")));
+                contactUs.setApprovedDate(rs.getDate("approval_date"));
                 contactUs.setApprovedStatus(rs.getBoolean("approval_status"));
                 contactUs.setReplyMessage(rs.getString("replay_message"));
                 contactUs.setProgressStatus(rs.getBoolean("progress_status"));
-                contactUs.setReplyDate(convertTimestamp(rs.getTimestamp("replay_date")));
+                contactUs.setReplyDate(rs.getDate("replay_date"));
                 contactUs.setRepliedBy(userService.getUserById(rs.getLong("replay_by")));
                 contactUs.setRepliedStatus(rs.getBoolean("replay_status"));
                 contactUs.setCreatedDate(convertTimestamp(rs.getTimestamp("created_date")));
@@ -196,11 +196,11 @@ public class ContactUsService {
         contactUs.setMessage(resultSet.getString(ColumnConstants.MESSAGE));
         UserService userService = new UserService(conn);
         contactUs.setApprovedBy(userService.getUserById(resultSet.getLong(ColumnConstants.APPROVED_BY)));
-        contactUs.setApprovedDate(convertTimestampToZonedDateTime(resultSet.getTimestamp(ColumnConstants.APPROVED_DATE)));
+        contactUs.setApprovedDate(resultSet.getDate(ColumnConstants.APPROVED_DATE));
         contactUs.setApprovedStatus(resultSet.getBoolean(ColumnConstants.APPROVED_STATUS));
         contactUs.setReplyMessage(resultSet.getString(ColumnConstants.REPLY_MESSAGE));
         contactUs.setProgressStatus(resultSet.getBoolean(ColumnConstants.PROGRESS_STATUS));
-        contactUs.setReplyDate(convertTimestampToZonedDateTime(resultSet.getTimestamp(ColumnConstants.REPLY_DATE)));
+        contactUs.setReplyDate(resultSet.getDate(ColumnConstants.REPLY_DATE));
         contactUs.setRepliedBy(userService.getUserById(resultSet.getLong(ColumnConstants.REPLIED_BY)));
         contactUs.setRepliedStatus(resultSet.getBoolean(ColumnConstants.REPLIED_STATUS));
         contactUs.setCreatedDate(convertTimestampToZonedDateTime(resultSet.getTimestamp(ColumnConstants.CREATED_DATE)));
@@ -227,9 +227,9 @@ public class ContactUsService {
      * @return A ContactUs object containing the details of the corresponding database entry,
      *         or an empty ContactUs object if no match is found or an error occurs during the retrieval process.
      */
-    public ContactUs getContactUsById(int i) {
+    public ContactUs getContactUsById(Long i) {
         try (PreparedStatement preparedStatement = conn.prepareStatement(GET_CONTACT_US_BY_ID)) {
-            preparedStatement.setInt(1, i);
+            preparedStatement.setLong(1, i);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToContactUs(resultSet);
@@ -300,8 +300,12 @@ public class ContactUsService {
      * @return A Boolean indicating whether the ContactUs entry was successfully replied to.
      */
     public Boolean replyContactUs(Long id, String replyMessage, Long repliedBy, Boolean repliedStatus) {
-        try (java.sql.PreparedStatement pstmt = conn.prepareStatement(REPLY_CONTACT_US)) {
-            setReplyParameters(pstmt, replyMessage, repliedBy, repliedStatus, id);
+        try (java.sql.PreparedStatement pstmt = conn.prepareStatement("UPDATE contact_us SET replay_message = ?, replay_by = ?, replay_date = now(), replay_status = ? WHERE id = ?")) {
+             pstmt.setString(1, replyMessage);
+            pstmt.setLong(2, repliedBy);
+            pstmt.setBoolean(3, repliedStatus);
+            pstmt.setLong(4, id);
+            // Execute the update and get the number of rows affected
             int rowsAffected = pstmt.executeUpdate();
             return handleUpdateResult(rowsAffected);
         } catch (Exception e) {
@@ -525,4 +529,101 @@ public class ContactUsService {
         }
         return contactUsList;
     }
+
+
+    public List<ContactUs> getContactUsWithPagination(int offset, int limit) {
+        List<ContactUs> contactUsList = new ArrayList<>();
+        UserService userService = new UserService(conn); // Move outside of the loop for efficiency
+
+        String query = "SELECT * FROM contact_us ORDER BY id DESC LIMIT ? OFFSET ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, limit);
+            pstmt.setInt(2, offset);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ContactUs contactUs = new ContactUs();
+                    contactUs.setId(rs.getLong("id"));
+                    contactUs.setFullName(rs.getString("name"));
+                    contactUs.setEmail(rs.getString("email"));
+                    contactUs.setMessage(rs.getString("message"));
+                    contactUs.setApprovedBy(userService.getUserById(rs.getLong("approved_by")));
+                    contactUs.setApprovedDate(rs.getDate("approval_date"));
+                    contactUs.setApprovedStatus(rs.getBoolean("approval_status"));
+                    contactUs.setReplyMessage(rs.getString("replay_message"));
+                    contactUs.setProgressStatus(rs.getBoolean("progress_status"));
+                    contactUs.setReplyDate(rs.getDate("replay_date"));
+                    contactUs.setRepliedBy(userService.getUserById(rs.getLong("replay_by")));
+                    contactUs.setRepliedStatus(rs.getBoolean("replay_status"));
+                    contactUs.setCreatedDate(convertTimestamp(rs.getTimestamp("created_date")));
+                    contactUsList.add(contactUs);
+                }
+            }
+        } catch (Exception e) {
+            handleException("Error in ContactUsService getAllContactUs", e);
+        }
+
+        return contactUsList;
+    }
+
+    public int getTotalContactUsCount() {
+        String query = "SELECT COUNT(*) FROM contact_us";
+        int count = 0;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            handleException("Error in ContactUsService getTotalContactUsCount", e);
+        }
+
+        return count;
+    }
+
+    public List<ContactUs> getContactUsByEmailWithPagination(String email, int offset, int limit) {
+        List<ContactUs> contactUsList = new ArrayList<>();
+        UserService userService = new UserService(conn); // Move outside of the loop for efficiency
+
+        String query = "SELECT * FROM contact_us WHERE email = ? ORDER BY id DESC LIMIT ? OFFSET ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setInt(2, limit); // Set limit (number of records per page)
+            preparedStatement.setInt(3, offset); // Set offset (starting point for this page)
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    ContactUs contactUs = new ContactUs();
+                    contactUs.setId(resultSet.getLong("id"));
+                    contactUs.setFullName(resultSet.getString("name"));
+                    contactUs.setEmail(resultSet.getString("email"));
+                    contactUs.setMessage(resultSet.getString("message"));
+                    contactUs.setApprovedBy(userService.getUserById(resultSet.getLong("approved_by")));
+                    contactUs.setApprovedDate(resultSet.getDate("approval_date"));
+                    contactUs.setApprovedStatus(resultSet.getBoolean("approval_status"));
+                    contactUs.setReplyMessage(resultSet.getString("replay_message"));
+                    contactUs.setProgressStatus(resultSet.getBoolean("progress_status"));
+                    contactUs.setReplyDate(resultSet.getDate("replay_date"));
+                    contactUs.setRepliedBy(userService.getUserById(resultSet.getLong("replay_by")));
+                    contactUs.setRepliedStatus(resultSet.getBoolean("replay_status"));
+                    contactUs.setCreatedDate(convertTimestamp(resultSet.getTimestamp("created_date")));
+
+                    contactUsList.add(contactUs); // Add to the list
+                }
+            }
+        } catch (SQLException e) {
+            handleException("Error fetching ContactUs by email with pagination: " + email, e);
+        }
+
+        return contactUsList; // Return the list of ContactUs
+    }
+
+
+
+
+
+
 }

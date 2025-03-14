@@ -4,6 +4,7 @@
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
 <%@ page import="com.equip.point.Service.UserService" %>
 <%@ page import="com.equip.point.util.DbConnection" %>
+<%@ page import="com.equip.point.Service.EmailLogService" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,10 +29,10 @@
     if (user != null) {
         loginUserName = user.getFullName();
         id = user.getId();
-        ContactUsService contactUsService = new ContactUsService(DbConnection.getConnection());
+        EmailLogService emailLogService = new EmailLogService(DbConnection.getConnection());
         UserService userServiceRoleName = new UserService(DbConnection.getConnection());
-        contactUsNotifiedCountByEmail = contactUsService.getContactUsNotifiedCountByEmail(userEmail);
-        contactUsNotifiedCountForAdmin = contactUsService.countNewContactUs();
+        contactUsNotifiedCountByEmail = emailLogService.getTotalCountIsUnreadEmailLogByUserEmail(userEmail);
+        contactUsNotifiedCountForAdmin = emailLogService.getTotalCountIsUnreadEmailLog();
         userRole = userServiceRoleName.getRoleNameByEmail(userEmail);
     } else {
         response.sendRedirect("../login/login.jsp");
@@ -82,10 +83,10 @@
                            aria-current="page">Dashboard</a>
                         <a href="${pageContext.request.contextPath}/catagory/viewCategories.jsp"
                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Equipment</a>
-                        <a href="#"
-                           class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Maintenance</a>
-                        <a href="#"
-                           class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
+<%--                        <a href="#"--%>
+<%--                           class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Maintenance</a>--%>
+<%--                        <a href="#"--%>
+<%--                           class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>--%>
                     </div>
                 </div>
             </div>
@@ -103,7 +104,7 @@
 
                 <!-- Profile dropdown -->
                 <button type="button"
-                        class="relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+                        class="relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" onclick="window.location.href='${pageContext.request.contextPath}/booking/email.jsp '">
                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                          viewBox="0 0 20 16">
                         <path d="M10.036 8.278L19.294.488A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>

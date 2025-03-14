@@ -1,6 +1,8 @@
 package com.equip.point.controller;
 
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.Service.VendorService;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,8 +31,15 @@ public class DeleteVendorController extends HttpServlet {
             Boolean deleteVendor = vendorService.deleteVendor(id);
             if (Boolean.TRUE.equals(deleteVendor)) {
                 conn.commit();
+                String subject = "Vendor Deleted Successfully";
+                String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour vendor has been successfully deleted.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                String status = "Success";
+                // Save the email log
+                EmailLogService emailLogService = new EmailLogService(conn);
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
                 req.setAttribute(VENDOR_DELETED_SUCCESSFULLY, VENDOR_DELETED_SUCCESSFULLY_MESSAGE);
-                req.getRequestDispatcher("/catagory/viewVendor.jsp").forward(req, resp);
+                req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
             } else {
                 conn.rollback();
                 System.out.println("Unable to delete vendor");

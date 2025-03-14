@@ -26,7 +26,7 @@ public class ForgetPassword extends HttpServlet {
             UserService userService = new UserService(DbConnection.getConnection());
              Boolean isForgetPassword = userService.forgetPassword(email, securityQuestion, securityAnswer);
             if (Boolean.TRUE.equals(isForgetPassword)) {
-                req.getRequestDispatcher("/login/resetPassword.jsp").forward(req, resp);
+                req.getRequestDispatcher("/login/resetPassword.jsp?email=" + email).forward(req, resp);
             } else {
                 System.out.println("Forget password failed for email: " + email);
                 String forgetPasswordError = "Forget Password Failed. Please try again";

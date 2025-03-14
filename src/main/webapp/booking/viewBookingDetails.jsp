@@ -90,6 +90,16 @@
             <label class="block text-gray-700 text-sm font-medium">Status:</label>
             <p class="text-gray-800 text-lg mt-1"><%= booking.getStatus() %></p>
         </div>
+        <div class="animate__animated animate__fadeInUp animate__delay-6s">
+            <%
+                if(booking.isBillingStatus()){
+
+            %>
+            <label class="block text-gray-700 text-sm font-medium">Invoice </label>
+            <p class="text-gray-800 text-lg mt-1"><a href="/booking/invoicePdf.jsp?id=<%= booking.getBookingId() %>" class="text-blue-500 hover:underline">View Invoice</a></p>
+            <%
+                }
+                %>
     </div>
 
     <div class="mt-6">

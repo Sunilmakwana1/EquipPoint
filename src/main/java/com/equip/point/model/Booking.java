@@ -21,6 +21,7 @@ public class Booking {
     private BigDecimal rentalRate = BigDecimal.ZERO;
     private String modelName;
     private String approvedStatus = "Pending";
+    private boolean billingStatus ;
     
 
     public Booking() {
@@ -150,11 +151,25 @@ public class Booking {
         this.userId = userId;
     }
 
+    public boolean isBillingStatus() {
+        return billingStatus;
+    }
+    public void setBillingStatus(boolean billingStatus) {
+        this.billingStatus = billingStatus;
+    }
+
     public String getApprovedStatus() {
         if (Boolean.TRUE.equals(approved)) {
             return "Approved";
         }
         return approvedStatus;
+    }
+
+    public String getBillingStatus() {
+        if (billingStatus) {
+            return "Paid";
+        }
+        return "Unpaid";
     }
 
     public void setApprovedStatus(String approvedStatus) {
