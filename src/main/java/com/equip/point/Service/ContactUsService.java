@@ -227,9 +227,9 @@ public class ContactUsService {
      * @return A ContactUs object containing the details of the corresponding database entry,
      *         or an empty ContactUs object if no match is found or an error occurs during the retrieval process.
      */
-    public ContactUs getContactUsById(int i) {
+    public ContactUs getContactUsById(Long i) {
         try (PreparedStatement preparedStatement = conn.prepareStatement(GET_CONTACT_US_BY_ID)) {
-            preparedStatement.setInt(1, i);
+            preparedStatement.setLong(1, i);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToContactUs(resultSet);

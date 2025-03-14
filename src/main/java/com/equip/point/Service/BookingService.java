@@ -437,4 +437,21 @@ public class BookingService {
         }
         return isBookingStatusUpdated;
     }
+
+    public String getUserEmailByBookingId(Long bookingId) {
+        String email = null;
+        try {
+            String query = "SELECT u.email FROM booking b JOIN user u ON b.user_id = u.id WHERE b.booking_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, bookingId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    email = rs.getString("email");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in BookingService getUserEmailByBookingId: " + e.getMessage());
+        }
+        return email;
+    }
 }

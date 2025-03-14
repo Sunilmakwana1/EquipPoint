@@ -9,7 +9,7 @@ public class Equipments {
     private int manufacturingYear;
     private double operatingWeight;
     private double enginePower;
-    private String fuelType;
+    private String fuelType = "Diesel";
     private double rentalRate;
     private String availabilityStatus = "Available";
     private String location;
@@ -24,7 +24,7 @@ public class Equipments {
     private String image;
     private String description;
     private Long vendorId;
-    private String equipmentsCategories;
+    private String equipmentsCategories = "heavy";
 
     public Equipments() {
         super();

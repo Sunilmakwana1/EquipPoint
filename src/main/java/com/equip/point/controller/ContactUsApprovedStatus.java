@@ -45,9 +45,13 @@ public class ContactUsApprovedStatus extends HttpServlet {
             if (Boolean.TRUE.equals(updateContactUsApprovedStatus)) {
                 conn.commit();
                 req.setAttribute(CONTACT_US_APPROVED_STATUS_UPDATED, CONTACT_US_APPROVED_STATUS_UPDATED_MESSAGE);
+                String subject = "Contact Us Approved";
+                String body = "Dear " + contactUsService.getContactUsById(id).getEmail() + ",\n\nYour contact us message has been successfully approved.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = contactUsService.getContactUsById(id).getEmail();
+                String status = "Success";
                 // Save the email log
-                emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), CONTACT_US_APPROVED, CONTACT_US_APPROVED_MESSAGE, SENT, null);
-                req.getRequestDispatcher(DASHBOARD_MESSAGE_INBOX_JSP).forward(req, resp);
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
+                req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
             } else {
                 conn.rollback();
                 System.out.println(UNABLE_TO_UPDATE_CONTACT_US_APPROVED_STATUS);

@@ -2,6 +2,7 @@
 <%@ page import="com.equip.point.util.DbConnection" %>
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
 <%@ page import="static com.equip.point.util.AppConstant.LOGIN_ERROR" %>
+<%@ page import="static com.equip.point.util.AppConstant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +24,26 @@
     <div class=" <%= request.getAttribute(LOGIN_ERROR) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
          role="alert">
         <strong class="font-bold"><%= request.getAttribute(LOGIN_ERROR) %></strong>
+    </div>
+    <div class=" <%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) %></strong>
+    </div>
+    <div class=" <%= request.getAttribute(VENDOR_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_ADDED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="deleteAlert1" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md mb-4 mx-auto w-full max-w-lg text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="deleteAlert2" class="<%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) %></strong>
+    </div>
+    <div id="vendor" class="<%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) %></strong>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <%
@@ -95,13 +116,13 @@
             <p class="mt-4 text-gray-700 font-semibold">Vendor Category</p>
         </a>
 
-        <a href="#"
-           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
-            <i class="fas fa-cog fa-4x text-green-500"></i>
-            <p class="mt-4 text-gray-700 font-semibold">Settings</p>
-        </a>
+<%--        <a href="#"--%>
+<%--           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">--%>
+<%--            <i class="fas fa-cog fa-4x text-green-500"></i>--%>
+<%--            <p class="mt-4 text-gray-700 font-semibold">Settings</p>--%>
+<%--        </a>--%>
 
-        <a href="#"
+        <a href="${pageContext.request.contextPath}/dashboard/bookingReportGraph.jsp"
            class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
             <i class="fas fa-chart-line fa-4x text-red-500"></i>
             <p class="mt-4 text-gray-700 font-semibold">Analytics</p>

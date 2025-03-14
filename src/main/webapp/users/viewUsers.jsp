@@ -17,12 +17,12 @@
 <body>
 <%@include file="/users/navbar.jsp" %>
 <div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-4">
-        <div class="flex-1"></div>
-        <a href="addedUser.jsp" id="addUserButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-            <i class="fas fa-user-plus"></i> Add User
-        </a>
-    </div>
+<%--    <div class="flex justify-between items-center mb-4">--%>
+<%--        <div class="flex-1"></div>--%>
+<%--        <a href="addedUser.jsp" id="addUserButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">--%>
+<%--            <i class="fas fa-user-plus"></i> Add User--%>
+<%--        </a>--%>
+<%--    </div>--%>
 </div>
 <div id="deleteAlert"
      class=" <%= request.getAttribute(USER_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
@@ -71,9 +71,9 @@
             </td>
             <td class="py-3 px-4">
                 <% if (EquipPointUtil.isEqualToUser(userList.getRole())) { %>
-                <a href="" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600" title="Edit User">
-                    <i class="fas fa-user-edit"></i>
-                </a>
+<%--                <a href="" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600" title="Edit User">--%>
+<%--                    <i class="fas fa-user-edit"></i>--%>
+<%--                </a>--%>
                 &nbsp;
                 <a href="${pageContext.request.contextPath}/api/user-deleted?id=<%=userList.getId()%>"
                    class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600" title="Delete User">

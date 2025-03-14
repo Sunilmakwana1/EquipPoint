@@ -1,6 +1,7 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.BookingService;
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.Service.EquipmentService;
 import com.equip.point.Service.UserService;
 import com.equip.point.model.Booking;
@@ -45,6 +46,12 @@ public class BookingController extends HttpServlet {
             }else {
                 Long bookingIdByUserId = bookingService.getBookingIdByUserId(userId);
                 conn.commit();
+                String subject = "Booking Confirmation";
+                String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour booking has been successfully processed.\n\nBooking ID: " + bookingIdByUserId + "\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                String status = "Success";
+                EmailLogService emailLogService = new EmailLogService(conn);
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
                 req.setAttribute("bookingSuccess", "#" + bookingIdByUserId);
                 req.getRequestDispatcher("/booking/bookingSuccess.jsp").forward(req, resp);
             }

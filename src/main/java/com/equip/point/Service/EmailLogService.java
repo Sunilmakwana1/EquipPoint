@@ -221,7 +221,7 @@ public class EmailLogService {
 
     public List<EmailLog> getAllEmailLogs(String searchKeyword, int offset, int limit) {
         List<EmailLog> emailLogs = new ArrayList<>();
-        String query = "SELECT * FROM email_log WHERE subject LIKE ? LIMIT ? OFFSET ?";
+        String query = "SELECT * FROM email_log WHERE subject LIKE ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, "%" + searchKeyword + "%"); // Search by subject
@@ -251,7 +251,7 @@ public class EmailLogService {
 
     public List<EmailLog> getEmailLogsByUserEmail(String userEmail, String searchKeyword, int offset, int limit) {
         List<EmailLog> emailLogs = new ArrayList<>();
-        String query = "SELECT * FROM email_log WHERE recipient_email=? AND subject LIKE ? LIMIT ? OFFSET ?";
+        String query = "SELECT * FROM email_log WHERE recipient_email=? AND subject LIKE ?  ORDER BY created_at DESC LIMIT ? OFFSET ?";
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, userEmail); // Filter by user email

@@ -1,6 +1,7 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.BookingService;
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +25,13 @@ public class BookingStatusController extends HttpServlet {
             Long bookingId = Long.parseLong(req.getParameter("id"));
             if (Boolean.TRUE.equals(bookingService.updateBookingStatus(bookingId))) {
                 conn.commit();
-                req.setAttribute("status", "Booking status updated successfully");
+                String subject = "Booking Approved";
+                String body = "Dear " + bookingService.getUserEmailByBookingId(bookingId) + ",\n\nYour booking has been successfully approved.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = bookingService.getUserEmailByBookingId(bookingId);
+                String status = "Success";
+                EmailLogService emailLogService = new EmailLogService(conn);
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
+                req.setAttribute("status", "Booking Approved");
                 req.getRequestDispatcher("/booking/viewBooking.jsp").forward(req, resp);
             } else {
                 conn.rollback();

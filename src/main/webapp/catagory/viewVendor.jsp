@@ -33,14 +33,7 @@
         </a>
         <% } %>
     </div>
-    <div id="deleteAlert" class="<%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
-         role="alert">
-        <strong class="font-bold"><%= request.getAttribute(VENDOR_DELETED_SUCCESSFULLY) %></strong>
-    </div>
-    <div id="vendor" class="<%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-auto w-1/2 text-center animate-bounce"
-         role="alert">
-        <strong class="font-bold"><%= request.getAttribute(VENDOR_EDITED_SUCCESSFULLY) %></strong>
-    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <%
             VendorService vendorService = new VendorService(DbConnection.getConnection());

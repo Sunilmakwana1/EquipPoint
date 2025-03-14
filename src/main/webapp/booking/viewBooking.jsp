@@ -145,7 +145,7 @@
                     </a>
                     <% } else { %>
                     <!-- If the status is not approved, show the clickable link -->
-                    <a href="/booking/billPayment.jsp?id=<%= booking.getBookingId() %>" class="text-green-500 hover:text-green-700">
+                    <a href="/api/booking-status?id=<%= booking.getBookingId() %>" class="text-green-500 hover:text-green-700">
                         <i class="fas fa-check-circle"></i> Approve
                     </a>
                     <% } %>

@@ -53,7 +53,7 @@
 
                 for (EmailLog emailLog : emailLogs) {
             %>
-            <div class="p-4 bg-gray-50 rounded-lg shadow-sm flex justify-between items-center">
+            <div class="p-4 rounded-lg shadow-sm flex justify-between items-center <%= emailLog.isRead() ? "bg-gray-50" : "bg-yellow-100" %>">
                 <div>
                     <p class="text-sm text-gray-500">Subject:</p>
                     <p class="text-lg font-semibold text-gray-800">
@@ -62,7 +62,8 @@
                     <p class="text-sm text-gray-500 mt-2">From: <span class="text-gray-700"><%= emailLog.getFromEmail() %></span></p>
                 </div>
                 <button
-                        class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='/booking/viewDetailEmail.jsp?id=<%= emailLog.getId() %>'">
+                        class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        onclick="window.location.href='/booking/viewDetailEmail.jsp?id=<%= emailLog.getId() %>'">
                     View Details
                 </button>
             </div>

@@ -1,7 +1,9 @@
 package com.equip.point.controller;
 
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.Service.VendorService;
 import com.equip.point.model.Categories;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import com.equip.point.util.EquipPointUtil;
 import jakarta.servlet.ServletException;
@@ -52,8 +54,15 @@ public class EditVendorController extends HttpServlet {
                 Boolean editVendor = vendorService.updateVendor(vendor);
                 if (Boolean.TRUE.equals(editVendor)) {
                     conn.commit();
+                    String subject = "Vendor Edited Successfully";
+                    String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour vendor has been successfully edited vendor name is " + vendorName + ".\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                    String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                    String status = "Success";
+                    // Save the email log
+                    EmailLogService emailLogService = new EmailLogService(conn);
+                    emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
                     req.setAttribute(VENDOR_EDITED_SUCCESSFULLY, VENDOR_EDITED_SUCCESSFULLY_MESSAGE);
-                    req.getRequestDispatcher("/catagory/viewVendor.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
                     System.out.println("Unable to edit vendor");

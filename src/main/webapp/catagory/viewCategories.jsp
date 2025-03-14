@@ -33,10 +33,7 @@
     </div>
 
     <!-- Success Alert for Category Deletion -->
-    <div id="deleteAlert" class="<%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md mb-4 mx-auto w-full max-w-lg text-center animate-bounce"
-         role="alert">
-        <strong class="font-bold"><%= request.getAttribute(CATEGORY_DELETED_SUCCESSFULLY) %></strong>
-    </div>
+
 
     <!-- Categories Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

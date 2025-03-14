@@ -37,7 +37,7 @@ public class AppConstant {
     public static final String FILE_PATH = "../images/";
 
     public static final String UPLOAD_PATH = "F:\\Major Project\\EquipPoint\\src\\main\\webapp\\images\\";
-    public static final String UPLOAD_PATH_EQUPMENT = "F:\\Major Project\\EquipPoint\\src\\main\\webapp\\images\\equipment";
+    public static final String UPLOAD_PATH_EQUPMENT = "F:\\Major Project\\EquipPoint\\src\\main\\webapp\\images\\equipment\\";
 
     public static final String CATEGORY_DELETED_SUCCESSFULLY = "categoryDeletedSuccessfully";
 

@@ -14,10 +14,7 @@
     <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="md:w-1/2 p-8">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Add Equipment</h2>
-            <div class=" <%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                 role="alert">
-                <strong class="font-bold"><%= request.getAttribute(EQUIPMENT_ADDED_SUCCESSFULLY) %></strong>
-            </div>
+
             <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/api/add-equipment" enctype="multipart/form-data">
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="vendorName">
@@ -66,7 +63,7 @@
                     </label>
                     <input class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                            id="vendorImage"
-                           name="vendorImage"
+                           name="equipmentImage"
                            type="file">
                 </div>
 

@@ -1,6 +1,7 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.ContactUsService;
+import com.equip.point.Service.EmailLogService;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,8 +30,15 @@ public class ContactUsProgressStatus extends HttpServlet {
             Boolean updateContactUsProgressStatus = contactUsService.progressContactUs(id, Boolean.TRUE);
             if (Boolean.TRUE.equals(updateContactUsProgressStatus)) {
                 conn.commit();
-                req.setAttribute(CONTACT_US_PROGRESS_STATUS_UPDATED, CONTACT_US_PROGRESS_STATUS_UPDATED_MESSAGE);
-                req.getRequestDispatcher("/dashboard/messageInbox.jsp").forward(req, resp);
+                String subject = "Contact Us Progress Status Updated";
+                String body = "Dear " + contactUsService.getContactUsById(id).getEmail() + ",\n\nYour contact us message progress status has been successfully updated.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = contactUsService.getContactUsById(id).getEmail();
+                String status = "Success";
+                EmailLogService emailLogService = new EmailLogService(conn);
+                // Save the email log
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
+                req.setAttribute(CONTACT_US_PROGRESS_STATUS_UPDATED, CONTACT_US_PROGRESS_STATUS_UPDATED_MESSAGE + "Support Ticket ID: " + id);
+                req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
             } else {
                 conn.rollback();
                 System.out.println("Unable to update contact us progress status");
