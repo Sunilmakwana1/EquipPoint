@@ -52,6 +52,12 @@
             if (EquipPointUtil.isEqualToAdmin(roleNameByEmail))
             {
         %>
+        <a href="${pageContext.request.contextPath}/dashboard/bookingReportGraph.jsp"
+           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+            <i class="fas fa-chart-line fa-4x text-red-500"></i>
+            <p class="mt-4 text-gray-700 font-semibold">Analytics</p>
+        </a>
+
         <a href="${pageContext.request.contextPath}/booking/viewBooking.jsp"
            class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
             <i class="far fa-calendar-check fa-4x text-red-500"></i>
@@ -122,11 +128,6 @@
 <%--            <p class="mt-4 text-gray-700 font-semibold">Settings</p>--%>
 <%--        </a>--%>
 
-        <a href="${pageContext.request.contextPath}/dashboard/bookingReportGraph.jsp"
-           class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
-            <i class="fas fa-chart-line fa-4x text-red-500"></i>
-            <p class="mt-4 text-gray-700 font-semibold">Analytics</p>
-        </a>
 
         <a href="${pageContext.request.contextPath}/dashboard/messageInbox.jsp"
            class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center justify-center hover:bg-blue-50 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
