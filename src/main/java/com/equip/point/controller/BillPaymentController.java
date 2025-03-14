@@ -1,6 +1,8 @@
 package com.equip.point.controller;
 
 import com.equip.point.Service.BillPaymetService;
+import com.equip.point.Service.EmailLogService;
+import com.equip.point.util.CurrentLoginUser;
 import com.equip.point.util.DbConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,28 +24,26 @@ public class BillPaymentController extends HttpServlet {
             connection = DbConnection.getConnection();
             Long equipmentId = Long.parseLong(req.getParameter("equipmentId"));
             BigDecimal paymentAmount = new BigDecimal(req.getParameter("paymentAmount"));
+            Long bookingId = Long.parseLong(req.getParameter("bookingId"));
             BillPaymetService billPaymentService = new BillPaymetService(connection);
-            boolean isPaid = billPaymentService.billPayment(equipmentId, paymentAmount);
+            boolean isPaid = billPaymentService.billPayment(equipmentId, paymentAmount, bookingId);
             if (isPaid) {
-                resp.setStatus(HttpServletResponse.SC_OK);
-                req.getRequestDispatcher("/booking/viewBooking.jsp").forward(req, resp);
+                    req.setAttribute("message", "Bill payment successful Booking ID: " + "#" + bookingId);
+                req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
+                EmailLogService emailLogService = new EmailLogService(connection);
+                String subject = "Bill Payment Confirmation";
+                String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour bill payment for Booking ID: " + bookingId + " has been successfully processed.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                String status = "Success";
+                emailLogService.saveEmailLog(recipientEmail, subject, body, status , null );
                 resp.getWriter().write("Bill payment successful.");
             } else {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("Bill payment failed.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("An error occurred: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("Error in BillPaymentController: " + e.getMessage());
+
         }
 
     }

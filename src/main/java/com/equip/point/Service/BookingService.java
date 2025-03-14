@@ -419,14 +419,14 @@ public class BookingService {
     }
 
 
-    public boolean updateBookingStatusByequipmentId(Long equipmentId) {
+    public boolean updateBookingStatusByBookingId(Long bookingId) {
         boolean isBookingStatusUpdated = false;
         try {
-            String query = "UPDATE booking SET is_bill_paid = true WHERE equipment_id = ?";
+            String query = "UPDATE booking SET is_bill_paid = true WHERE booking_id = ?";
             int i;
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setLong(1, equipmentId);
-                i = pstmt.executeUpdate();
+                pstmt.setLong(1, bookingId);
+                    i = pstmt.executeUpdate();
                 System.out.println("Booking status updated successfully");
             }
             if (i == 1) {

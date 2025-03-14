@@ -1,6 +1,7 @@
 <%@ page import="com.equip.point.Service.UserService" %>
 <%@ page import="com.equip.point.util.DbConnection" %>
 <%@ page import="com.equip.point.util.EquipPointUtil" %>
+<%@ page import="static com.equip.point.util.AppConstant.LOGIN_ERROR" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,14 @@
 <body class="bg-gray-100">
 <%@include file="/users/navbar.jsp"%>
 <div class="container mx-auto px-4 py-8">
+    <div class=" <%= request.getAttribute("message") != null ? "" : "hidden" %> bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute("message") %></strong>
+    </div>
+    <div class=" <%= request.getAttribute(LOGIN_ERROR) != null ? "" : "hidden" %> bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+         role="alert">
+        <strong class="font-bold"><%= request.getAttribute(LOGIN_ERROR) %></strong>
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <%
             UserService userService = new UserService(DbConnection.getConnection());

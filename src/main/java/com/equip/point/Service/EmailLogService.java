@@ -6,6 +6,7 @@ import com.equip.point.util.DbConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmailLogService {
@@ -141,7 +142,7 @@ public class EmailLogService {
     }
 
     public List<EmailLog> getAllEmailLogs() {
-        List<EmailLog> emailLogs = null;
+        List<EmailLog> emailLogs = new java.util.ArrayList<>();
         EmailLog emailLog = null;
         try {
             String query = "SELECT * FROM email_log";
@@ -156,6 +157,8 @@ public class EmailLogService {
                     emailLog.setStatus(rs.getString("status"));
                     emailLog.setErrorMessage(rs.getString("error_message"));
                     emailLog.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    emailLog.setFromEmail(rs.getString("from"));
+
                     emailLogs.add(emailLog);
                 }
             }
@@ -189,5 +192,163 @@ public class EmailLogService {
         return emailLog;
     }
 
+    public List<EmailLog> getEmailLogsByUserEmail(String userEmail) {
+        List<EmailLog> emailLogs = new java.util.ArrayList<>();
+        EmailLog emailLog = null;
+        try {
+            String query = "SELECT * FROM email_log WHERE recipient_email=?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, userEmail);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    emailLog = new EmailLog();
+                    emailLog.setId(rs.getInt("id"));
+                    emailLog.setRecipientEmail(rs.getString("recipient_email"));
+                    emailLog.setSubject(rs.getString("subject"));
+                    emailLog.setMessage(rs.getString("message"));
+                    emailLog.setStatus(rs.getString("status"));
+                    emailLog.setErrorMessage(rs.getString("error_message"));
+                    emailLog.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    emailLog.setFromEmail(rs.getString("from"));
+                    emailLogs.add(emailLog);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EmailLogService getEmailLogsByUserEmail: " + e.getMessage());
+        }
+        return emailLogs;
+    }
 
+    public List<EmailLog> getAllEmailLogs(String searchKeyword, int offset, int limit) {
+        List<EmailLog> emailLogs = new ArrayList<>();
+        String query = "SELECT * FROM email_log WHERE subject LIKE ? LIMIT ? OFFSET ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, "%" + searchKeyword + "%"); // Search by subject
+            ps.setInt(2, limit); // Pagination limit
+            ps.setInt(3, offset); // Pagination offset
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                EmailLog emailLog = new EmailLog();
+                emailLog.setId(rs.getInt("id"));
+                emailLog.setRecipientEmail(rs.getString("recipient_email"));
+                emailLog.setSubject(rs.getString("subject"));
+                emailLog.setMessage(rs.getString("message"));
+                emailLog.setStatus(rs.getString("status"));
+                emailLog.setErrorMessage(rs.getString("error_message"));
+                emailLog.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                emailLog.setFromEmail(rs.getString("from"));
+                emailLog.setRead(rs.getBoolean("is_read"));
+                emailLogs.add(emailLog);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getAllEmailLogs with search: " + e.getMessage());
+        }
+        return emailLogs;
+    }
+
+
+    public List<EmailLog> getEmailLogsByUserEmail(String userEmail, String searchKeyword, int offset, int limit) {
+        List<EmailLog> emailLogs = new ArrayList<>();
+        String query = "SELECT * FROM email_log WHERE recipient_email=? AND subject LIKE ? LIMIT ? OFFSET ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, userEmail); // Filter by user email
+            ps.setString(2, "%" + searchKeyword + "%"); // Search by subject
+            ps.setInt(3, limit); // Pagination limit
+            ps.setInt(4, offset); // Pagination offset
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                EmailLog emailLog = new EmailLog();
+                emailLog.setId(rs.getInt("id"));
+                emailLog.setRecipientEmail(rs.getString("recipient_email"));
+                emailLog.setSubject(rs.getString("subject"));
+                emailLog.setMessage(rs.getString("message"));
+                emailLog.setStatus(rs.getString("status"));
+                emailLog.setErrorMessage(rs.getString("error_message"));
+                emailLog.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                emailLog.setFromEmail(rs.getString("from"));
+                emailLog.setRead(rs.getBoolean("is_read"));
+                emailLogs.add(emailLog);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getEmailLogsByUserEmail with search: " + e.getMessage());
+        }
+        return emailLogs;
+    }
+
+
+    public EmailLog getEmailLogById(int emailId) {
+        EmailLog emailLog = null;
+        try {
+            String query = "SELECT * FROM email_log WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, emailId);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    emailLog = new EmailLog();
+                    emailLog.setId(rs.getInt("id"));
+                    emailLog.setRecipientEmail(rs.getString("recipient_email"));
+                    emailLog.setSubject(rs.getString("subject"));
+                    emailLog.setMessage(rs.getString("message"));
+                    emailLog.setStatus(rs.getString("status"));
+                    emailLog.setErrorMessage(rs.getString("error_message"));
+                    emailLog.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    emailLog.setFromEmail(rs.getString("from"));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EmailLogService getEmailLogById: " + e.getMessage());
+        }
+        return emailLog;
+    }
+
+
+    public void isReadEmailLog(int emailId) {
+        try {
+            String query = "UPDATE email_log SET is_read= true WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, emailId);
+                ps.executeUpdate();
+                conn.commit(); // Ensure the changes are saved
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EmailLogService isReadEmailLog: " + e.getMessage());
+        }
+    }
+
+    public Long getTotalCountIsUnreadEmailLog() {
+        long count = 0L;
+        try {
+            String query = "SELECT COUNT(*) FROM email_log WHERE is_read = false";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getLong(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EmailLogService getTotalCountIsUnReadEmailLog: " + e.getMessage());
+        }
+        return count;
+    }
+
+    public  Long getTotalCountIsUnreadEmailLogByUserEmail(String userEmail) {
+        long count = 0L;
+        try {
+            String query = "SELECT COUNT(*) FROM email_log WHERE recipient_email=? AND is_read = false";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, userEmail);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getLong(1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in EmailLogService getTotalCountIsUnReadEmailLogByUserEmail: " + e.getMessage());
+        }
+        return count;
+    }
 }

@@ -14,12 +14,13 @@ public class BillPaymetService {
         this.conn = conn;
     }
 
-    public boolean billPayment(Long equipmentId, BigDecimal paymentAmount) {
+    public boolean billPayment(Long equipmentId, BigDecimal paymentAmount , Long bookingId) {
         boolean isPaid = false;
         try {
-            String sql = "INSERT INTO bill_payment (equipment_id, bill_date ) VALUES (?,now())";
+            String sql = "INSERT INTO bill_payment (equipment_id, bill_date ,booking_id) VALUES (?,now(),?)";
             var preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setLong(1, equipmentId);
+            preparedStatement.setLong(2, bookingId);
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected == 1) {
                 BookingService bookingService = new BookingService(conn);
@@ -27,21 +28,13 @@ public class BillPaymetService {
                 PaymentService paymentService = new PaymentService(conn);
                 boolean processPayment = paymentService.processPayment(billPaymentId, paymentAmount);
                 if (processPayment) {
-                    bookingService.updateBookingStatusByequipmentId(equipmentId);
+                    bookingService.updateBookingStatusByBookingId(bookingId);
                 }
                 isPaid = true;
             }
             preparedStatement.close();
         } catch (Exception e) {
                 e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return isPaid;
     }

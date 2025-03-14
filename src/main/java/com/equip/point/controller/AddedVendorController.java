@@ -56,9 +56,12 @@ public class AddedVendorController extends HttpServlet {
                 if (Boolean.TRUE.equals(addVendor)) {
                     conn.commit();
                     req.setAttribute(VENDOR_ADDED_SUCCESSFULLY, VENDOR_ADDED_SUCCESSFULLY_MESSAGE);
-                    // Save the email log
-                    emailLogService.saveEmailLog(CurrentLoginUser.getCurrentLoginUser(), VENDOR_ADDED, VENDOR_ADDED_SUCCESSFULLY_MESSAGE, SENT, null);
-                    req.getRequestDispatcher(ADD_VENDOR_JSP).forward(req, resp);
+                    String subject = "Vendor Added Successfully";
+                    String body = "Dear " + CurrentLoginUser.getCurrentLoginUser() + ",\n\nYour vendor has been successfully added.\n\nThank you for using our service.\n\nBest regards,\nThe Team";
+                    String recipientEmail = CurrentLoginUser.getCurrentLoginUser();
+                    String status = "Success";
+                    emailLogService.saveEmailLog(recipientEmail, subject, body, status, null);
+                    req.getRequestDispatcher("/dashboard/dasboard.jsp").forward(req, resp);
                 } else {
                     conn.rollback();
                 }

@@ -10,6 +10,8 @@ public class EmailLog {
     private String status; // sent, failed, pending
     private String errorMessage;
     private LocalDateTime createdAt;
+    private String fromEmail ;
+    private boolean isRead;
 
     public EmailLog() {
         this.createdAt = LocalDateTime.now();
@@ -80,6 +82,22 @@ public class EmailLog {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getFromEmail() {
+        return fromEmail;
+    }
+
+    public void setFromEmail(String fromEmail) {
+        this.fromEmail = fromEmail;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 }
 

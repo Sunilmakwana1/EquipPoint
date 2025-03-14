@@ -30,6 +30,22 @@ public class EquipPointUtil {
         }
     }
 
+
+    public static void equpmentUploadFile(String uploadPath, Part filePart1) {
+        try {
+            FileOutputStream fos1 = new FileOutputStream(uploadPath);
+            InputStream is = filePart1.getInputStream();
+            byte[] data = new byte[is.available()];
+            is.read(data);
+            fos1.write(data);
+            fos1.close();
+        } catch (Exception e) {
+            System.out.println("Unable to Upload File: "+ e.getMessage());
+        }
+    }
+
+
+
     public static boolean isEmpty(String value) {
         return value == null || value.trim().isEmpty();
     }

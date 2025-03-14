@@ -29,6 +29,7 @@
                     <form class= "space-y-6" action="${pageContext.request.contextPath}/api/bill-payment " method="POST">
                         <input type="hidden" name="equipmentId" value="<%= booking.getEquipmentId() %>">
                         <input type="hidden" name="paymentAmount" value="<%= booking.getTotalCost() %>">
+                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
                         <div class="flex items-center justify-between"></div>
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                 Pay Now
