@@ -14,8 +14,8 @@ ext {
     junitVersion = '5.11.0-M2'
 }
 
-sourceCompatibility = '21'
-targetCompatibility = '21'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -31,6 +31,8 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'javax.servlet:jstl:1.2'
     implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'org.owasp.encoder:encoder:1.2.3'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
