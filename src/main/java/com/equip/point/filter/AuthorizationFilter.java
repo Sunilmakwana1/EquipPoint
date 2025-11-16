@@ -109,7 +109,13 @@ public class AuthorizationFilter implements Filter {
             
             // Get user role
             String role = user.getRole();
-            Long roleId = Long.parseLong(role);
+            Long roleId;
+            try {
+                roleId = Long.parseLong(role);
+            } catch (NumberFormatException nfe) {
+                System.err.println("Invalid role format for user: " + role);
+                return false;
+            }
 
             // Map path to resource and action
             String resource = getResourceFromPath(path);

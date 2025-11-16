@@ -201,9 +201,15 @@ public class SecurityFilter implements Filter {
      */
     private void cleanupExpiredEntries() {
         long now = System.currentTimeMillis();
-        loginAttempts.entrySet().removeIf(entry -> 
-            now - entry.getValue().firstAttemptTime > RATE_LIMIT_DURATION_MS
-        );
+        java.util.List<String> keysToRemove = new java.util.ArrayList<>();
+        for (var entry : loginAttempts.entrySet()) {
+            if (now - entry.getValue().firstAttemptTime > RATE_LIMIT_DURATION_MS) {
+                keysToRemove.add(entry.getKey());
+            }
+        }
+        for (String key : keysToRemove) {
+            loginAttempts.remove(key);
+        }
     }
 
     /**

@@ -22,7 +22,7 @@ public class PermissionService {
     /**
      * Get all permissions for a specific role
      * @param roleId The role ID
-     * @return List of permissions
+     * @return List of permissions (empty list on error - check logs)
      */
     public List<Permission> getPermissionsByRole(Long roleId) {
         List<Permission> permissions = new ArrayList<>();
@@ -46,7 +46,9 @@ public class PermissionService {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error in getPermissionsByRole: " + e.getMessage());
+            System.err.println("Error in getPermissionsByRole for roleId " + roleId + ": " + e.getMessage());
+            e.printStackTrace();
+            // Return empty list to deny access by default on error
         }
         return permissions;
     }
@@ -56,7 +58,7 @@ public class PermissionService {
      * @param roleId The role ID
      * @param resource The resource name
      * @param action The action name
-     * @return true if permission exists, false otherwise
+     * @return true if permission exists, false otherwise (false on error - check logs)
      */
     public boolean hasPermission(Long roleId, String resource, String action) {
         try {
@@ -73,7 +75,10 @@ public class PermissionService {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error in hasPermission: " + e.getMessage());
+            System.err.println("Error in hasPermission for roleId " + roleId + 
+                             ", resource " + resource + ", action " + action + ": " + e.getMessage());
+            e.printStackTrace();
+            // Return false to deny access by default on error
         }
         return false;
     }

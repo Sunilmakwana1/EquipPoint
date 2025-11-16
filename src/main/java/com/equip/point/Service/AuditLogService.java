@@ -51,7 +51,10 @@ public class AuditLogService {
                 return ps.executeUpdate() > 0;
             }
         } catch (Exception e) {
-            System.err.println("Error logging audit event: " + e.getMessage());
+            System.err.println("CRITICAL: Audit logging failed for action '" + action + 
+                             "' on resource '" + resource + "': " + e.getMessage());
+            e.printStackTrace();
+            // TODO: Implement fallback logging mechanism (e.g., file-based logging)
             return false;
         }
     }

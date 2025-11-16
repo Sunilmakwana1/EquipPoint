@@ -3,6 +3,7 @@ package com.equip.point.util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -68,7 +69,23 @@ public class CSRFUtil {
             return false;
         }
 
-        return sessionToken.equals(requestToken);
+        // Use constant-time comparison to prevent timing attacks
+        return constantTimeEquals(sessionToken, requestToken);
+    }
+
+    /**
+     * Constant-time string comparison to prevent timing attacks
+     * @param a First string
+     * @param b Second string
+     * @return true if strings are equal
+     */
+    private static boolean constantTimeEquals(String a, String b) {
+        if (a == null || b == null) {
+            return a == b;
+        }
+        byte[] aBytes = a.getBytes();
+        byte[] bBytes = b.getBytes();
+        return MessageDigest.isEqual(aBytes, bBytes);
     }
 
     /**

@@ -177,7 +177,7 @@
                 <div class="mt-6 text-center">
                     <p class="text-xs text-gray-500">
                         <i class="fas fa-shield-alt text-green-500 mr-1"></i>
-                        Secured with BCrypt Encryption
+                        Secured with industry-standard encryption
                     </p>
                 </div>
             </div>

@@ -3,10 +3,20 @@ package com.equip.point.util;
 import org.mindrot.jbcrypt.BCrypt;
 import org.owasp.encoder.Encode;
 
+import java.util.regex.Pattern;
+
 /**
  * Security utility class for password hashing and input sanitization
  */
 public class SecurityUtil {
+
+    // Pre-compiled regex patterns for performance
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[+]?[0-9\\s\\-()]{10,22}$");
+    private static final Pattern UPPER_PATTERN = Pattern.compile(".*[A-Z].*");
+    private static final Pattern LOWER_PATTERN = Pattern.compile(".*[a-z].*");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile(".*[0-9].*");
+    private static final String SPECIAL_CHARS = "!@#$%^&*()_+-=[]{};\':\"\\|,.<>/?";
 
     private SecurityUtil() {
         // Private constructor to prevent instantiation
@@ -69,8 +79,7 @@ public class SecurityUtil {
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        return email.matches(emailRegex);
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 
     /**
@@ -83,8 +92,7 @@ public class SecurityUtil {
             return false;
         }
         // Allow digits, spaces, hyphens, parentheses, and plus sign
-        String phoneRegex = "^[+]?[0-9\\s\\-()]{10,22}$";
-        return phone.matches(phoneRegex);
+        return PHONE_PATTERN.matcher(phone).matches();
     }
 
     /**
@@ -97,10 +105,25 @@ public class SecurityUtil {
             return false;
         }
         // At least one uppercase, one lowercase, one digit, and one special character
-        boolean hasUpper = password.matches(".*[A-Z].*");
-        boolean hasLower = password.matches(".*[a-z].*");
-        boolean hasDigit = password.matches(".*[0-9].*");
-        boolean hasSpecial = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+        boolean hasUpper = UPPER_PATTERN.matcher(password).matches();
+        boolean hasLower = LOWER_PATTERN.matcher(password).matches();
+        boolean hasDigit = DIGIT_PATTERN.matcher(password).matches();
+        boolean hasSpecial = containsAny(password, SPECIAL_CHARS);
         return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+
+    /**
+     * Check if string contains any character from the given set
+     * @param str String to check
+     * @param chars Character set
+     * @return true if any character is found
+     */
+    private static boolean containsAny(String str, String chars) {
+        for (char c : str.toCharArray()) {
+            if (chars.indexOf(c) >= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

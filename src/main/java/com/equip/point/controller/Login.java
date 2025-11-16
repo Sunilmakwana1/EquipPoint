@@ -45,6 +45,10 @@ public class Login extends HttpServlet {
         Connection conn = null;
         try {
             conn = DbConnection.getConnection();
+            if (conn == null) {
+                throw new RuntimeException("Failed to establish database connection");
+            }
+            
             HttpSession session = req.getSession();
             LoginService loginService = new LoginService(conn);
             AuditLogService auditLogService = new AuditLogService(conn);
@@ -79,7 +83,11 @@ public class Login extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Error in Login doPost: " + e.getMessage());
             req.setAttribute(LOGIN_ERROR, "An error occurred during login. Please try again.");
-            req.getRequestDispatcher("/login/login.jsp").forward(req, resp);
+            try {
+                req.getRequestDispatcher("/login/login.jsp").forward(req, resp);
+            } catch (ServletException | IOException forwardException) {
+                System.err.println("Error forwarding to login page: " + forwardException.getMessage());
+            }
         } finally {
             if (conn != null) {
                 try {
