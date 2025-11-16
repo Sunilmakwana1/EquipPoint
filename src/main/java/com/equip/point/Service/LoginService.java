@@ -2,6 +2,7 @@ package com.equip.point.Service;
 
 import com.equip.point.model.User;
 import com.equip.point.util.DbConnection;
+import com.equip.point.util.SecurityUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,22 +21,29 @@ public class LoginService {
     public User loginUser(String email, String password) {
         User user = null;
         try {
-            String query = "SELECT * FROM user WHERE email=? AND password=? AND is_deleted = false";
+            // First, get the user by email only
+            String query = "SELECT * FROM user WHERE email=? AND is_deleted = false AND status = true";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, email);
-                ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    user = new User();
-                    user.setId(rs.getLong("id"));
-                    user.setFullName(rs.getString("full_name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setRole(rs.getString("role"));
+                    String storedPassword = rs.getString("password");
+                    
+                    // Verify password using BCrypt
+                    if (SecurityUtil.verifyPassword(password, storedPassword)) {
+                        user = new User();
+                        user.setId(rs.getLong("id"));
+                        user.setFullName(rs.getString("full_name"));
+                        user.setEmail(rs.getString("email"));
+                        user.setPassword(storedPassword);
+                        user.setRole(rs.getString("role_id"));
+                        user.setStatus(rs.getBoolean("status"));
+                        user.setPhone(rs.getString("phone"));
+                    }
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error in LoginService loginUser: " + e.getMessage());
+            System.err.println("Error in LoginService loginUser: " + e.getMessage());
         }
         return user;
     }
